@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{C2EE8537-50D3-41C9-9CC9-09768F825F6C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{FFFC9876-1002-45C5-AF32-E4A78231CDF1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2EE8537-50D3-41C9-9CC9-09768F825F6C} = {C2EE8537-50D3-41C9-9CC9-09768F825F6C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Enums;
-using Infrastructure.Identity;
+﻿using ApplicationCore.Entities.Abstract;
+using ApplicationCore.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
