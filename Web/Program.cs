@@ -1,7 +1,22 @@
+using System;
+using Infrastructure.Data;
+using Infrastructure.Identity;
+using Microsoft.EntityFrameworkCore;
+using Web.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddWebServices(builder.Configuration);
+builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GymAppDb")));
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GymAppIdentityDb")));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppIdentityDbContext>();
 
 var app = builder.Build();
 
@@ -17,6 +32,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
