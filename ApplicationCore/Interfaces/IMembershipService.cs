@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    internal interface IMembershipService
+    public interface IMembershipService
     {
         Task<GymMembership> GetActiveMembership(int clientId);
     }

@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Client;
+using ApplicationCore.Specifications;
 using Ardalis.Result;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,13 @@ namespace ApplicationCore.Services
     public class ClientService : IClientService
     {
         private readonly IRepository<Client> _clientRepository;
-        public ClientService(IRepository<Client> clientRepository)
+        private readonly IMembershipService _membershipService;
+        public ClientService(
+            IRepository<Client> clientRepository,
+            IMembershipService membershipService)
         {
             _clientRepository = clientRepository;
+            _membershipService = membershipService;
         }
 
         /// <summary>
@@ -38,9 +43,20 @@ namespace ApplicationCore.Services
             return Result.Success();
         }
 
-        public Task<bool> CheckIfHasActiveMembership(string userId)
+        /// <summary>
+        /// Checks if Client has acitve GymMembership
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// Returns <c>true</c> if an active membership is found for the client, otherwise <c>false</c>.</returns>
+        public async Task<bool> CheckIfHasActiveMembership(string userId)
         {
-            throw new NotImplementedException();
+            var _clientSpec = new FindClientByUserId(userId);
+            var client = _clientRepository.FirstOrDefaultAsync(_clientSpec);
+
+            var result = await _membershipService.GetActiveMembership(client.Id);
+
+            return result != null;
         }
     }
 }
