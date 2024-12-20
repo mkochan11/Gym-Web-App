@@ -17,6 +17,12 @@ namespace ApplicationCore.Services
         {
             _clientRepository = clientRepository;
         }
+
+        /// <summary>
+        /// Adds new Client
+        /// </summary>
+        /// <param name="newClient"></param>
+        /// <returns></returns>
         public async Task<Result> AddClient(NewClientModel newClient)
         {
             Client client = new Client
