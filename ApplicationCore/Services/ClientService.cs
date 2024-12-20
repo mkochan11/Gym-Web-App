@@ -22,7 +22,7 @@ namespace ApplicationCore.Services
         /// Adds new Client
         /// </summary>
         /// <param name="newClient"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Result"/> indicating the success or failure of the operation.</returns>
         public async Task<Result> AddClient(NewClientModel newClient)
         {
             Client client = new Client
