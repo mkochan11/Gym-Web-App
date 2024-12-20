@@ -37,5 +37,10 @@ namespace ApplicationCore.Services
 
             return Result.Success();
         }
+
+        public Task<bool> CheckIfHasActiveMembership(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
