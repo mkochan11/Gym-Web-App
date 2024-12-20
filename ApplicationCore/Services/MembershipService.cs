@@ -44,9 +44,13 @@ namespace ApplicationCore.Services
         }
 
 
-        private bool IsMembershipActive(GymMembership membership) {
+        /// <summary>
+        /// Determines if the specified gym membership is currently active.
+        /// </summary>
+        /// <param name="membership">The gym membership to check.</param>
+        /// <returns><c>true</c> if the membership is active; otherwise, <c>false</c>.</returns>
+        public bool IsMembershipActive(GymMembership membership) {
             DateTime currentDate = DateTime.Now;
-
             return membership.StartDate < currentDate && membership.EndDate > currentDate;
         }
     }
