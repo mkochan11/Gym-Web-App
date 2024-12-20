@@ -11,7 +11,8 @@ namespace Web.Configuration
         {
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IClientService), typeof(ClientService));
-            
+            services.AddScoped(typeof(IMembershipService), typeof(MembershipService));
+
             return services;
         }
     }

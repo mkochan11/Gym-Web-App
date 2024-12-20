@@ -11,6 +11,6 @@ namespace ApplicationCore.Interfaces
     public interface IClientService
     {
         Task<Result> AddClient(NewClientModel newClient);
-        Task<bool> CheckIfHasActiveMembership(string userId);
+        Task<bool> HasActiveMembership(string userId);
     }
 }

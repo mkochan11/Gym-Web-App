@@ -49,7 +49,7 @@ namespace ApplicationCore.Services
         /// <param name="userId"></param>
         /// <returns>
         /// Returns <c>true</c> if an active membership is found for the client, otherwise <c>false</c>.</returns>
-        public async Task<bool> CheckIfHasActiveMembership(string userId)
+        public async Task<bool> HasActiveMembership(string userId)
         {
             var _clientSpec = new FindClientByUserId(userId);
             var client = _clientRepository.FirstOrDefaultAsync(_clientSpec);

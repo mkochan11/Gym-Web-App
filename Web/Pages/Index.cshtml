@@ -1,10 +1,24 @@
 ﻿@page
 @model Web.Pages.IndexModel
+
+@using Infrastructure.Identity;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager;
+
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h2 class="display-4">Witaj!</h2>
-    <h4 class="display-6">Serwis Zarządzania i Wspierania Pracy Siłowni Sportowej</h4>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h2 class="display-4">Witaj!</h2>
+        <h4 class="display-6">Serwis Zarządzania i Wspierania Pracy Siłowni Sportowej</h4>
+    }
+    else
+    {
+        <h2 class="display-4">Witaj!</h2>
+        <h4 class="display-6">Serwis Zarządzania i Wspierania Pracy Siłowni Sportowej</h4>
+        <h4 class="display-8">Zarejestruj lub zaloguj się</h4>
+    }
 </div>
