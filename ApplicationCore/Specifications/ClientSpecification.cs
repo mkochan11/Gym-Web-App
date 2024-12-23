@@ -12,7 +12,7 @@ namespace ApplicationCore.Specifications
     {
         public FindClientByUserId(string userId)
         {
-            Query.Where(x => x.AccountId == userId).AsSplitQuery();
+            Query.Where(x => x.AccountId.ToString() == userId.ToString()).AsSplitQuery();
         }
     }
 }

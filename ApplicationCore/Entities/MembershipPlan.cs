@@ -14,5 +14,6 @@ namespace ApplicationCore.Entities
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
         public string DurationTime { get; set; } = string.Empty;
+        public int DurationInMonths { get; set; }
     }
 }

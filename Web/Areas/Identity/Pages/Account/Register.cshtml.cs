@@ -138,6 +138,12 @@ namespace Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Client");
+                    if (!roleResult.Succeeded)
+                    {
+                        return RedirectToPage("Error");
+                    }
+
                     var userId = await _userManager.GetUserIdAsync(user);
 
                     var clientModel = new NewClientModel

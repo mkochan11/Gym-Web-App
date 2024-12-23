@@ -57,6 +57,12 @@ namespace Infrastructure.Identity
                     Id = "6",
                     Name = "Receptionist",
                     NormalizedName = "RECEPTIONIST"
+                },
+                new IdentityRole
+                {
+                    Id = "7",
+                    Name = "Client",
+                    NormalizedName = "CLIENT"
                 }
             );
         }

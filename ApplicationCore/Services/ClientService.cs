@@ -6,6 +6,7 @@ using Ardalis.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,12 +52,18 @@ namespace ApplicationCore.Services
         /// Returns <c>true</c> if an active membership is found for the client, otherwise <c>false</c>.</returns>
         public async Task<bool> HasActiveMembership(string userId)
         {
-            var _clientSpec = new FindClientByUserId(userId);
-            var client = _clientRepository.FirstOrDefaultAsync(_clientSpec);
+            var client = await GetClientByUserId(userId);
 
             var result = await _membershipService.GetActiveMembership(client.Id);
 
             return result != null;
+        }
+
+        public async Task<Client> GetClientByUserId(string userId){
+            var _clientSpec = new FindClientByUserId(userId);
+            var client = await _clientRepository.FirstOrDefaultAsync(_clientSpec);
+
+            return client;
         }
     }
 }

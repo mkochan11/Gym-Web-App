@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models.Client;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Models.Client;
 using Ardalis.Result;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace ApplicationCore.Interfaces
     {
         Task<Result> AddClient(NewClientModel newClient);
         Task<bool> HasActiveMembership(string userId);
+        Task<Client> GetClientByUserId(string userId);
     }
 }

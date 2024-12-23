@@ -10,8 +10,9 @@ namespace Web.Configuration
         public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IClientService), typeof(ClientService));
-            services.AddScoped(typeof(IMembershipService), typeof(MembershipService));
+            services.AddTransient(typeof(IClientService), typeof(ClientService));
+            services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
+            services.AddTransient(typeof(IMembershipPlanService), typeof(MembershipPlanService));
 
             return services;
         }

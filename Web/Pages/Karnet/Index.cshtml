@@ -1,0 +1,43 @@
+@page
+@model Web.Pages.Karnet.IndexModel
+
+@using Infrastructure.Identity;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager;
+
+@{
+    ViewData["Title"] = "Karnet";
+    var membership = Model.MembershipViewModel.MembershipIndexItem;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Typ karnetu</th>
+            <th>Opis karnetu</th>
+            <th>Cena</th>
+            <th>Data zakupu</th>
+            <th>Data zakończenia karnetu</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (membership != null)
+        {
+            <tr>
+                <td>@membership.PlanType</td>
+                <td>@membership.PlanDescription</td>
+                <td>@membership.Price</td>
+                <td>@membership.StartDate.ToString("yyyy-MM-dd")</td> <!-- Format date as needed -->
+                <td>@membership.EndDate.ToString("yyyy-MM-dd")</td>   <!-- Format date as needed -->
+                <td>@membership.Status</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">Brak karnetów dla wybranego użytkownika.</td>
+            </tr>
+        }
+    </tbody>
+</table>

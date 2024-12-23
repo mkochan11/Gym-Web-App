@@ -171,5 +171,38 @@ namespace Infrastructure.Data
                 }
             };
         }
+        // static IEnumerable<GroupTraining> GetPreconfiguredTrainingTypes(SeedUsersIds ids)
+        // {
+        //     return new List<GroupTraining>
+        //     {
+        //         new GroupTraining
+        //         {
+        //             TrainingTypeId = 1,
+        //             GroupTrainerId = ids.GroupTrainerId,
+        //             Name = "Trening siłowy",
+        //             Description = "Trening siłowy z trenerem",
+        //             Capacity = 10,
+                    
+        //         },
+        //         new GroupTraining
+        //         {
+        //             TrainingTypeId = 2,
+        //             GroupTrainerId = ids.GroupTrainerId,
+        //             Name = "Trening kardio",
+        //             Description = "Trening kardio z trenerem",
+        //             Capacity = 15,
+        //         },
+        //         new GroupTraining
+        //         {
+        //             TrainingTypeId = 3,
+        //             GroupTrainerId = ids.GroupTrainerId,
+        //             Name = "Trening taneczny",
+        //             Description = "Trening taneczny z trenerem",
+        //             Capacity = 12,
+        //             Date = DateTime.Now.AddDays(7),
+        //             Duration = TimeSpan.FromHours(1),
+        //         },
+        //     };
+        //}
     }
 }
