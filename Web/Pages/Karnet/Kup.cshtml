@@ -12,15 +12,17 @@
         <div class="d-flex overflow-auto" style="gap: 1rem; max-width: 100%; white-space: nowrap;">
             @foreach (var membershipPlan in Model.ViewModel.Plans)
             {
-                <div class="card text-center" style="min-width: 300px; border: 1px solid #ddd; cursor: pointer;"
-                     onclick="selectCard(@membershipPlan.Id)" id="card-@membershipPlan.Id">
-                    <div class="card-body">
-                        <h5 class="card-title">@membershipPlan.Type</h5>
-                        <p class="card-text">@membershipPlan.Description</p>
-                        <p class="card-text"><strong>Cena:</strong> @membershipPlan.Price zł</p>
-                        <p class="card-text"><strong>Czas trwania:</strong> @membershipPlan.DurationTime</p>
+                {
+                    <div class="card text-center" style="min-width: 300px; border: 1px solid #ddd; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; max-height: 400px;"
+                         onclick="selectCard(@membershipPlan.Id)" id="card-@membershipPlan.Id">
+                        <div class="card-body" style="overflow: hidden; text-overflow: ellipsis;">
+                            <h5 class="card-title" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">@membershipPlan.Type</h5>
+                            <p class="card-text" style="white-space: normal; overflow: hidden; text-overflow: ellipsis;">@membershipPlan.Description</p>
+                            <p class="card-text"><strong>Cena:</strong> @membershipPlan.Price zł</p>
+                            <p class="card-text"><strong>Czas trwania:</strong> @membershipPlan.DurationTime</p>
+                        </div>
                     </div>
-                </div>
+                }
             }
         </div>
 

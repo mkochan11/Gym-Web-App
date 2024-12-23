@@ -15,9 +15,9 @@ namespace ApplicationCore.Entities
         [ForeignKey(nameof(PersonalTrainerId))]
         public PersonalTrainer PersonalTrainer { get; set; }
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         [ForeignKey(nameof(ClientId))]
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
     }
 }

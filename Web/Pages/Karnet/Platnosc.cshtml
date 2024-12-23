@@ -1,0 +1,46 @@
+﻿@page
+@model Web.Pages.Karnet.PlatnoscModel
+@{
+}
+
+
+<div class="container my-5 text-center">
+    <h3>Wybierz płatność</h3>
+
+    <div class="row justify-content-center">
+        <ul class="list-group">
+            @foreach (var method in Model.PaymentMethods)
+            {
+            <li class="list-group-item list-group-item-action" onclick="selectPaymentMethod('@method')" style="cursor: pointer;">
+                <h5 class="mb-1">@method</h5>
+                <p class="mb-1">Zapłać przy użyciu @method</p>
+            </li>
+            }
+        </ul>
+    </div>
+
+    <div id="selectedMethodContainer" class="mt-4" style="display:none;">
+        <h4>Wybrana metoda płatności: <span id="selectedMethodDisplay"></span></h4>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="selectedPaymentMethod" id="selectedPaymentMethod" />
+        <button type="submit" class="btn btn-primary mt-4" id="payButton" style="display:none;">Opłać</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let selectedPaymentMethod = null;
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            document.getElementById("selectedPaymentMethod").value = selectedPaymentMethod;
+
+            document.getElementById("selectedMethodDisplay").innerText = selectedPaymentMethod;
+            document.getElementById("selectedMethodContainer").style.display = "block";
+
+            document.getElementById("payButton").style.display = "inline-block";
+        }
+    </script>
+}

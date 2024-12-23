@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Entities.Abstract;
 using Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +15,9 @@ namespace Infrastructure.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Receptionist> Receptionists{ get; set; }
+        public DbSet<Manager> Managers{ get; set; }
+        public DbSet<Owner> Owners{ get; set; }
         public DbSet<PersonalTrainer> PersonalTrainers { get; set; }
         public DbSet<GroupTrainer> GroupTrainers { get; set; }
         public DbSet<IndividualTraining> IndividualTrainings { get; set; }
@@ -25,7 +28,7 @@ namespace Infrastructure.Data
         public DbSet<GymMembership> GymMemberships { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<TrainingType> TrainingTypes { get; set; }
-        public DbSet<Shift> Shifts { get; set; }
-        public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<Shift<Receptionist>> ReceptionistsShifts { get; set; }
+        public DbSet<Availability<Receptionist>> ReceptionistsAvailabilities { get; set; }
     }
 }

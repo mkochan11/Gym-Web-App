@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApplicationCore.Entities.Abstract;
 
 namespace ApplicationCore.Entities
 {
-    public class Availability : BaseEntity
+    public class Availability<T> : BaseEntity
     {
         public DateTime StartTime { get; set; }
 
@@ -16,6 +17,6 @@ namespace ApplicationCore.Entities
         public int EmployeeId { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
-        public Employee Employee { get; set; }
+        public T Employee { get; set; }
     }
 }

@@ -16,10 +16,30 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDbContext<AppIdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GymAppIdentityDb")));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AppIdentityDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppIdentityDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    try
+    {
+        var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var indentityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var UsersIds = await AppIdentityDbContextSeed.SeedAsync(indentityContext, userManager, roleManager);
+
+        var appDbContext = scopedProvider.GetRequiredService<AppDbContext>();
+        await AppDbContextSeed.SeedAsync(appDbContext, UsersIds);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred while seeding DB");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

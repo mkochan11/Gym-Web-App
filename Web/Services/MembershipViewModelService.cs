@@ -36,10 +36,12 @@ namespace Web.Services
 
             var _membershipSpec = new FindMembershipByClientId(client.Id);
             var memberships = await _membershipRepository.ListAsync(_membershipSpec);
-            if (memberships.Count != 0){
+            if (memberships.Count > 0){
                 var latestMembership = memberships.OrderByDescending(m => m.EndDate).FirstOrDefault();
 
-                var membershipIndexItemViewModel = new MembershipIndexItemViewModel()
+                latestMembership.MembershipPlan = await _membershipPlanRepository.GetByIdAsync(latestMembership.MembershipPlanId);
+
+                var membershipIndexItemViewModel = new MembershipIndexItemViewModel
                 {
                     Id = latestMembership.Id,
                     StartDate = latestMembership.StartDate,
@@ -50,7 +52,7 @@ namespace Web.Services
                     Status = latestMembership.EndDate < DateTime.Today ? "Zakończony" : "Aktywny"
                 };
 
-                var membershipIndexViewModel = new MembershipIndexViewModel()
+                var membershipIndexViewModel = new MembershipIndexViewModel
                 {
                     MembershipIndexItem = membershipIndexItemViewModel,
                     IsFound = true,
@@ -59,7 +61,7 @@ namespace Web.Services
             }
             else
             {
-                return new MembershipIndexViewModel() { IsFound = false };
+                return new MembershipIndexViewModel { IsFound = false };
 
             }
         }

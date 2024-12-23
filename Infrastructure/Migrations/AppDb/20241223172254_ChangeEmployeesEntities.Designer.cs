@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241223172254_ChangeEmployeesEntities")]
+    partial class ChangeEmployeesEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,54 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.GroupTrainer>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("GroupTrainersAvailabilities");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.PersonalTrainer>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("PersonalTrainerAvailabilities");
+                });
 
             modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.Receptionist>", b =>
                 {
@@ -219,7 +270,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -450,6 +501,54 @@ namespace Infrastructure.Migrations
                     b.ToTable("Receptionists");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.GroupTrainer>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("GroupTrainersShifts");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.PersonalTrainer>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("PersonalTrainersShifts");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.Receptionist>", b =>
                 {
                     b.Property<int>("Id")
@@ -541,6 +640,28 @@ namespace Infrastructure.Migrations
                     b.ToTable("ClientGroupTraining");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.GroupTrainer>", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.GroupTrainer", "Employee")
+                        .WithMany("Availabilities")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.PersonalTrainer>", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.PersonalTrainer", "Employee")
+                        .WithMany("Availabilities")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.Availability<ApplicationCore.Entities.Receptionist>", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Receptionist", "Employee")
@@ -605,7 +726,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("ApplicationCore.Entities.Client", "Client")
                         .WithMany("IndividualTrainings")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApplicationCore.Entities.PersonalTrainer", "PersonalTrainer")
                         .WithMany("Trainings")
@@ -627,6 +750,28 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("GymMembership");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.GroupTrainer>", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.GroupTrainer", "Employee")
+                        .WithMany("Shifts")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.PersonalTrainer>", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.PersonalTrainer", "Employee")
+                        .WithMany("Shifts")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Shift<ApplicationCore.Entities.Receptionist>", b =>
@@ -685,6 +830,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("ApplicationCore.Entities.GroupTrainer", b =>
                 {
+                    b.Navigation("Availabilities");
+
+                    b.Navigation("Shifts");
+
                     b.Navigation("Trainings");
                 });
 
@@ -695,7 +844,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("ApplicationCore.Entities.PersonalTrainer", b =>
                 {
+                    b.Navigation("Availabilities");
+
                     b.Navigation("Plans");
+
+                    b.Navigation("Shifts");
 
                     b.Navigation("Trainings");
                 });

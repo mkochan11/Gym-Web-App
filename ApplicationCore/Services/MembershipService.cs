@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.Models.Membership;
+using ApplicationCore.Enums;
 
 namespace ApplicationCore.Services
 {
@@ -16,12 +17,14 @@ namespace ApplicationCore.Services
         private readonly IRepository<GymMembership> _membershipRepository;
         private readonly IRepository<MembershipPlan> _membershipPlanRepository;
         private readonly IRepository<Client> _clientRepository;
+        private readonly IRepository<Payment> _paymentRepository;
         //private readonly IClientService _clientService;
 
         public MembershipService(
             IRepository<GymMembership> membershipRepository,
             IRepository<MembershipPlan> membershipPlanRepository,
-            IRepository<Client> clientRepository
+            IRepository<Client> clientRepository,
+            IRepository<Payment> paymentRepository
             //IClientService clientService
             )
         {
@@ -29,6 +32,7 @@ namespace ApplicationCore.Services
             //_clientService = clientService;
             _membershipPlanRepository = membershipPlanRepository;
             _clientRepository = clientRepository;
+            _paymentRepository = paymentRepository;
         }
 
         /// <summary>
@@ -99,6 +103,28 @@ namespace ApplicationCore.Services
             
             if(result == null){
                 return Result.Error("Membership could not be added");
+            }
+
+            
+            if (!Enum.TryParse(model.PaymentMethod, out PaymentMethod method)) {
+                return Result.Error("Could not resolve payment method");
+            }
+
+            PaymentMethod paymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), model.PaymentMethod);
+
+            Payment payment = new Payment
+            {
+                GymMembership = membership,
+                PaymentDate = DateTime.Now,
+                PaymentMethod = paymentMethod,
+                PaymentStatus = PaymentStatus.Success
+            };
+
+            var paymentResult = await _paymentRepository.AddAsync(payment);
+
+            if (paymentResult == null)
+            {
+                return Result.Error("Payment could not be added");
             }
 
             return Result.Success();

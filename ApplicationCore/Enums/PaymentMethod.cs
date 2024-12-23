@@ -8,9 +8,9 @@ namespace ApplicationCore.Enums
 {
     public enum PaymentMethod
     {
-        Card,
-        Transfer,
+        Karta,
+        Przelew,
         BLIK,
-        Cash
+        Gotówka
     }
 }

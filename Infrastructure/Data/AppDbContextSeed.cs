@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Entities.Abstract;
 using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,15 +21,6 @@ namespace Infrastructure.Data
                     appDbContext.Database.Migrate();
                 }
 
-
-                if (!await appDbContext.Employees.AnyAsync())
-                {
-                    await appDbContext.Employees.AddRangeAsync(
-                        GetPreconfiguredEmployees(ids));
-
-                    await appDbContext.SaveChangesAsync();
-                }
-
                 if (!await appDbContext.MembershipPlans.AnyAsync())
                 {
                     await appDbContext.MembershipPlans.AddRangeAsync(
@@ -44,6 +36,77 @@ namespace Infrastructure.Data
 
                     await appDbContext.SaveChangesAsync();
                 }
+                if (!await appDbContext.Owners.AnyAsync())
+                {
+                    var owner = GetPreconfiguredOwner(ids);
+                    await appDbContext.Owners.AddAsync(owner);
+                    await appDbContext.SaveChangesAsync();
+                }
+
+                if (!await appDbContext.Managers.AnyAsync())
+                {
+                    var manager = GetPreconfiguredManager(ids);
+                    await appDbContext.Managers.AddAsync(manager);
+                    await appDbContext.SaveChangesAsync();
+                }
+
+                if (!await appDbContext.GroupTrainers.AnyAsync())
+                {
+                    var groupTrainer = GetPreconfiguredGroupTrainer(ids);
+                    await appDbContext.GroupTrainers.AddAsync(groupTrainer);
+                    await appDbContext.SaveChangesAsync();
+                }
+
+                if (!await appDbContext.PersonalTrainers.AnyAsync())
+                {
+                    var personalTrainer = GetPreconfiguredPersonalTrainer(ids);
+                    await appDbContext.PersonalTrainers.AddAsync(personalTrainer);
+                    await appDbContext.SaveChangesAsync();
+                }
+
+                if (!await appDbContext.Receptionists.AnyAsync())
+                {
+                    var receptionist = GetPreconfiguredReceptionist(ids);
+                    await appDbContext.Receptionists.AddAsync(receptionist);
+                    await appDbContext.SaveChangesAsync();
+                }
+
+                if (!await appDbContext.GroupTrainings.AnyAsync())
+                {
+                    var groupTrainer = await appDbContext.GroupTrainers.FirstOrDefaultAsync();
+                    var trainingTypes = await appDbContext.TrainingTypes.ToListAsync();
+
+                    if (groupTrainer != null && trainingTypes.Any())
+                    {
+                        var groupTrainings = GetPreconfiguredGroupTrainings(groupTrainer, trainingTypes);
+                        await appDbContext.GroupTrainings.AddRangeAsync(groupTrainings);
+                        await appDbContext.SaveChangesAsync();
+                    }
+                }
+
+                if (!await appDbContext.IndividualTrainings.AnyAsync())
+                {
+                    var personalTrainer = await appDbContext.PersonalTrainers.FirstOrDefaultAsync();
+
+                    if (personalTrainer != null)
+                    {
+                        var individualTrainings = GetPreconfiguredIndividualTrainings(personalTrainer);
+                        await appDbContext.IndividualTrainings.AddRangeAsync(individualTrainings);
+                        await appDbContext.SaveChangesAsync();
+                    }
+                }
+
+                if (!await appDbContext.ReceptionistsShifts.AnyAsync())
+                {
+                    var receptionist = await appDbContext.Receptionists.FirstOrDefaultAsync();
+
+                    if (receptionist != null)
+                    {
+                        var receptionistShifts = GetPreconfiguredReceptionistShift(receptionist);
+                        await appDbContext.ReceptionistsShifts.AddRangeAsync(receptionistShifts);
+                        await appDbContext.SaveChangesAsync();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -57,23 +120,26 @@ namespace Infrastructure.Data
                 new MembershipPlan
                 {
                     Type = "Klasyczny",
-                    Description = "Klasyczny karnet",
+                    Description = "Dostęp do siłowni w godzinach otwarcia siłowni, bez dostępu do zajęć grupowych i indywidualnych.",
                     Price = 150.00m,
-                    DurationTime = "3 Months"
+                    DurationTime = "3 Miesiące",
+                    DurationInMonths = 3                    
                 },
                 new MembershipPlan
                 {
                     Type = "Premium",
-                    Description = "Karnet premium",
-                    Price = 250.00m,
-                    DurationTime = "3 Months"
+                    Description = "Dostęp do siłowni oraz zajęć indywiudalnych oraz grupowych w godzinach otwarcia siłowni.",
+                    Price = 600.00m,
+                    DurationTime = "6 Miesięcy",
+                    DurationInMonths = 6
                 },
                 new MembershipPlan
                 {
-                    Type = "Student",
-                    Description = "Karnet studencki",
+                    Type = "Studencki",
+                    Description = "Dostęp do siłowni w godzinach 7-9 oraz 16-19, bez dostępu do zajęć grupowych i indywidualnych.",
                     Price = 100.00m,
-                    DurationTime = "3 Months"
+                    DurationTime = "3 Miesiące",
+                    DurationInMonths = 3                    
                 }
             };
         }
@@ -105,104 +171,153 @@ namespace Infrastructure.Data
             };
         }
 
-        static IEnumerable<Employee> GetPreconfiguredEmployees(SeedUsersIds ids)
+
+        static Owner GetPreconfiguredOwner(SeedUsersIds ids)
         {
-            return new List<Employee>
+            return new Owner
             {
-                new Employee
+                AccountId = ids.OwnerId,
+                Name = "Michał",
+                Surname = "Kochanowski",
+                RegistrationDate = DateTime.Now,
+                EmploymentDate = DateTime.Now,
+                Position = ApplicationCore.Enums.Position.Owner,
+                Salary = 200.00m
+            };
+        }
+        static Manager GetPreconfiguredManager(SeedUsersIds ids)
+        {
+            return new Manager
+            {
+                AccountId = ids.ManagerId,
+                Name = "Adam",
+                Surname = "Kowalski",
+                RegistrationDate = DateTime.Now,
+                EmploymentDate = DateTime.Now,
+                Position = ApplicationCore.Enums.Position.Manager,
+                Salary = 100.00m
+            };
+        }
+        static GroupTrainer GetPreconfiguredGroupTrainer(SeedUsersIds ids)
+        {
+            return new GroupTrainer
+            {
+                AccountId = ids.GroupTrainerId,
+                Name = "Jan",
+                Surname = "Grupowy",
+                RegistrationDate = DateTime.Now,
+                EmploymentDate = DateTime.Now,
+                Position = ApplicationCore.Enums.Position.GroupTrainer,
+                Salary = 75.00m
+            };
+        }
+        static PersonalTrainer GetPreconfiguredPersonalTrainer(SeedUsersIds ids)
+        {
+            return new PersonalTrainer
+            {
+                AccountId = ids.PersonalTrainerId,
+                Name = "Maciej",
+                Surname = "Indywidualny",
+                RegistrationDate = DateTime.Now,
+                EmploymentDate = DateTime.Now,
+                Position = ApplicationCore.Enums.Position.GroupTrainer,
+                Salary = 80.00m
+            };
+        }
+        static Receptionist GetPreconfiguredReceptionist(SeedUsersIds ids)
+        {
+            return new Receptionist
+            {
+                AccountId = ids.ReceptionistId,
+                Name = "Anna",
+                Surname = "Recepjowa",
+                RegistrationDate = DateTime.Now,
+                EmploymentDate = DateTime.Now,
+                Position = ApplicationCore.Enums.Position.Receptionist,
+                Salary = 40.00m
+            };
+        }
+        static IEnumerable<GroupTraining> GetPreconfiguredGroupTrainings(GroupTrainer trainer, List<TrainingType> types)
+        {
+            return new List<GroupTraining>
+            {
+                new GroupTraining
                 {
-                    AccountId = ids.AdminId,
-                    Name = "Admin",
-                    Surname = "Admin",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.Admin,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 30.00m,
+                    Date = new DateTime(2025, 1, 15, 17, 0, 0),
+                    Duration = TimeSpan.FromMinutes(60),
+                    Description = "Trening grupowy " + types.ElementAt(0).Description,
+                    GroupTrainer = trainer,
+                    MaxParticipantNumber = 20,
+                    TrainingType = types.ElementAt(0)
                 },
-                new Employee
+                new GroupTraining
                 {
-                    AccountId = ids.OwnerId,
-                    Name = "Michał",
-                    Surname = "Kochanowski",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.Owner,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 100.00m,
+                    Date = new DateTime(2025, 1, 16, 18, 0, 0),
+                    Duration = TimeSpan.FromMinutes(45),
+                    Description = "Trening grupowy " + types.ElementAt(1).Description,
+                    GroupTrainer = trainer,
+                    MaxParticipantNumber = 30,
+                    TrainingType = types.ElementAt(1)
                 },
-                new Employee
+                new GroupTraining
                 {
-                    AccountId = ids.ManagerId,
-                    Name = "Joe",
-                    Surname = "Manager",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.Manager,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 70.00m,
-                },
-                new Employee
-                {
-                    AccountId = ids.ReceptionistId,
-                    Name = "Jan",
-                    Surname = "Kowalski",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.Receptionist,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 30.00m,
-                },
-                new Employee
-                {
-                    AccountId = ids.GroupTrainerId,
-                    Name = "Anna",
-                    Surname = "Grupowska",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.GroupTrainer,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 50.00m,
-                },
-                new Employee
-                {
-                    AccountId = ids.PersonalTrainerId,
-                    Name = "Adam",
-                    Surname = "Personalny",
-                    RegistrationDate = DateTime.Now,
-                    Position = ApplicationCore.Enums.Position.PersonalTrainer,
-                    EmploymentDate = DateTime.Now,
-                    Salary = 40.00m,
+                    Date = new DateTime(2025, 1, 15, 20, 30, 0),
+                    Duration = TimeSpan.FromMinutes(30),
+                    Description = "Trening grupowy " + types.ElementAt(2).Description,
+                    GroupTrainer = trainer,
+                    MaxParticipantNumber = 15,
+                    TrainingType = types.ElementAt(2)
                 }
             };
         }
-        // static IEnumerable<GroupTraining> GetPreconfiguredTrainingTypes(SeedUsersIds ids)
-        // {
-        //     return new List<GroupTraining>
-        //     {
-        //         new GroupTraining
-        //         {
-        //             TrainingTypeId = 1,
-        //             GroupTrainerId = ids.GroupTrainerId,
-        //             Name = "Trening siłowy",
-        //             Description = "Trening siłowy z trenerem",
-        //             Capacity = 10,
-                    
-        //         },
-        //         new GroupTraining
-        //         {
-        //             TrainingTypeId = 2,
-        //             GroupTrainerId = ids.GroupTrainerId,
-        //             Name = "Trening kardio",
-        //             Description = "Trening kardio z trenerem",
-        //             Capacity = 15,
-        //         },
-        //         new GroupTraining
-        //         {
-        //             TrainingTypeId = 3,
-        //             GroupTrainerId = ids.GroupTrainerId,
-        //             Name = "Trening taneczny",
-        //             Description = "Trening taneczny z trenerem",
-        //             Capacity = 12,
-        //             Date = DateTime.Now.AddDays(7),
-        //             Duration = TimeSpan.FromHours(1),
-        //         },
-        //     };
-        //}
+        static IEnumerable<IndividualTraining> GetPreconfiguredIndividualTrainings(PersonalTrainer trainer)
+        {
+            return new List<IndividualTraining>
+            {
+                new IndividualTraining
+                {
+                    Date = new DateTime(2025, 1, 15, 13, 0, 0),
+                    Duration = TimeSpan.FromMinutes(60),
+                    PersonalTrainer = trainer,
+                },
+                new IndividualTraining
+                {
+                    Date = new DateTime(2025, 1, 14, 15, 0, 0),
+                    Duration = TimeSpan.FromMinutes(30),
+                    PersonalTrainer = trainer,
+                },
+                new IndividualTraining
+                {
+                    Date = new DateTime(2025, 1, 18, 19, 15, 0),
+                    Duration = TimeSpan.FromMinutes(45),
+                    PersonalTrainer = trainer,
+                }
+            };
+        }
+
+        static IEnumerable<Shift<Receptionist>> GetPreconfiguredReceptionistShift(Receptionist receptionist)
+        {
+            return new List<Shift<Receptionist>>
+            {
+                new Shift<Receptionist>
+                {
+                    StartTime = new DateTime(2025, 1, 15, 7, 0, 0),
+                    EndTime = new DateTime(2025, 1, 15, 23, 0, 0),
+                    Employee = receptionist,
+                },
+                new Shift<Receptionist>
+                {
+                    StartTime = new DateTime(2025, 1, 16, 15, 0, 0),
+                    EndTime = new DateTime(2025, 1, 16, 23, 0, 0),
+                    Employee = receptionist,
+                },
+                new Shift<Receptionist>
+                {
+                    StartTime = new DateTime(2025, 1, 16, 7, 0, 0),
+                    EndTime = new DateTime(2025, 1, 16, 15, 0, 0),
+                    Employee = receptionist,
+                }
+            };
+        }
     }
 }
