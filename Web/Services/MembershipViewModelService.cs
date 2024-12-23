@@ -6,7 +6,7 @@ using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
-using Web.ViewModels;
+using Web.ViewModels.Membership;
 
 namespace Web.Services
 {
@@ -36,28 +36,32 @@ namespace Web.Services
 
             var _membershipSpec = new FindMembershipByClientId(client.Id);
             var memberships = await _membershipRepository.ListAsync(_membershipSpec);
-            if (memberships == null){
-                return null;
+            if (memberships.Count != 0){
+                var latestMembership = memberships.OrderByDescending(m => m.EndDate).FirstOrDefault();
+
+                var membershipIndexItemViewModel = new MembershipIndexItemViewModel()
+                {
+                    Id = latestMembership.Id,
+                    StartDate = latestMembership.StartDate,
+                    EndDate = latestMembership.EndDate,
+                    PlanType = latestMembership.MembershipPlan.Type,
+                    PlanDescription = latestMembership.MembershipPlan.Description,
+                    Price = latestMembership.MembershipPlan.Price,
+                    Status = latestMembership.EndDate < DateTime.Today ? "Zakończony" : "Aktywny"
+                };
+
+                var membershipIndexViewModel = new MembershipIndexViewModel()
+                {
+                    MembershipIndexItem = membershipIndexItemViewModel,
+                    IsFound = true,
+                };
+                return membershipIndexViewModel;
             }
-
-            var latestMembership = memberships.OrderByDescending(m => m.EndDate).FirstOrDefault();
-
-            var membershipIndexItemViewModel = new MembershipIndexItemViewModel()
+            else
             {
-                Id = latestMembership.Id,
-                StartDate = latestMembership.StartDate,
-                EndDate = latestMembership.EndDate,
-                PlanType = latestMembership.MembershipPlan.Type,
-                PlanDescription = latestMembership.MembershipPlan.Description,
-                Price = latestMembership.MembershipPlan.Price,
-                Status = latestMembership.EndDate < DateTime.Today ? "Zakończony" : "Aktywny"
-            };
+                return new MembershipIndexViewModel() { IsFound = false };
 
-            var membershipIndexViewModel = new MembershipIndexViewModel()
-            {
-                MembershipIndexItem = membershipIndexItemViewModel,
-            };
-            return membershipIndexViewModel;
+            }
         }
     }
 }

@@ -7,37 +7,38 @@
 
 @{
     ViewData["Title"] = "Karnet";
-    var membership = Model.MembershipViewModel.MembershipIndexItem;
 }
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Typ karnetu</th>
-            <th>Opis karnetu</th>
-            <th>Cena</th>
-            <th>Data zakupu</th>
-            <th>Data zakończenia karnetu</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (membership != null)
+    
+        @if (Model.MembershipViewModel.IsFound)
         {
-            <tr>
-                <td>@membership.PlanType</td>
-                <td>@membership.PlanDescription</td>
-                <td>@membership.Price</td>
-                <td>@membership.StartDate.ToString("yyyy-MM-dd")</td> <!-- Format date as needed -->
-                <td>@membership.EndDate.ToString("yyyy-MM-dd")</td>   <!-- Format date as needed -->
-                <td>@membership.Status</td>
-            </tr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Typ karnetu</th>
+                        <th>Opis karnetu</th>
+                        <th>Cena</th>
+                        <th>Data zakupu</th>
+                        <th>Data zakończenia karnetu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.PlanType</td>
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.PlanDescription</td>
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.Price</td>
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.StartDate.ToString("yyyy-MM-dd")</td> <!-- Format date as needed -->
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.EndDate.ToString("yyyy-MM-dd")</td>   <!-- Format date as needed -->
+                        <td>@Model.MembershipViewModel.MembershipIndexItem.Status</td>
+                    </tr>
+                </tbody>
+            </table>
         }
         else
         {
-            <tr>
-                <td colspan="6">Brak karnetów dla wybranego użytkownika.</td>
-            </tr>
+            <div class="text-center">
+                <h4 class="display-8">Nie posiadasz żadnych karnetów.</h4>
+                <a class="btn btn-primary" href="/Karnet/Kup">Kup Karnet</a>
+            </div>
         }
-    </tbody>
-</table>
+   

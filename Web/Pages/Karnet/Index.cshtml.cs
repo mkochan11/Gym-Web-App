@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ApplicationCore.Interfaces;
 using Web.Interfaces;
-using Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
+using Web.ViewModels.Membership;
 
-namespace Web.Pages.Karnet{
+namespace Web.Pages.Karnet
+{
     // [Authorize(Roles = "Client")]
     public class IndexModel : PageModel
     {

@@ -10,7 +10,7 @@ namespace Web.Configuration
         public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration) 
         {
             services.AddScoped(typeof(IMembershipViewModelService), typeof(MembershipViewModelService));
-            
+            services.AddScoped(typeof(IMembershipBuyViewModelService), typeof(MembershipBuyViewModelService));
             return services;
         }
     }
