@@ -52,7 +52,6 @@ namespace WebTests
 
             var mockUserStore = new Mock<IUserStore<ApplicationUser>>();
             var mockEmailStore = new Mock<IUserEmailStore<ApplicationUser>>();
-            var mockEmailSender = new Mock<IEmailSender>();
             var mockClientService = new Mock<IClientService>();
             var mockLogger = new Mock<ILogger<RegisterModel>>();
 
@@ -61,7 +60,6 @@ namespace WebTests
                 mockEmailStore.Object,
                 mockSignInManager.Object,
                 mockLogger.Object,
-                mockEmailSender.Object,
                 mockClientService.Object)
             {
                 Input = new RegisterModel.InputModel
@@ -127,7 +125,6 @@ namespace WebTests
 
             var mockUserStore = new Mock<IUserStore<ApplicationUser>>();
             var mockEmailStore = new Mock<IUserEmailStore<ApplicationUser>>();
-            var mockEmailSender = new Mock<IEmailSender>();
             var mockClientService = new Mock<IClientService>();
             var mockLogger = new Mock<ILogger<RegisterModel>>();
 
@@ -136,7 +133,6 @@ namespace WebTests
                 mockEmailStore.Object,
                 mockSignInManager.Object,
                 mockLogger.Object,
-                mockEmailSender.Object,
                 mockClientService.Object)
             {
                 Input = new RegisterModel.InputModel

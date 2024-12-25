@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities
     {
         public List<GymMembership> GymMemberships { get; set; } = new List<GymMembership>();
         public List<IndividualTraining> IndividualTrainings { get; set; } = new List<IndividualTraining>();
-        public List<GroupTraining> GroupTrainings { get; set; } = new List<GroupTraining>();
+        public List<GroupTrainingParticipation> GroupTrainingsParticipations { get; set; } = new List<GroupTrainingParticipation>();
         public List<TrainingPlan> TrainingPlans { get; set;} = new List<TrainingPlan>();
     }
 }

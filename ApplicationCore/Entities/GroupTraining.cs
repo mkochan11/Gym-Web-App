@@ -17,7 +17,7 @@ namespace ApplicationCore.Entities
 
         public int MaxParticipantNumber { get; set; }
 
-        public List<Client> Participants { get; set; }
+        public List<GroupTrainingParticipation> Participations { get; set; }
 
         public int TrainingTypeId { get; set; }
 

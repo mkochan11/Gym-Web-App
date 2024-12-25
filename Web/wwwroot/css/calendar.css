@@ -1,0 +1,48 @@
+﻿.calendar-day {
+    height: 50px;
+    width: 80px
+    cursor: pointer;
+}
+
+.calendar-day span {
+    font-weight: bold;
+}
+
+.calendar-day:hover {
+    background-color: #f0f0f0;
+}
+
+.training-cards {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.training-card {
+    background-color: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    word-wrap: break-word; /* Ensures long words break into the next line */
+    overflow-wrap: break-word; /* Ensures proper wrapping for modern browsers */
+    white-space: normal; /* Allows the text to wrap onto multiple lines */
+    overflow: hidden; /* Prevents text from spilling out */
+    text-overflow: ellipsis; /* Truncates text with ellipsis (optional, if needed) */
+}
+
+.training-card strong {
+    color: #1565c0;
+    font-size: 14px;
+}
+
+.training-card p {
+    font-size: 12px;
+    margin: 0;
+    color: #424242;
+}
+
+.calendar-table {
+    table-layout: fixed; /* Prevent dynamic resizing of cells */
+    width: 100%; /* Stretch table to full width */
+}

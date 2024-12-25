@@ -30,5 +30,6 @@ namespace Infrastructure.Data
         public DbSet<TrainingType> TrainingTypes { get; set; }
         public DbSet<Shift<Receptionist>> ReceptionistsShifts { get; set; }
         public DbSet<Availability<Receptionist>> ReceptionistsAvailabilities { get; set; }
+        public DbSet<GroupTrainingParticipation> GroupTrainingParticipations { get; set; }
     }
 }

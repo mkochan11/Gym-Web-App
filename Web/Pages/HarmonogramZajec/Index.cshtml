@@ -1,0 +1,62 @@
+﻿@page
+@model Web.Pages.HarmonogramZajec.IndexModel
+@{
+    var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/calendar.css" />
+</head>
+
+<div class="container my-5">
+    <h3 class="text-center">Harmonogram zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
+
+    <div class="row justify-content-center">
+        <table class="table table-bordered text-center calendar-table">
+            <thead>
+                <tr>
+                    @foreach (var day in daysOfWeek)
+                    {
+                        <th>@day</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 5; i++)  // 6 rows for a month (max)
+                {
+                    <tr>
+                        @for (int j = 0; j < 7; j++)  // 7 columns for the days
+                        {
+                            var day = Model.ViewModel.DaysInMonth[i * 7 + j];
+                            <td class="calendar-day">
+                                @if (day != null)
+                                {
+                                    <span>@day.Day</span>
+                                    @if (day.IndividualTrainings.Any() || day.GroupTrainings.Any())
+                                    {
+                                        <div class="training-cards">
+                                            @foreach (var training in day.IndividualTrainings)
+                                            {
+                                                <div class="training-card">
+                                                    <strong>@training.TrainerName @training.TrainerSurname</strong>
+                                                    <p>@training.Description</p>
+                                                </div>
+                                            }
+                                            @foreach (var training in day.GroupTrainings)
+                                            {
+                                                <div class="training-card">
+                                                    <strong>@training.TrainingName</strong>
+                                                    <p>@training.TrainingDescription</p>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
