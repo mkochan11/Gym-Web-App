@@ -47,18 +47,18 @@ else
 
                 @if (Model.IsReserved && Model.IsReservedByUser)
                 {
-                    <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="CancelIndividual">
+                    <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="CancelIndividual">
                         <input type="hidden" name="trainingId" value="@Model.Id" />
                         <button type="submit" class="btn btn-danger">Odwołaj rezerwację treningu</button>
                     </form>
                 }
                 else if (Model.IsReserved && !Model.IsReservedByUser)
                 {
-                    <span class="text-danger">Wszystkie miejsca na treningu są zajęte</span>
+                    <span class="text-danger">Trening jest już zarezerwowany</span>
                 }
                 else
                 {
-                    <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="ReserveIndividual">
+                    <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="ReserveIndividual">
                         <input type="hidden" name="trainingId" value="@Model.Id" />
                         <button type="submit" class="btn btn-success">Rezerwuj trening</button>
                     </form>

@@ -55,15 +55,15 @@ namespace Web.Pages.Karnet
                 PaymentMethod = SelectedPaymentMethod,
             };
 
-            var response = _membershipService.AddGymMembership(newMembershipModel);
+            var response = await _membershipService.AddGymMembership(newMembershipModel);
 
-            if (response.Result.IsSuccess)
+            if (response.IsSuccess)
             {
                 return RedirectToPage("./PlatnoscPowodzenie");
             }
             else
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/Error", new {errorMessage = response.Errors.FirstOrDefault()});
             }
             
         }

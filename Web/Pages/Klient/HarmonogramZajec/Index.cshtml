@@ -14,8 +14,8 @@
         @if (Model.CurrentMonth != DateTime.Now.Month || Model.CurrentYear != DateTime.Now.Year)
         {
             <div class="col-auto">
-                <form method="post">
-                    <button type="submit" class="btn btn-primary" asp-page-handler="Previous">
+                <form method="post" asp-page-handler="Previous">
+                    <button type="submit" class="btn btn-primary" >
                         &larr; <!-- Left Arrow -->
                     </button>
                 </form>
@@ -29,8 +29,8 @@
 
         <!-- Right Arrow Button -->
         <div class="col-auto">
-            <form method="post">
-                <button type="submit" class="btn btn-primary" asp-page-handler="Next">
+            <form method="post" asp-page-handler="Next">
+                <button type="submit" class="btn btn-primary" >
                     &rarr; <!-- Right Arrow -->
                 </button>
             </form>

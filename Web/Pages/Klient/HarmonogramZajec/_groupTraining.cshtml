@@ -47,14 +47,14 @@ else
                 {
                     if (Model.IsReservedByUser)
                     {
-                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="CancelGroup">
+                        <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="CancelGroup">
                             <input type="hidden" name="trainingId" value="@Model.Id" />
                             <button type="submit" class="btn btn-danger">Odwołaj rezerwację miejsca</button>
                         </form>
                     }
                     else
                     {
-                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="ReserveGroup">
+                        <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="ReserveGroup">
                             <input type="hidden" name="trainingId" value="@Model.Id" />
                             <button type="submit" class="btn btn-success">Rezerwuj miejsce</button>
                         </form>
