@@ -21,16 +21,19 @@ namespace Web.Pages.HarmonogramZajec
         private readonly ITrainingsCalendarViewModelService _trainingsCalendarViewModelService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IGroupTrainingService _groupTrainingService;
+        private readonly IIndividualTrainingService _individualTrainingService;
 
         public IndexModel(
             ITrainingsCalendarViewModelService trainingsCalendarViewModelService,
             UserManager<ApplicationUser> userManager,
-            IGroupTrainingService groupTrainingService
+            IGroupTrainingService groupTrainingService,
+            IIndividualTrainingService individualTrainingService
             )
         {
             _trainingsCalendarViewModelService = trainingsCalendarViewModelService;
             _userManager = userManager;
             _groupTrainingService = groupTrainingService;
+            _individualTrainingService = individualTrainingService;
         }
 
         public required TrainingsCalendarIndexViewModel ViewModel { get; set; }
@@ -102,7 +105,7 @@ namespace Web.Pages.HarmonogramZajec
             }
             else
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.First()});
             }
         }
 
@@ -116,7 +119,35 @@ namespace Web.Pages.HarmonogramZajec
             }
             else
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
+            }
+        }
+
+        public async Task<IActionResult> OnPostReserveIndividual(int trainingId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _individualTrainingService.Reserve(trainingId, user.Id);
+            if (result.IsSuccess)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
+            }
+        }
+
+        public async Task<IActionResult> OnPostCancelIndividual(int trainingId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _individualTrainingService.CancelReservation(trainingId, user.Id);
+            if (result.IsSuccess)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
             }
         }
     }

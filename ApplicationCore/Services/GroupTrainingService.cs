@@ -17,13 +17,15 @@ namespace ApplicationCore.Services
         IRepository<MembershipPlan> _membershipPlanRepository;
         IRepository<GroupTraining> _groupTrainingRepository;
         IRepository<GroupTrainingParticipation> _groupTrainingParticipationRepository;
+        IMembershipService _membershipService;
 
         public GroupTrainingService(
             IRepository<Client> clientRepository,
             IRepository<GymMembership>  gymMemberhsipRepository,
             IRepository<MembershipPlan> membershipPlanRepository,
             IRepository<GroupTraining> groupTrainingRepository,
-            IRepository<GroupTrainingParticipation> groupTrainingParticipationRepository
+            IRepository<GroupTrainingParticipation> groupTrainingParticipationRepository,
+            IMembershipService membershipService
             )
         {
             _clientRepository = clientRepository;
@@ -31,6 +33,7 @@ namespace ApplicationCore.Services
             _membershipPlanRepository = membershipPlanRepository;
             _groupTrainingRepository = groupTrainingRepository;
             _groupTrainingParticipationRepository = groupTrainingParticipationRepository;
+            _membershipService = membershipService;
         }
 
         public async Task<Result> CancelPlace(int trainingId, string userId)
@@ -81,12 +84,11 @@ namespace ApplicationCore.Services
                 return Result.Error("Nie znaleziono klienta");
             }
 
-            var _membershipSpec = new FindMembershipByClientId(client.Id);
-            var membership = await _gymMembershipRepository.FirstOrDefaultAsync(_membershipSpec);
+            var membership = await _membershipService.GetActiveMembership(client.Id);
 
             if (membership == null)
             {
-                return Result.Error("Nie znaleziono karnetu dla danego klienta");
+                return Result.Error("Nie znaleziono aktywnego karnetu dla danego klienta");
             }
 
             var membershipPlan = await _membershipPlanRepository.GetByIdAsync(membership.MembershipPlanId);

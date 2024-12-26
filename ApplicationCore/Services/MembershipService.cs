@@ -18,18 +18,15 @@ namespace ApplicationCore.Services
         private readonly IRepository<MembershipPlan> _membershipPlanRepository;
         private readonly IRepository<Client> _clientRepository;
         private readonly IRepository<Payment> _paymentRepository;
-        //private readonly IClientService _clientService;
 
         public MembershipService(
             IRepository<GymMembership> membershipRepository,
             IRepository<MembershipPlan> membershipPlanRepository,
             IRepository<Client> clientRepository,
             IRepository<Payment> paymentRepository
-            //IClientService clientService
             )
         {
             _membershipRepository = membershipRepository;
-            //_clientService = clientService;
             _membershipPlanRepository = membershipPlanRepository;
             _clientRepository = clientRepository;
             _paymentRepository = paymentRepository;

@@ -9,6 +9,7 @@ namespace Web.Pages
     public class ErrorModel : PageModel
     {
         public string? RequestId { get; set; }
+        public string? Error { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
@@ -19,9 +20,10 @@ namespace Web.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(string errorMessage)
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            Error = errorMessage;
         }
     }
 
