@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
 using Web.ViewModels.Membership.Buy;
 
-namespace Web.Pages.Karnet
+namespace Web.Pages.Klient.Karnet
 {
     public class KupModel : PageModel
     {

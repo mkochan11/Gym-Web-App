@@ -1,0 +1,82 @@
+﻿@using Web.ViewModels.Calendar.Trainings
+@model TrainingsCalendarIndexGroupTrainingItemViewModel
+
+@if(Model.Date < DateTime.Now)
+{
+    <div class="training-card training-card-expired">
+        <strong>@Model.TrainingName</strong>
+        <p>@Model.Date.ToString("HH:mm")</p>
+    </div>
+}
+else
+{
+    @if (Model.IsReservedByUser)
+    {
+        <div class="training-card group-training-card-reserved" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
+            <strong>@Model.TrainingName</strong>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
+    else
+    {
+        <div class="training-card group-training-card" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
+            <strong>@Model.TrainingName</strong>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
+}
+
+
+<!-- Group Training Modal -->
+<div class="modal fade" id="groupTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="staticBackdropLabelEdit_@Model.Id">@Model.TrainingName</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Additional modal content goes here -->
+                <p><strong>Trener: </strong>@Model.TrainerName @Model.TrainerSurname</p>
+                <p><strong>Czas: </strong>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+                <p><strong>Opis: </strong>@Model.TrainingDescription</p>
+                <p><strong>Uczestnicy: </strong>@Model.LiveParticipantNumber/@Model.MaxParticipantNumber</p>
+            </div>
+            <div class="modal-footer">
+                @if (!Model.IsFull)
+                {
+                    if (Model.IsReservedByUser)
+                    {
+                        <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="CancelGroup">
+                            <input type="hidden" name="trainingId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger">Odwołaj rezerwację miejsca</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="ReserveGroup">
+                            <input type="hidden" name="trainingId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success">Rezerwuj miejsce</button>
+                        </form>
+                    } 
+                }
+                else
+                {
+                    if (Model.IsReservedByUser)
+                    {
+                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="CancelGroup">
+                            <input type="hidden" name="trainingId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger">Odwołaj rezerwację miejsca</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Wszystkie miejsca na treningu są zajęte</span>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

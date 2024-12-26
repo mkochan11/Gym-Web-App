@@ -1,0 +1,106 @@
+﻿@page
+@model Web.Pages.HarmonogramZajec.IndexModel
+@{
+    var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/calendar.css" />
+</head>
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        <!-- Left Arrow Button -->
+        @if (Model.CurrentMonth != DateTime.Now.Month || Model.CurrentYear != DateTime.Now.Year)
+        {
+            <div class="col-auto">
+                <form method="post" asp-page-handler="Previous">
+                    <button type="submit" class="btn btn-primary" >
+                        &larr; <!-- Left Arrow -->
+                    </button>
+                </form>
+            </div>
+        }
+
+        <!-- Month and Year Header -->
+        <div class="col text-center">
+            <h3>Harmonogram zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
+        </div>
+
+        <!-- Right Arrow Button -->
+        <div class="col-auto">
+            <form method="post" asp-page-handler="Next">
+                <button type="submit" class="btn btn-primary" >
+                    &rarr; <!-- Right Arrow -->
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <table class="table table-bordered text-center calendar-table">
+            <thead>
+                <tr>
+                    @foreach (var day in daysOfWeek)
+                    {
+                        <th>@day</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 5; i++)  // 6 rows for a month (max)
+                {
+                    <tr>
+                        @for (int j = 0; j < 7; j++)  // 7 columns for the days
+                        {
+                            var day = Model.ViewModel.DaysInMonth[i * 7 + j];
+                            <td class="calendar-day">
+                                @if (day != null)
+                                {
+                                    <span>@day.Day</span>
+                                    @if (day.IndividualTrainings.Any() || day.GroupTrainings.Any())
+                                    {
+                                        <div class="training-cards">
+                                            @foreach (var training in day.IndividualTrainings)
+                                            {
+                                                <partial name="_individualTraining" for="@training" />
+                                            }
+                                            @foreach (var training in day.GroupTrainings)
+                                            {
+                                                <partial name="_groupTraining" for="@training" />
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Legend -->
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #cce5ff;"></div>
+                <span>Trening grupowy</span>
+            </div>
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
+                <span>Trening indywidualny</span>
+            </div>
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #6bc96e;"></div>
+                <span>Trening zarezerwowany przez ciebie</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="legend-ellipse me-2" style="background-color: #bab8b1;"></div>
+                <span>Trening odbyty</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+

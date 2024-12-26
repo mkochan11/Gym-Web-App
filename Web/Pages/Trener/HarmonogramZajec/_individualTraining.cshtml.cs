@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Web.Pages.Klient.HarmonogramZajec
+namespace Web.Pages.Trener.HarmonogramZajec
 {
-    public class _groupTrainingModel : PageModel
+    public class _individualTrainingModel : PageModel
     {
         public void OnGet()
         {

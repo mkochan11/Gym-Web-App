@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
 using Web.ViewModels.Calendar.Trainings;
 
-namespace Web.Pages.Klient.HarmonogramZajec
+namespace Web.Pages.Trener.HarmonogramZajec
 {
     [Authorize(Roles = "Client")]
     public class IndexModel : PageModel

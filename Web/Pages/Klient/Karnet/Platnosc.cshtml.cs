@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Web.Pages.Karnet
+namespace Web.Pages.Klient.Karnet
 {
     public class PlatnoscModel : PageModel
     {

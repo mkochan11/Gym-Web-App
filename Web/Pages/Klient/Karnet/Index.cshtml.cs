@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
 using Web.ViewModels.Membership;
 
-namespace Web.Pages.Karnet
+namespace Web.Pages.Klient.Karnet
 {
     [Authorize(Roles = "Client")]
     public class IndexModel : PageModel
