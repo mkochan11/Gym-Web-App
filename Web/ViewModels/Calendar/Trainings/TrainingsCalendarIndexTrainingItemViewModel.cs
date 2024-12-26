@@ -9,5 +9,6 @@
         public int TrainerId { get; set; }
         public string TrainerName { get; set; } = string.Empty;
         public string TrainerSurname { get; set; } = string.Empty;
+        public bool IsReservedByUser { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Web.ViewModels.Membership;
 
 namespace Web.Pages.Karnet
 {
-    // [Authorize(Roles = "Client")]
+    [Authorize(Roles = "Client")]
     public class IndexModel : PageModel
     {
         private readonly IMembershipViewModelService _membershipViewModelService;

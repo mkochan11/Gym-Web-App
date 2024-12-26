@@ -35,8 +35,11 @@ namespace Web.Services
             _clientRepository = clientRepository;
             _groupTrainingParticipationRepository = groupTrainingParticipationRepository;
         }
-        public async Task<TrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year)
+        public async Task<TrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId)
         {
+            var _clientSpec = new FindClientByUserId(userId);
+            var user = await _clientRepository.FirstOrDefaultAsync(_clientSpec);
+
             var _individualTrainingSpec = new FindIndividualTrainigByMonth(month, year);
             var individualTrainings = await _individualTrainingRepository.ListAsync(_individualTrainingSpec);
 
@@ -66,14 +69,26 @@ namespace Web.Services
                     TrainerName = item.PersonalTrainer is null ? "Nie znaleziono trenera" : item.PersonalTrainer.Name,
                     TrainerSurname = item.PersonalTrainer is null ? "" : item.PersonalTrainer.Surname,
                     IsReserved = item.Client is null ? false : true,
+                    IsReservedByUser = item.Client == user ? true : false,
                 });
             }
 
             foreach (var item in groupTrainings)
             {
                 item.GroupTrainer = await _groupTrainerRepository.GetByIdAsync(item.GroupTrainerId);
-                item.Participations = await _groupTrainingParticipationRepository.ListAsync();
+
+                var _participationTrainingSpec = new FindParticipationByTrainingId(item.Id);
+                item.Participations = await _groupTrainingParticipationRepository.ListAsync(_participationTrainingSpec);
                 item.TrainingType = await _trainingTypeRepository.GetByIdAsync(item.TrainingTypeId);
+
+                var isReservedByUser = false;
+                if(item.Participations != null)
+                {
+                    foreach(var participation in item.Participations)
+                    {
+                        if(participation.ClientId == user.Id) isReservedByUser = true;
+                    }
+                }
 
                 _groupTrainingItems.Add(new TrainingsCalendarIndexGroupTrainingItemViewModel
                 {
@@ -90,6 +105,7 @@ namespace Web.Services
                     TrainingTypeId = item.TrainingTypeId,
                     TrainingName = item.TrainingType is null ? "Nie znaleziono typu treningu" : item.TrainingType.Name,
                     TrainingDescription = item.TrainingType is null ? "Nie znaleziono typu treningu" : item.TrainingType.Description,
+                    IsReservedByUser = isReservedByUser,
                 });
             }
 

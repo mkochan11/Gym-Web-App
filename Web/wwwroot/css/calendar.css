@@ -18,7 +18,6 @@
 }
 
 .training-card {
-    background-color: #e3f2fd;
     border: 1px solid #90caf9;
     border-radius: 5px;
     padding: 5px;
@@ -29,6 +28,42 @@
     white-space: normal; /* Allows the text to wrap onto multiple lines */
     overflow: hidden; /* Prevents text from spilling out */
     text-overflow: ellipsis; /* Truncates text with ellipsis (optional, if needed) */
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+/* Individual Training Cards - Red */
+.individual-training-card {
+    background-color: #ffcccc; /* Light red */
+}
+
+.individual-training-card:hover {
+    background-color: #ff6666; /* Slightly darker red on hover */
+}
+
+/* Group Training Cards - Blue */
+.group-training-card {
+    background-color: #cce5ff; /* Light blue */
+}
+
+.group-training-card:hover {
+    background-color: #66b3ff; /* Slightly darker blue on hover */
+}
+
+.group-training-card-reserved {
+    background-color: #6bc96e; /* Light green */
+}
+
+.group-training-card-reserved:hover {
+    background-color: #448246; /* Slightly darker green on hover */
+}
+
+.individual-training-card-reserved {
+    background-color: #6bc96e; /* Light green */
+}
+
+.individual-training-card-reserved:hover {
+    background-color: #448246; /* Slightly darker green on hover */
 }
 
 .training-card strong {
@@ -45,4 +80,12 @@
 .calendar-table {
     table-layout: fixed; /* Prevent dynamic resizing of cells */
     width: 100%; /* Stretch table to full width */
+}
+
+.legend-ellipse {
+    width: 30px; /* Wider for the elliptical shape */
+    height: 10px; /* Thinner for a sleek look */
+    display: inline-block;
+    border-radius: 50%; /* Makes the shape elliptical */
+    border: 1px solid #000; /* Adds a border for better visibility */
 }

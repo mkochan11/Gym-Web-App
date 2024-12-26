@@ -15,5 +15,6 @@ namespace ApplicationCore.Entities
         public decimal Price { get; set; }
         public string DurationTime { get; set; } = string.Empty;
         public int DurationInMonths { get; set; }
+        public bool CanReserveTrainings { get; set; }
     }
 }

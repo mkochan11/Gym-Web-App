@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTests", "Tests\WebTests\
 		{EA3E9FC0-5582-48A2-B146-6097028CF5B1} = {EA3E9FC0-5582-48A2-B146-6097028CF5B1}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTests", "Tests\CoreTests\CoreTests.csproj", "{3AC91F51-5A6A-4223-9BCE-EB0A3E572D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "Tests\CoreTests\CoreTests.csproj", "{3AC91F51-5A6A-4223-9BCE-EB0A3E572D1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

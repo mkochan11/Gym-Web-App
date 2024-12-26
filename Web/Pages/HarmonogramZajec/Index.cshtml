@@ -9,7 +9,33 @@
 </head>
 
 <div class="container my-5">
-    <h3 class="text-center">Harmonogram zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
+    <div class="row align-items-center">
+        <!-- Left Arrow Button -->
+        @if (Model.CurrentMonth != DateTime.Now.Month || Model.CurrentYear != DateTime.Now.Year)
+        {
+            <div class="col-auto">
+                <form method="post">
+                    <button type="submit" class="btn btn-primary" asp-page-handler="Previous">
+                        &larr; <!-- Left Arrow -->
+                    </button>
+                </form>
+            </div>
+        }
+
+        <!-- Month and Year Header -->
+        <div class="col text-center">
+            <h3>Harmonogram zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
+        </div>
+
+        <!-- Right Arrow Button -->
+        <div class="col-auto">
+            <form method="post">
+                <button type="submit" class="btn btn-primary" asp-page-handler="Next">
+                    &rarr; <!-- Right Arrow -->
+                </button>
+            </form>
+        </div>
+    </div>
 
     <div class="row justify-content-center">
         <table class="table table-bordered text-center calendar-table">
@@ -37,17 +63,11 @@
                                         <div class="training-cards">
                                             @foreach (var training in day.IndividualTrainings)
                                             {
-                                                <div class="training-card">
-                                                    <strong>@training.TrainerName @training.TrainerSurname</strong>
-                                                    <p>@training.Description</p>
-                                                </div>
+                                                <partial name="_individualTraining" for="@training" />
                                             }
                                             @foreach (var training in day.GroupTrainings)
                                             {
-                                                <div class="training-card">
-                                                    <strong>@training.TrainingName</strong>
-                                                    <p>@training.TrainingDescription</p>
-                                                </div>
+                                                <partial name="_groupTraining" for="@training" />
                                             }
                                         </div>
                                     }
@@ -59,4 +79,24 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Legend -->
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #cce5ff;"></div>
+                <span>Trening grupowy</span>
+            </div>
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
+                <span>Trening indywidualny</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="legend-ellipse me-2" style="background-color: #6bc96e;"></div>
+                <span>Trening zarezerwowany przez ciebie</span>
+            </div>
+        </div>
+    </div>
 </div>
+
+
