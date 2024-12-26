@@ -1,9 +1,8 @@
 ﻿@using Web.ViewModels.Calendar.Trainings
 @model TrainingsCalendarIndexIndividualTrainingItemViewModel
-
-@if (@Model.IsReservedByUser)
+@if (Model.Date < DateTime.Now)
 {
-    <div class="training-card individual-training-card-reserved" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+    <div class="training-card training-card-expired">
         <strong>@Model.TrainerName @Model.TrainerSurname</strong>
         <p>@Model.Description</p>
         <p>@Model.Date.ToString("HH:mm")</p>
@@ -11,12 +10,24 @@
 }
 else
 {
-    <div class="training-card individual-training-card" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
-        <strong>@Model.TrainerName @Model.TrainerSurname</strong>
-        <p>@Model.Description</p>
-        <p>@Model.Date.ToString("HH:mm")</p>
-    </div>
+    @if (Model.IsReservedByUser)
+    {
+        <div class="training-card individual-training-card-reserved" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+            <strong>@Model.TrainerName @Model.TrainerSurname</strong>
+            <p>@Model.Description</p>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
+    else
+    {
+        <div class="training-card individual-training-card" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+            <strong>@Model.TrainerName @Model.TrainerSurname</strong>
+            <p>@Model.Description</p>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
 }
+
 
 <!-- Group Training Modal -->
 <div class="modal fade" id="individualTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit_@Model.Id" aria-hidden="true">

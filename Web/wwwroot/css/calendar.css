@@ -66,6 +66,15 @@
     background-color: #448246; /* Slightly darker green on hover */
 }
 
+.training-card-expired {
+    background-color: #bab8b1; /* Light grey */
+    cursor: default;
+}
+
+.training-card-expired:hover {
+    background-color: #8a8883; /* Slightly darker grey on hover */
+}
+
 .training-card strong {
     color: #1565c0;
     font-size: 14px;
@@ -86,6 +95,6 @@
     width: 30px; /* Wider for the elliptical shape */
     height: 10px; /* Thinner for a sleek look */
     display: inline-block;
-    border-radius: 50%; /* Makes the shape elliptical */
+    border-radius: 10%; /* Makes the shape elliptical */
     border: 1px solid #000; /* Adds a border for better visibility */
 }

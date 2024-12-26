@@ -1,20 +1,31 @@
 ﻿@using Web.ViewModels.Calendar.Trainings
 @model TrainingsCalendarIndexGroupTrainingItemViewModel
 
-@if (@Model.IsReservedByUser)
+@if(Model.Date < DateTime.Now)
 {
-    <div class="training-card group-training-card-reserved" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
+    <div class="training-card training-card-expired">
         <strong>@Model.TrainingName</strong>
         <p>@Model.Date.ToString("HH:mm")</p>
     </div>
 }
 else
 {
-    <div class="training-card group-training-card" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
-        <strong>@Model.TrainingName</strong>
-        <p>@Model.Date.ToString("HH:mm")</p>
-    </div>
+    @if (Model.IsReservedByUser)
+    {
+        <div class="training-card group-training-card-reserved" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
+            <strong>@Model.TrainingName</strong>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
+    else
+    {
+        <div class="training-card group-training-card" data-bs-toggle="modal" data-bs-target="#groupTrainingModal_@Model.Id">
+            <strong>@Model.TrainingName</strong>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
 }
+
 
 <!-- Group Training Modal -->
 <div class="modal fade" id="groupTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit_@Model.Id" aria-hidden="true">
