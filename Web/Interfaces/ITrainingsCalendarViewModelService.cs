@@ -1,9 +1,10 @@
-﻿using Web.ViewModels.Calendar.Trainings;
+﻿using Web.ViewModels.Calendar.Client.Trainings;
 
 namespace Web.Interfaces
 {
     public interface ITrainingsCalendarViewModelService
     {
-        Task<TrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId);
+        Task<ClientTrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId);
+        
     }
 }

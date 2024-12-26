@@ -38,6 +38,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Areas\Identity\Pages\" />
+	  <Folder Include="ViewModels\Calendar\Trainer\" />
 	</ItemGroup>
 
 </Project>

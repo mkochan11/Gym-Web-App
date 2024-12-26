@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
-using Web.ViewModels.Calendar.Trainings;
+using Web.ViewModels.Calendar.Client.Trainings;
 
 namespace Web.Pages.Klient.HarmonogramZajec
 {
@@ -36,7 +36,7 @@ namespace Web.Pages.Klient.HarmonogramZajec
             _individualTrainingService = individualTrainingService;
         }
 
-        public required TrainingsCalendarIndexViewModel ViewModel { get; set; }
+        public required ClientTrainingsCalendarIndexViewModel ViewModel { get; set; }
 
         public async Task OnGet()
         {
@@ -100,7 +100,7 @@ namespace Web.Pages.Klient.HarmonogramZajec
             var user = await _userManager.GetUserAsync(User);
             var result = await _groupTrainingService.ReservePlace(trainingId, user.Id);
             if (result.IsSuccess)
-            {
+            { 
                 return RedirectToPage("./Index");
             }
             else

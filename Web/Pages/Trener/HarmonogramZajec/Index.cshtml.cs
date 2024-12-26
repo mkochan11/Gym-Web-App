@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
-using Web.ViewModels.Calendar.Trainings;
+using Web.ViewModels.Calendar.Client.Trainings;
 
 namespace Web.Pages.Trener.HarmonogramZajec
 {
-    [Authorize(Roles = "Client")]
+    [Authorize(Roles = "PersonalTrainer,GroupTrainer")]
     public class IndexModel : PageModel
     {
 
@@ -36,7 +36,7 @@ namespace Web.Pages.Trener.HarmonogramZajec
             _individualTrainingService = individualTrainingService;
         }
 
-        public required TrainingsCalendarIndexViewModel ViewModel { get; set; }
+        public required ClientTrainingsCalendarIndexViewModel ViewModel { get; set; }
 
         public async Task OnGet()
         {

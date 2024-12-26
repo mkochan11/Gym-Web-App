@@ -3,7 +3,7 @@ using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
-using Web.ViewModels.Calendar.Trainings;
+using Web.ViewModels.Calendar.Client.Trainings;
 
 namespace Web.Services
 {
@@ -35,7 +35,7 @@ namespace Web.Services
             _clientRepository = clientRepository;
             _groupTrainingParticipationRepository = groupTrainingParticipationRepository;
         }
-        public async Task<TrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId)
+        public async Task<ClientTrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId)
         {
             var _clientSpec = new FindClientByUserId(userId);
             var user = await _clientRepository.FirstOrDefaultAsync(_clientSpec);
@@ -46,8 +46,8 @@ namespace Web.Services
             var _groupTrainingSpec = new FindGroupTrainigByMonth(month, year);
             var groupTrainings = await _groupTrainingRepository.ListAsync(_groupTrainingSpec);
 
-            var _individualTrainingItems = new List<TrainingsCalendarIndexIndividualTrainingItemViewModel>();
-            var _groupTrainingItems = new List<TrainingsCalendarIndexGroupTrainingItemViewModel>();
+            var _individualTrainingItems = new List<ClientTrainingsCalendarIndexIndividualTrainingItemViewModel>();
+            var _groupTrainingItems = new List<ClientTrainingsCalendarIndexGroupTrainingItemViewModel>();
 
             foreach (var item in individualTrainings)
             {
@@ -59,7 +59,7 @@ namespace Web.Services
                     item.Client = await _clientRepository.GetByIdAsync(item.ClientId);
                 }
 
-                _individualTrainingItems.Add(new TrainingsCalendarIndexIndividualTrainingItemViewModel
+                _individualTrainingItems.Add(new ClientTrainingsCalendarIndexIndividualTrainingItemViewModel
                 {
                     Id = item.Id,
                     Date = item.Date,
@@ -90,7 +90,7 @@ namespace Web.Services
                     }
                 }
 
-                _groupTrainingItems.Add(new TrainingsCalendarIndexGroupTrainingItemViewModel
+                _groupTrainingItems.Add(new ClientTrainingsCalendarIndexGroupTrainingItemViewModel
                 {
                     Id = item.Id,
                     Date = item.Date,
@@ -137,7 +137,7 @@ namespace Web.Services
                 }
             }
 
-            var viewModel = new TrainingsCalendarIndexViewModel
+            var viewModel = new ClientTrainingsCalendarIndexViewModel
             {
                 DaysInMonth = daysInMonth,
             };
@@ -145,9 +145,9 @@ namespace Web.Services
             return viewModel;
         }
 
-        private List<TrainingsCalendarIndexDayItemViewModel> GetDaysInMonth(int year, int month)
+        private List<ClientTrainingsCalendarIndexDayItemViewModel> GetDaysInMonth(int year, int month)
         {
-            List<TrainingsCalendarIndexDayItemViewModel> days = new List<TrainingsCalendarIndexDayItemViewModel>();
+            List<ClientTrainingsCalendarIndexDayItemViewModel> days = new List<ClientTrainingsCalendarIndexDayItemViewModel>();
             var firstDayOfMonth = new DateTime(year, month, 1);
             var daysInMonth = DateTime.DaysInMonth(year, month);
 
@@ -163,7 +163,7 @@ namespace Web.Services
             // dodanie dni w aktualnym miesiącu
             for (int i = 1; i <= daysInMonth; i++)
             {
-                days.Add(new TrainingsCalendarIndexDayItemViewModel
+                days.Add(new ClientTrainingsCalendarIndexDayItemViewModel
                 {
                     Day = i
                 });

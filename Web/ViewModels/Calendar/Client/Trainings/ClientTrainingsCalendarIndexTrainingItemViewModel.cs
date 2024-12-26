@@ -1,6 +1,6 @@
-﻿namespace Web.ViewModels.Calendar.Trainings
+﻿namespace Web.ViewModels.Calendar.Client.Trainings
 {
-    public abstract class TrainingsCalendarIndexTrainingItemViewModel
+    public abstract class ClientTrainingsCalendarIndexTrainingItemViewModel
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
