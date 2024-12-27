@@ -17,7 +17,7 @@ namespace Web.InputModels.Calendar.Trainer.Trainings.Personal
         public required TimeSpan Duration { get; set; }
 
         [Display(Name = "Opis")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
         
     }
 }

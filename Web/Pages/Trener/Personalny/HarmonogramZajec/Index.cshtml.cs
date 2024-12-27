@@ -48,6 +48,12 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
             CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
             CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
+            if (TempData["ToastMessage"] != null)
+            {
+                var message = TempData["ToastMessage"].ToString();
+            }
+
+
             var user = await _userManager.GetUserAsync(User);
             IndexViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
         }
@@ -119,6 +125,8 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 
                 if (result.IsSuccess)
                 {
+                    TempData["ToastMessage"] = "Pomyœlnie zedytowano trening";
+                    TempData["ToastType"] = "success";
                     return RedirectToPage();
                 }
                 else
@@ -128,16 +136,10 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
             }
             else
             {
-                var errors = ModelState
-               .Where(x => x.Value.Errors.Count > 0)
-               .Select(x => new { x.Key, x.Value.Errors })
-               .ToList();
+                TempData["ToastMessage"] = "Nie uda³o siê edytowaæ treningu";
+                TempData["ToastType"] = "warning";
 
-                foreach (var error in errors)
-                {
-                    ModelState.AddModelError(error.Key, error.Errors[0].ErrorMessage);
-                }
-                return Page();
+                return RedirectToPage();
             }
         }
 
@@ -149,6 +151,8 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 
             if (result.IsSuccess)
             {
+                TempData["ToastMessage"] = "Pomyœlnie odwo³ano trening";
+                TempData["ToastType"] = "success";
                 return RedirectToPage();
             }
             else
@@ -178,6 +182,8 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 
                 if (result.IsSuccess)
                 {
+                    TempData["ToastMessage"] = "Pomyœlnie dodano trening";
+                    TempData["ToastType"] = "success";
                     return RedirectToPage();
                 }
                 else
@@ -187,16 +193,9 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
             }
             else
             {
-                var errors = ModelState
-               .Where(x => x.Value.Errors.Count > 0)
-               .Select(x => new { x.Key, x.Value.Errors })
-               .ToList();
-
-                foreach (var error in errors)
-                {
-                    ModelState.AddModelError(error.Key, error.Errors[0].ErrorMessage);
-                }
-                return Page();
+                TempData["ToastMessage"] = "Nie uda³o siê dodaæ treningu";
+                TempData["ToastType"] = "warning";
+                return RedirectToPage();
             }
         }
     }

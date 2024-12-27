@@ -41,6 +41,11 @@ namespace Web.Pages.Klient.HarmonogramZajec
             CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
             CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
+            if (TempData["ToastMessage"] != null)
+            {
+                var message = TempData["ToastMessage"].ToString();
+            }
+
             var user = await _userManager.GetUserAsync(User);
             ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
         }
@@ -98,8 +103,10 @@ namespace Web.Pages.Klient.HarmonogramZajec
             var user = await _userManager.GetUserAsync(User);
             var result = await _groupTrainingService.ReservePlace(trainingId, user.Id);
             if (result.IsSuccess)
-            { 
-                return RedirectToPage("./Index");
+            {
+                TempData["ToastMessage"] = "Pomyœlnie zarezerwowano miejsce na treningu";
+                TempData["ToastType"] = "success";
+                return RedirectToPage();
             }
             else
             {
@@ -113,7 +120,9 @@ namespace Web.Pages.Klient.HarmonogramZajec
             var result = await _groupTrainingService.CancelPlace(trainingId, user.Id);
             if (result.IsSuccess)
             {
-                return RedirectToPage("./Index");
+                TempData["ToastMessage"] = "Pomyœlnie odwo³ano rezerwacjê miejsca na treningu";
+                TempData["ToastType"] = "success";
+                return RedirectToPage();
             }
             else
             {
@@ -127,7 +136,9 @@ namespace Web.Pages.Klient.HarmonogramZajec
             var result = await _individualTrainingService.Reserve(trainingId, user.Id);
             if (result.IsSuccess)
             {
-                return RedirectToPage("./Index");
+                TempData["ToastMessage"] = "Pomyœlnie zarezerwowano trening";
+                TempData["ToastType"] = "success";
+                return RedirectToPage();
             }
             else
             {
@@ -141,7 +152,9 @@ namespace Web.Pages.Klient.HarmonogramZajec
             var result = await _individualTrainingService.CancelReservation(trainingId, user.Id);
             if (result.IsSuccess)
             {
-                return RedirectToPage("./Index");
+                TempData["ToastMessage"] = "Pomyœlnie odwo³ano rezerwacjê treningu";
+                TempData["ToastType"] = "success";
+                return RedirectToPage();
             }
             else
             {

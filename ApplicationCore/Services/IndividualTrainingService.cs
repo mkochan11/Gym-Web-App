@@ -97,7 +97,7 @@ namespace ApplicationCore.Services
                         {
                             PersonalTrainerId = trainer.Id,
                             Date = startDate.AddDays(i),
-                            Description = model.Description,
+                            Description = model.Description is null ? "" : model.Description,
                             Duration = model.Duration,
                         };
 
@@ -115,7 +115,7 @@ namespace ApplicationCore.Services
                         {
                             PersonalTrainerId = trainer.Id,
                             Date = startDate.AddDays(i * 7),
-                            Description = model.Description,
+                            Description = model.Description is null ? "" : model.Description,
                             Duration = model.Duration,
                         };
 
@@ -133,7 +133,7 @@ namespace ApplicationCore.Services
                         {
                             PersonalTrainerId = trainer.Id,
                             Date = startDate.AddMonths(i),
-                            Description = model.Description,
+                            Description = model.Description is null ? "" : model.Description,
                             Duration = model.Duration,
                         };
 
@@ -156,7 +156,7 @@ namespace ApplicationCore.Services
                 {
                     PersonalTrainerId = trainer.Id,
                     Date = model.Date,
-                    Description = model.Description,
+                    Description = model.Description is null ? "" : model.Description,
                     Duration = model.Duration,
                 };
 
@@ -259,7 +259,7 @@ namespace ApplicationCore.Services
 
             training.Date = model.Date;
             training.Duration = model.Duration;
-            training.Description = model.Description;
+            training.Description = model.Description is null ? "" : model.Description;
             training.Date = training.Date.AddHours(model.Hour.Hour);
 
             await _individualTrainingRepository.UpdateAsync(training);
