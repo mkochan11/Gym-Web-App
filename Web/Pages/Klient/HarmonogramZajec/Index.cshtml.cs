@@ -44,7 +44,7 @@ namespace Web.Pages.Klient.HarmonogramZajec
             CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
         }
 
         public async Task<IActionResult> OnPostNext()
@@ -66,7 +66,7 @@ namespace Web.Pages.Klient.HarmonogramZajec
             TempData["CurrentYear"] = CurrentYear;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }
@@ -90,7 +90,7 @@ namespace Web.Pages.Klient.HarmonogramZajec
             TempData["CurrentYear"] = CurrentYear;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }

@@ -1,5 +1,5 @@
 ﻿@page
-@model Web.Pages.Trener.HarmonogramZajec.IndexModel
+@model Web.Pages.Trener.Personalny.HarmonogramZajec.IndexModel
 @{
     var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
 }
@@ -24,7 +24,7 @@
 
         <!-- Month and Year Header -->
         <div class="col text-center">
-            <h3>Harmonogram zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
+            <h3>Harmonogram Twoich zajęć @Model.CurrentMonth/@Model.CurrentYear</h3>
         </div>
 
         <!-- Right Arrow Button -->
@@ -58,16 +58,12 @@
                                 @if (day != null)
                                 {
                                     <span>@day.Day</span>
-                                    @if (day.IndividualTrainings.Any() || day.GroupTrainings.Any())
+                                    @if (day.Trainings.Any())
                                     {
                                         <div class="training-cards">
-                                            @foreach (var training in day.IndividualTrainings)
+                                            @foreach (var training in day.Trainings)
                                             {
                                                 <partial name="_individualTraining" for="@training" />
-                                            }
-                                            @foreach (var training in day.GroupTrainings)
-                                            {
-                                                <partial name="_groupTraining" for="@training" />
                                             }
                                         </div>
                                     }
@@ -84,21 +80,28 @@
     <div class="row mt-4">
         <div class="col-12 d-flex justify-content-center align-items-center">
             <div class="d-flex align-items-center me-4">
-                <div class="legend-ellipse me-2" style="background-color: #cce5ff;"></div>
-                <span>Trening grupowy</span>
-            </div>
-            <div class="d-flex align-items-center me-4">
                 <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
-                <span>Trening indywidualny</span>
+                <span>Trening zarezerwowany</span>
             </div>
             <div class="d-flex align-items-center me-4">
                 <div class="legend-ellipse me-2" style="background-color: #6bc96e;"></div>
-                <span>Trening zarezerwowany przez ciebie</span>
+                <span>Trening niezarezerwowany</span>
             </div>
             <div class="d-flex align-items-center">
                 <div class="legend-ellipse me-2" style="background-color: #bab8b1;"></div>
                 <span>Trening odbyty</span>
             </div>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="row mt-3">
+        <div class="col-12 text-center">
+            <h5></h5>
+            <ul class="list-unstyled">
+                <li>• Aby dodać trening, kliknij na dzień w kalendarzu.</li>
+                <li>• Aby edytować lub usunąć trening, kliknij na kafelek treningu w kalendarzu.</li>
+            </ul>
         </div>
     </div>
 </div>

@@ -38,10 +38,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Klient/Karnet/Index">Karnet</a>
                             </li>
                         }
-                        else if (User.IsInRole("PersonalTrainer") || User.IsInRole("GroupTrainer"))
+                        else if (User.IsInRole("PersonalTrainer"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Trener/HarmonogramZajec/Index">Harmonogram zajęć</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Trener/Personalny/HarmonogramZajec/Index">Harmonogram zajęć</a>
                             </li>
                         }
                     </ul>

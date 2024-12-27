@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
 using Web.ViewModels.Calendar.Client.Trainings;
+using Web.ViewModels.Calendar.Trainer.Trainings.Personal;
 
-namespace Web.Pages.Trener.HarmonogramZajec
+namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 {
-    [Authorize(Roles = "PersonalTrainer,GroupTrainer")]
+    [Authorize(Roles = "PersonalTrainer")]
     public class IndexModel : PageModel
     {
 
@@ -20,23 +21,20 @@ namespace Web.Pages.Trener.HarmonogramZajec
 
         private readonly ITrainingsCalendarViewModelService _trainingsCalendarViewModelService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IGroupTrainingService _groupTrainingService;
         private readonly IIndividualTrainingService _individualTrainingService;
 
         public IndexModel(
             ITrainingsCalendarViewModelService trainingsCalendarViewModelService,
             UserManager<ApplicationUser> userManager,
-            IGroupTrainingService groupTrainingService,
             IIndividualTrainingService individualTrainingService
             )
         {
             _trainingsCalendarViewModelService = trainingsCalendarViewModelService;
             _userManager = userManager;
-            _groupTrainingService = groupTrainingService;
             _individualTrainingService = individualTrainingService;
         }
 
-        public required ClientTrainingsCalendarIndexViewModel ViewModel { get; set; }
+        public required PersonalTrainingsCalendarIndexViewModel ViewModel { get; set; }
 
         public async Task OnGet()
         {
@@ -44,7 +42,7 @@ namespace Web.Pages.Trener.HarmonogramZajec
             CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
         }
 
         public async Task<IActionResult> OnPostNext()
@@ -66,7 +64,7 @@ namespace Web.Pages.Trener.HarmonogramZajec
             TempData["CurrentYear"] = CurrentYear;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }
@@ -90,12 +88,12 @@ namespace Web.Pages.Trener.HarmonogramZajec
             TempData["CurrentYear"] = CurrentYear;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostReserveGroup(int trainingId)
+        /*public async Task<IActionResult> OnPostReserveGroup(int trainingId)
         {
             var user = await _userManager.GetUserAsync(User);
             var result = await _groupTrainingService.ReservePlace(trainingId, user.Id);
@@ -149,6 +147,6 @@ namespace Web.Pages.Trener.HarmonogramZajec
             {
                 return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
             }
-        }
+        }*/
     }
 }

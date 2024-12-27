@@ -2,8 +2,10 @@
 using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using Ardalis.Result;
 using Web.Interfaces;
 using Web.ViewModels.Calendar.Client.Trainings;
+using Web.ViewModels.Calendar.Trainer.Trainings.Personal;
 
 namespace Web.Services
 {
@@ -35,7 +37,7 @@ namespace Web.Services
             _clientRepository = clientRepository;
             _groupTrainingParticipationRepository = groupTrainingParticipationRepository;
         }
-        public async Task<ClientTrainingsCalendarIndexViewModel> GetTrainingsCalendarIndexViewModel(int month, int year, string userId)
+        public async Task<ClientTrainingsCalendarIndexViewModel> GetClientTrainingsCalendarIndexViewModel(int month, int year, string userId)
         {
             var _clientSpec = new FindClientByUserId(userId);
             var user = await _clientRepository.FirstOrDefaultAsync(_clientSpec);
@@ -109,7 +111,7 @@ namespace Web.Services
                 });
             }
 
-            var daysInMonth = GetDaysInMonth(year, month);
+            var daysInMonth = GetClientDaysInMonth(year, month);
 
             foreach (var day in daysInMonth)
             {
@@ -145,7 +147,69 @@ namespace Web.Services
             return viewModel;
         }
 
-        private List<ClientTrainingsCalendarIndexDayItemViewModel> GetDaysInMonth(int year, int month)
+        public async Task<PersonalTrainingsCalendarIndexViewModel> GetPersonalTrainingsCalendarIndexViewModel(int month, int year, string userId)
+        {
+            var _personalTrainerSpec = new FindPersonalTrainerByUserId(userId);
+            var personalTrainer = await _personalTrainerRepository.FirstOrDefaultAsync(_personalTrainerSpec);
+
+            var _individualTrainingSpec = new FindIndividualTrainigByMonth(month, year);
+            var individualTrainings = await _individualTrainingRepository.ListAsync(_individualTrainingSpec);
+
+            var trainersTrainings = individualTrainings
+                .Where(training => training.PersonalTrainerId == personalTrainer.Id)
+                .ToList();
+
+            var _individualTrainingItems = new List<TrainingsCalendarIndexIndividualTrainingItemViewModel>();
+
+            foreach (var item in trainersTrainings)
+            {
+
+                if (item.ClientId != null)
+                {
+                    item.Client = await _clientRepository.GetByIdAsync(item.ClientId);
+                }
+
+                _individualTrainingItems.Add(new TrainingsCalendarIndexIndividualTrainingItemViewModel
+                {
+                    Id = item.Id,
+                    Date = item.Date,
+                    Duration = item.Duration,
+                    Description = item.Description,
+                    TrainerId = item.PersonalTrainerId,
+                    IsReserved = item.Client is null ? false : true,
+                    ClientName = item.Client is null ? "" : item.Client.Name,
+                    ClientSurname = item.Client is null ? "" : item.Client.Surname
+                });
+            }
+
+            var daysInMonth = GetPersonalTrainerDaysInMonth(year, month);
+
+            foreach (var day in daysInMonth)
+            {
+                if (day != null)
+                {
+                    foreach (var ind_training in _individualTrainingItems)
+                    {
+                        if (ind_training.Date.Day == day.Day)
+                        {
+                            day.Trainings.Add(ind_training);
+                        }
+                    }
+
+                    day.Trainings = day.Trainings.OrderBy(ind => ind.Date.TimeOfDay).ToList();
+                }
+            }
+
+            var viewModel = new PersonalTrainingsCalendarIndexViewModel
+            {
+                DaysInMonth = daysInMonth,
+            };
+
+            return viewModel;
+        }
+
+
+        private List<ClientTrainingsCalendarIndexDayItemViewModel> GetClientDaysInMonth(int year, int month)
         {
             List<ClientTrainingsCalendarIndexDayItemViewModel> days = new List<ClientTrainingsCalendarIndexDayItemViewModel>();
             var firstDayOfMonth = new DateTime(year, month, 1);
@@ -164,6 +228,40 @@ namespace Web.Services
             for (int i = 1; i <= daysInMonth; i++)
             {
                 days.Add(new ClientTrainingsCalendarIndexDayItemViewModel
+                {
+                    Day = i
+                });
+            }
+
+            // Fill in the remaining empty days at the end (next month's days)
+            int remainingDays = 42 - (startDay + daysInMonth); // 42 = 6 rows of 7 days
+            for (int i = 0; i < remainingDays; i++)
+            {
+                days.Add(null); // Empty day
+            }
+
+            return days;
+        }
+
+        private List<PersonalTrainingsCalendarIndexDayItemViewModel> GetPersonalTrainerDaysInMonth(int year, int month)
+        {
+            List<PersonalTrainingsCalendarIndexDayItemViewModel> days = new List<PersonalTrainingsCalendarIndexDayItemViewModel>();
+            var firstDayOfMonth = new DateTime(year, month, 1);
+            var daysInMonth = DateTime.DaysInMonth(year, month);
+
+            // znalezienie dnia tygodnia pierwszego dnia miesiąca
+            var startDay = (int)firstDayOfMonth.DayOfWeek;
+
+            // dodanie pustych dni na początku miesiąca
+            for (int i = 0; i < startDay; i++)
+            {
+                days.Add(null);
+            }
+
+            // dodanie dni w aktualnym miesiącu
+            for (int i = 1; i <= daysInMonth; i++)
+            {
+                days.Add(new PersonalTrainingsCalendarIndexDayItemViewModel
                 {
                     Day = i
                 });
