@@ -1,9 +1,5 @@
-﻿using Ardalis.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationCore.Models.Training;
+using Ardalis.Result;
 
 namespace ApplicationCore.Interfaces
 {
@@ -11,5 +7,8 @@ namespace ApplicationCore.Interfaces
     {
         Task<Result> Reserve(int trainingId, string userId);
         Task<Result> CancelReservation(int trainingId, string userId);
+        Task<Result> CreateTraining(NewIndividualTrainingModel model, string userId);
+        Task<Result> DeleteTraining(int trainingId, string userId);
+        Task<Result> UpdateTraining(EditIndividualTrainingModel model, string userId);
     }
 }

@@ -1,5 +1,3 @@
-using ApplicationCore.Entities;
-using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -40,8 +38,8 @@ namespace Web.Pages.Klient.HarmonogramZajec
 
         public async Task OnGet()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             var user = await _userManager.GetUserAsync(User);
             ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
@@ -49,8 +47,8 @@ namespace Web.Pages.Klient.HarmonogramZajec
 
         public async Task<IActionResult> OnPostNext()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             if (CurrentMonth == 12)
             {
@@ -62,8 +60,8 @@ namespace Web.Pages.Klient.HarmonogramZajec
                 CurrentMonth++;
             }
 
-            TempData["CurrentMonth"] = CurrentMonth;
-            TempData["CurrentYear"] = CurrentYear;
+            HttpContext.Session.SetInt32("CurrentMonth", CurrentMonth);
+            HttpContext.Session.SetInt32("CurrentYear", CurrentYear);
 
             var user = await _userManager.GetUserAsync(User);
             ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
@@ -73,8 +71,8 @@ namespace Web.Pages.Klient.HarmonogramZajec
 
         public async Task<IActionResult> OnPostPrevious()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             if (CurrentMonth == 1)
             {
@@ -86,8 +84,8 @@ namespace Web.Pages.Klient.HarmonogramZajec
                 CurrentMonth--;
             }
 
-            TempData["CurrentMonth"] = CurrentMonth;
-            TempData["CurrentYear"] = CurrentYear;
+            HttpContext.Session.SetInt32("CurrentMonth", CurrentMonth);
+            HttpContext.Session.SetInt32("CurrentYear", CurrentYear);
 
             var user = await _userManager.GetUserAsync(User);
             ViewModel = await _trainingsCalendarViewModelService.GetClientTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);

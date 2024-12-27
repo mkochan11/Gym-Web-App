@@ -263,7 +263,8 @@ namespace Web.Services
             {
                 days.Add(new PersonalTrainingsCalendarIndexDayItemViewModel
                 {
-                    Day = i
+                    Day = i,
+                    Date = new DateTime(year, month, i)
                 });
             }
 

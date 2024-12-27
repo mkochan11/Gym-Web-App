@@ -1,14 +1,15 @@
-using ApplicationCore.Entities;
-using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Models.Training;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Web.InputModels.Calendar.Trainer.Trainings.Personal;
 using Web.Interfaces;
-using Web.ViewModels.Calendar.Client.Trainings;
 using Web.ViewModels.Calendar.Trainer.Trainings.Personal;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 
 namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 {
@@ -34,21 +35,27 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
             _individualTrainingService = individualTrainingService;
         }
 
-        public required PersonalTrainingsCalendarIndexViewModel ViewModel { get; set; }
+        public required PersonalTrainingsCalendarIndexViewModel IndexViewModel { get; set; }
+
+        [BindProperty]
+        public NewIndividualTrainingInputModel NewTrainingInputModel { get; set; }
+
+        [BindProperty]
+        public EditIndividualTrainingInputModel EditTrainingInputModel { get; set; }
 
         public async Task OnGet()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            IndexViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
         }
 
         public async Task<IActionResult> OnPostNext()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             if (CurrentMonth == 12)
             {
@@ -60,19 +67,19 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
                 CurrentMonth++;
             }
 
-            TempData["CurrentMonth"] = CurrentMonth;
-            TempData["CurrentYear"] = CurrentYear;
+            HttpContext.Session.SetInt32("CurrentMonth", CurrentMonth);
+            HttpContext.Session.SetInt32("CurrentYear", CurrentYear);
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            IndexViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostPrevious()
         {
-            CurrentMonth = TempData["CurrentMonth"] != null ? (int)TempData["CurrentMonth"] : DateTime.Now.Month;
-            CurrentYear = TempData["CurrentYear"] != null ? (int)TempData["CurrentYear"] : DateTime.Now.Year;
+            CurrentMonth = HttpContext.Session.GetInt32("CurrentMonth") ?? DateTime.Now.Month;
+            CurrentYear = HttpContext.Session.GetInt32("CurrentYear") ?? DateTime.Now.Year;
 
             if (CurrentMonth == 1)
             {
@@ -84,36 +91,65 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
                 CurrentMonth--;
             }
 
-            TempData["CurrentMonth"] = CurrentMonth;
-            TempData["CurrentYear"] = CurrentYear;
+            HttpContext.Session.SetInt32("CurrentMonth", CurrentMonth);
+            HttpContext.Session.SetInt32("CurrentYear", CurrentYear);
 
             var user = await _userManager.GetUserAsync(User);
-            ViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
+            IndexViewModel = await _trainingsCalendarViewModelService.GetPersonalTrainingsCalendarIndexViewModel(CurrentMonth, CurrentYear, user.Id);
 
             return Page();
         }
 
-        /*public async Task<IActionResult> OnPostReserveGroup(int trainingId)
+        public async Task<IActionResult> OnPostEditTraining(int trainingId)
         {
-            var user = await _userManager.GetUserAsync(User);
-            var result = await _groupTrainingService.ReservePlace(trainingId, user.Id);
-            if (result.IsSuccess)
+            if (TryValidateModel(EditTrainingInputModel))
             {
-                return RedirectToPage("./Index");
+                var user = await _userManager.GetUserAsync(User);
+
+                var updatedTrainingModel = new EditIndividualTrainingModel
+                {
+                    Id = trainingId,
+                    Date = EditTrainingInputModel.Date,
+                    Hour = EditTrainingInputModel.Hour,
+                    Duration = EditTrainingInputModel.Duration,
+                    Description = EditTrainingInputModel.Description
+                };
+
+                var result = await _individualTrainingService.UpdateTraining(updatedTrainingModel, user.Id);
+
+                if (result.IsSuccess)
+                {
+                    return RedirectToPage();
+                }
+                else
+                {
+                    return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
+                }
             }
             else
             {
-                return RedirectToPage("/Error", new { errorMessage = result.Errors.First()});
+                var errors = ModelState
+               .Where(x => x.Value.Errors.Count > 0)
+               .Select(x => new { x.Key, x.Value.Errors })
+               .ToList();
+
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(error.Key, error.Errors[0].ErrorMessage);
+                }
+                return Page();
             }
         }
 
-        public async Task<IActionResult> OnPostCancelGroup(int trainingId)
+        public async Task<IActionResult> OnPostCancelTraining(int trainingId)
         {
             var user = await _userManager.GetUserAsync(User);
-            var result = await _groupTrainingService.CancelPlace(trainingId, user.Id);
+
+            var result = await _individualTrainingService.DeleteTraining(trainingId, user.Id);
+
             if (result.IsSuccess)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage();
             }
             else
             {
@@ -121,32 +157,47 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
             }
         }
 
-        public async Task<IActionResult> OnPostReserveIndividual(int trainingId)
+        public async Task<IActionResult> OnPostCreateTraining()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var result = await _individualTrainingService.Reserve(trainingId, user.Id);
-            if (result.IsSuccess)
+            if (TryValidateModel(NewTrainingInputModel))
             {
-                return RedirectToPage("./Index");
+                NewIndividualTrainingModel model = new NewIndividualTrainingModel
+                {
+                    Date = NewTrainingInputModel.Date,
+                    Hour = NewTrainingInputModel.Hour,
+                    Duration = NewTrainingInputModel.Duration,
+                    IsCyclic = NewTrainingInputModel.IsCyclic,
+                    Description = NewTrainingInputModel.Description,
+                    Repeatability = NewTrainingInputModel.IsCyclic is true ? NewTrainingInputModel.Repeatability : ""
+                };
+
+
+                var user = await _userManager.GetUserAsync(User);
+
+                var result = await _individualTrainingService.CreateTraining(model, user.Id);
+
+                if (result.IsSuccess)
+                {
+                    return RedirectToPage();
+                }
+                else
+                {
+                    return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
+                }
             }
             else
             {
-                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
+                var errors = ModelState
+               .Where(x => x.Value.Errors.Count > 0)
+               .Select(x => new { x.Key, x.Value.Errors })
+               .ToList();
+
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(error.Key, error.Errors[0].ErrorMessage);
+                }
+                return Page();
             }
         }
-
-        public async Task<IActionResult> OnPostCancelIndividual(int trainingId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var result = await _individualTrainingService.CancelReservation(trainingId, user.Id);
-            if (result.IsSuccess)
-            {
-                return RedirectToPage("./Index");
-            }
-            else
-            {
-                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
-            }
-        }*/
     }
 }

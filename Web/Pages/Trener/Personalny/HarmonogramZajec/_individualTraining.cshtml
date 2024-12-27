@@ -4,29 +4,33 @@
 {
     <div class="training-card training-card-expired">
         <p>@Model.Description</p>
-        <p>@Model.Date.ToString("HH:mm")</p>
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
     </div>
 }
 else
 {
     @if (Model.IsReserved)
     {
-        <div class="training-card individual-training-card" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+        <div class="training-card individual-training-card" 
+             data-bs-toggle="modal" 
+             data-bs-target="#individualTrainingModal_@Model.Id">
             <p>@Model.Description</p>
-            <p>@Model.Date.ToString("HH:mm")</p>
+            <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
         </div>
     }
     else
     {
-        <div class="training-card individual-training-card-reserved" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+        <div class="training-card individual-training-card-reserved" 
+             data-bs-toggle="modal"
+             data-bs-target="#individualTrainingModal_@Model.Id">
             <p>@Model.Description</p>
-            <p>@Model.Date.ToString("HH:mm")</p>
+            <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
         </div>
     }
 }
 
 
-<!-- Group Training Modal -->
+<!-- Individual Training Modal -->
 <div class="modal fade" id="individualTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit_@Model.Id" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -44,25 +48,81 @@ else
                 }
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal_@Model.Id">
+                    Edytuj trening
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelConfirmationModal_@Model.Id">
+                    Odwołaj trening
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                @* @if (Model.IsReserved && Model.IsReservedByUser)
-                {
-                    <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="CancelIndividual">
-                        <input type="hidden" name="trainingId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-danger">Odwołaj rezerwację treningu</button>
-                    </form>
-                }
-                else if (Model.IsReserved && !Model.IsReservedByUser)
-                {
-                    <span class="text-danger">Trening jest już zarezerwowany</span>
-                }
-                else
-                {
-                    <form method="post" asp-page="/Klient/HarmonogramZajec/Index" asp-page-handler="ReserveIndividual">
-                        <input type="hidden" name="trainingId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-success">Rezerwuj trening</button>
-                    </form>
-                } *@
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelConfirmationModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="cancelConfirmationModalLabel_@Model.Id">Potwierdzenie odwołania treningu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz odwołać ten trening?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page="/Trener/Personalny/HarmonogramZajec/Index" asp-page-handler="CancelTraining">
+                    <input type="hidden" name="trainingId" id="cancelTrainingId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Odwołaj trening</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Training Modal -->
+<div class="modal fade" id="editTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editTrainingModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="editTrainingModalLabel_@Model.Id">Edytuj trening indywidualny</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page="/Trener/Personalny/HarmonogramZajec/Index" asp-page-handler="EditTraining">
+                    <input type="hidden" name="trainingId" value="@Model.Id" />
+
+                    <!-- Date input field -->
+                    <div class="mb-3">
+                        <label for="editDate_@Model.Id" class="form-label">Data treningu</label>
+                        <input type="date" class="form-control" id="editDate_@Model.Id" name="Date" value="@Model.Date.ToShortDateString()" min="@DateTime.Now.ToShortDateString()" required />
+                    </div>
+
+                    <!-- Hour input field -->
+                    <div class="mb-3">
+                        <label for="editHour_@Model.Id" class="form-label">Godzina</label>
+                        <input type="time" class="form-control" id="editHour_@Model.Id" name="Hour" value="@Model.Date.ToString("HH:mm")" required />
+                    </div>
+
+                    <!-- Duration input field -->
+                    <div class="mb-3">
+                        <label for="editDuration_@Model.Id" class="form-label">Czas trwania</label>
+                        <input type="time" class="form-control" id="editDuration_@Model.Id" name="Duration" value="@Model.Duration.ToString(@"hh\:mm")" required />
+                    </div>
+
+                    <!-- Description input field -->
+                    <div class="mb-3">
+                        <label for="editDescription_@Model.Id" class="form-label">Opis</label>
+                        <textarea class="form-control" id="editDescription_@Model.Id" name="Description">@Model.Description</textarea>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
             </div>
         </div>
     </div>
