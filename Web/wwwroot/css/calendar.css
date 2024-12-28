@@ -32,13 +32,13 @@
     transition: background-color 0.1s ease;
 }
 
-/* Individual Training Cards - Red */
+/* Individual Training Cards - green */
 .individual-training-card {
-    background-color: #ffcccc; /* Light red */
+    background-color: #93e696; /* Light green */
 }
 
 .individual-training-card:hover {
-    background-color: #ff6666; /* Slightly darker red on hover */
+    background-color: #76c279; /* Slightly darker green on hover */
 }
 
 /* Group Training Cards - Blue */
@@ -51,19 +51,35 @@
 }
 
 .group-training-card-reserved {
-    background-color: #6bc96e; /* Light green */
+    background-color: #FFF981; /* Light green */
 }
 
 .group-training-card-reserved:hover {
-    background-color: #448246; /* Slightly darker green on hover */
+    background-color: #FFF649; /* Slightly darker green on hover */
 }
 
 .individual-training-card-reserved {
-    background-color: #6bc96e; /* Light green */
+    background-color: #FFF981; /* Light yellow */
 }
 
 .individual-training-card-reserved:hover {
-    background-color: #448246; /* Slightly darker green on hover */
+    background-color: #FFF649; /* Slightly darker yellow on hover */
+}
+
+.personal-individual-training-card-reserved {
+    background-color: #ffcccc; /* Light red */
+}
+
+.personal-individual-training-card-reserved:hover {
+    background-color: #fa7878; /* Slightly darker red on hover */
+}
+
+.personal-individual-training-card {
+    background-color: #93e696; /* Light green */
+}
+
+.personal-individual-training-card:hover {
+    background-color: #76c279; /* Slightly darker green on hover */
 }
 
 .training-card-expired {

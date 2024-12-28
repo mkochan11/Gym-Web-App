@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationCore.Entities;
+using Ardalis.Specification;
 
 namespace ApplicationCore.Specifications
 {
-    public class FindTrainerById
+    public class FindGroupTrainerByUserId : SingleResultSpecification<GroupTrainer>
     {
+        public FindGroupTrainerByUserId(string userId)
+        {
+            Query.Where(x => x.AccountId.ToString() == userId.ToString()).AsSplitQuery();
+        }
     }
 }

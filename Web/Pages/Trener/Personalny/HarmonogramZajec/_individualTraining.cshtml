@@ -11,7 +11,7 @@ else
 {
     @if (Model.IsReserved)
     {
-        <div class="training-card individual-training-card" 
+        <div class="training-card personal-individual-training-card-reserved" 
              data-bs-toggle="modal" 
              data-bs-target="#individualTrainingModal_@Model.Id">
             <p>@Model.Description</p>
@@ -20,7 +20,7 @@ else
     }
     else
     {
-        <div class="training-card individual-training-card-reserved" 
+        <div class="training-card personal-individual-training-card" 
              data-bs-toggle="modal"
              data-bs-target="#individualTrainingModal_@Model.Id">
             <p>@Model.Description</p>

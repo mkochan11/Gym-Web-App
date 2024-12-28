@@ -14,7 +14,13 @@ else
     {
         <div class="training-card individual-training-card-reserved" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
             <strong>@Model.TrainerName @Model.TrainerSurname</strong>
-            <p>@Model.Description</p>
+            <p>@Model.Date.ToString("HH:mm")</p>
+        </div>
+    }
+    else if (Model.IsReserved)
+    {
+        <div class="training-card personal-individual-training-card-reserved" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
+            <strong>@Model.TrainerName @Model.TrainerSurname</strong>
             <p>@Model.Date.ToString("HH:mm")</p>
         </div>
     }
@@ -22,7 +28,6 @@ else
     {
         <div class="training-card individual-training-card" data-bs-toggle="modal" data-bs-target="#individualTrainingModal_@Model.Id">
             <strong>@Model.TrainerName @Model.TrainerSurname</strong>
-            <p>@Model.Description</p>
             <p>@Model.Date.ToString("HH:mm")</p>
         </div>
     }

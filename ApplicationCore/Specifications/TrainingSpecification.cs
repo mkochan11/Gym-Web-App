@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Specifications
 {
-    public class FindIndividualTrainigByMonth : SingleResultSpecification<IndividualTraining>
+    public class FindIndividualTrainingByMonth : SingleResultSpecification<IndividualTraining>
     {
-        public FindIndividualTrainigByMonth(int month, int year)
+        public FindIndividualTrainingByMonth(int month, int year)
         {
             Query.Where(x => x.Date.Month == month && x.Date.Year == year).AsSplitQuery();
         }
     }
 
-    public class FindGroupTrainigByMonth : SingleResultSpecification<GroupTraining>
+    public class FindGroupTrainingByMonth : SingleResultSpecification<GroupTraining>
     {
-        public FindGroupTrainigByMonth(int month, int year)
+        public FindGroupTrainingByMonth(int month, int year)
         {
             Query.Where(x => x.Date.Month == month && x.Date.Year == year).AsSplitQuery();
         }

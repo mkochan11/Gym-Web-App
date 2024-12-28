@@ -1,5 +1,5 @@
 ﻿@page
-@model Web.Pages.Trener.Personalny.HarmonogramZajec.IndexModel
+@model Web.Pages.Trener.Grupowy.HarmonogramZajec.IndexModel
 @{
     var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
     ViewData["Title"] = "Harmonogram";
@@ -16,7 +16,7 @@
         {
             <div class="col-auto">
                 <form method="post" asp-page-handler="Previous">
-                    <button type="submit" class="btn btn-primary" >
+                    <button type="submit" class="btn btn-primary">
                         &larr;
                     </button>
                 </form>
@@ -29,7 +29,7 @@
 
         <div class="col-auto">
             <form method="post" asp-page-handler="Next">
-                <button type="submit" class="btn btn-primary" >
+                <button type="submit" class="btn btn-primary">
                     &rarr;
                 </button>
             </form>
@@ -59,7 +59,7 @@
                                 {
                                     <span>@day.Day</span>
 
-                                    @if(day.Date >= DateTime.Now)
+                                    @if (day.Date >= DateTime.Now)
                                     {
                                         <button class="btn btn-sm btn-primary position-absolute top-0 end-0 m-1 p-0"
                                                 style="width: 20px; height: 20px; border-radius: 10%; font-size: 14px;"
@@ -77,13 +77,13 @@
                                             {
                                                 <!-- Powyżej 3 treningów -->
                                                 <div class="card">
-                                                        <button class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#trainingsModal_@day.Day">
-                                                            Treningi
-                                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                                    @day.Trainings.Count
-                                                                    <span class="visually-hidden">unread messages</span>
-                                                                </span>
-                                                        </button>
+                                                    <button class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#trainingsModal_@day.Day">
+                                                        Treningi
+                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                            @day.Trainings.Count
+                                                            <span class="visually-hidden">unread messages</span>
+                                                        </span>
+                                                    </button>
                                                 </div>
 
                                                 <!-- Wyświetlenie treningów -->
@@ -97,7 +97,7 @@
                                                             <div class="modal-body">
                                                                 @foreach (var training in day.Trainings)
                                                                 {
-                                                                    <partial name="_individualTraining" for="@training" />
+                                                                    <partial name="_groupTraining" for="@training" />
                                                                 }
                                                             </div>
                                                         </div>
@@ -108,7 +108,7 @@
                                             {
                                                 @foreach (var training in day.Trainings)
                                                 {
-                                                    <partial name="_individualTraining" for="@training" />
+                                                    <partial name="_groupTraining" for="@training" />
                                                 }
                                             }
                                         </div>
@@ -127,11 +127,11 @@
         <div class="col-12 d-flex justify-content-center align-items-center">
             <div class="d-flex align-items-center me-4">
                 <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
-                <span>Trening zarezerwowany</span>
+                <span>Trening pełny</span>
             </div>
             <div class="d-flex align-items-center me-4">
                 <div class="legend-ellipse me-2" style="background-color: #6bc96e;"></div>
-                <span>Trening niezarezerwowany</span>
+                <span>Trening niepełny</span>
             </div>
             <div class="d-flex align-items-center">
                 <div class="legend-ellipse me-2" style="background-color: #bab8b1;"></div>
@@ -151,84 +151,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modal for Creating Training -->
-<div class="modal fade" id="createTrainingModal" tabindex="-1" aria-labelledby="createTrainingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createTrainingModalLabel">Dodaj trening w dniu <span id="modalDate"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" asp-page-handler="CreateTraining">
-
-                    <input type="hidden" id="TrainingDate" name="NewTrainingInputModel.Date" />
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="NewTrainingInputModel.Hour" class="form-control" autocomplete="off" aria-required="true" placeholder="Godzina" type="time" />
-                        <label asp-for="NewTrainingInputModel.Hour">Godzina</label>
-                        <span asp-validation-for="NewTrainingInputModel.Hour" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="NewTrainingInputModel.Duration" class="form-control" autocomplete="off" aria-required="true" placeholder="Czas trwania" type="time" />
-                        <label asp-for="NewTrainingInputModel.Duration">Czas trwania</label>
-                        <span asp-validation-for="NewTrainingInputModel.Duration" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="NewTrainingInputModel.Description" class="form-control" autocomplete="off" placeholder="Opis" />
-                        <label asp-for="NewTrainingInputModel.Description">Opis</label>
-                        <span asp-validation-for="NewTrainingInputModel.Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input id="IsCyclic" asp-for="NewTrainingInputModel.IsCyclic" class="form-check-input" type="checkbox" />
-                        <label class="form-check-label" for="IsCyclic">
-                            Czy cykliczny?
-                        </label>
-                    </div>
-
-                    <div id="RepeatabilityOptions" class="form-check mb-3" style="display: none;">
-                        <label>Powtarzalność:</label><br />
-                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyday" id="daily" />
-                        <label for="daily">Codziennie</label><br />
-                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyWeek" id="weekly" />
-                        <label for="weekly">Co tydzień</label><br />
-                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyMonth" id="monthly" />
-                        <label for="monthly">Co miesiąc</label><br />
-                        <span asp-validation-for="NewTrainingInputModel.Repeatability" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-success">Zapisz trening</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="serverToast" class="toast align-items-center text-bg-@TempData["ToastType"] text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                @TempData["ToastMessage"]
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
-
-@if (TempData["ToastMessage"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var toastElement = document.getElementById('serverToast');
-            var toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        });
-    </script>
-}

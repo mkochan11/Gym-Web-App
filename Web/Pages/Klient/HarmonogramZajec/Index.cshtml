@@ -2,6 +2,7 @@
 @model Web.Pages.Klient.HarmonogramZajec.IndexModel
 @{
     var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
+    ViewData["Title"] = "Harmonogram";
 }
 
 <head>
@@ -48,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < 5; i++)  // 6 rows for a month (max)
+                @for (int i = 0; i < 6; i++)  // 6 rows for a month (max)
                 {
                     <tr>
                         @for (int j = 0; j < 7; j++)  // 7 columns for the days
@@ -61,14 +62,53 @@
                                     @if (day.IndividualTrainings.Any() || day.GroupTrainings.Any())
                                     {
                                         <div class="training-cards">
-                                            @foreach (var training in day.IndividualTrainings)
+                                            @if (day.IndividualTrainings.Count + day.GroupTrainings.Count >= 3)
                                             {
-                                                <partial name="_individualTraining" for="@training" />
+                                                <!-- Powyżej 3 treningów -->
+                                                <div class="card">
+                                                        <button class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#trainingsModal_@day.Day">
+                                                            Treningi
+                                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                                @(day.IndividualTrainings.Count + day.GroupTrainings.Count)
+                                                                    <span class="visually-hidden">unread messages</span>
+                                                                </span>
+                                                        </button>
+                                                </div>
+
+                                                <!-- Wyświetlenie treningów -->
+                                                <div class="modal fade" id="trainingsModal_@day.Day" tabindex="-1" aria-labelledby="trainingsModalLabel_@day.Day" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="trainingsModalLabel_@day.Day">Treningi w dniu @day.Date.ToString("dd-MM-yyyy")</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @foreach (var training in day.IndividualTrainings)
+                                                                {
+                                                                    <partial name="_individualTraining" for="@training" />
+                                                                }
+                                                                @foreach (var training in day.GroupTrainings)
+                                                                {
+                                                                    <partial name="_groupTraining" for="@training" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             }
-                                            @foreach (var training in day.GroupTrainings)
+                                            else
                                             {
-                                                <partial name="_groupTraining" for="@training" />
+                                                @foreach (var training in day.IndividualTrainings)
+                                                {
+                                                    <partial name="_individualTraining" for="@training" />
+                                                }
+                                                @foreach (var training in day.GroupTrainings)
+                                                {
+                                                    <partial name="_groupTraining" for="@training" />
+                                                }
                                             }
+                                           
                                         </div>
                                     }
                                 }
@@ -88,12 +128,16 @@
                 <span>Trening grupowy</span>
             </div>
             <div class="d-flex align-items-center me-4">
-                <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
+                <div class="legend-ellipse me-2" style="background-color: #93e696;"></div>
                 <span>Trening indywidualny</span>
             </div>
             <div class="d-flex align-items-center me-4">
-                <div class="legend-ellipse me-2" style="background-color: #6bc96e;"></div>
+                <div class="legend-ellipse me-2" style="background-color: #FFF981;"></div>
                 <span>Trening zarezerwowany przez ciebie</span>
+            </div>
+            <div class="d-flex align-items-center me-4">
+                <div class="legend-ellipse me-2" style="background-color: #ffcccc;"></div>
+                <span>Trening niedostępny</span>
             </div>
             <div class="d-flex align-items-center">
                 <div class="legend-ellipse me-2" style="background-color: #bab8b1;"></div>
@@ -101,6 +145,18 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Instructions -->
+<div class="row mt-3">
+    <div class="col-12 text-center">
+        <h5></h5>
+        <ul class="list-unstyled">
+            <li>• Aby dodać trening, kliknij na przycisk z plusem w dniu w kalendarzu.</li>
+            <li>• Aby edytować lub usunąć trening, kliknij na kafelek treningu w kalendarzu.</li>
+        </ul>
+    </div>
+</div>
 </div>
 
 

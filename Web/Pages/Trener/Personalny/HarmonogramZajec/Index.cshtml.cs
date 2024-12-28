@@ -16,7 +16,6 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
     [Authorize(Roles = "PersonalTrainer")]
     public class IndexModel : PageModel
     {
-
         public int CurrentMonth { get; set; }
         public int CurrentYear { get; set; }
 
