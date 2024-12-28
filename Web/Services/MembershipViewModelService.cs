@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
@@ -13,13 +9,11 @@ namespace Web.Services
     public class MembershipViewModelService : IMembershipViewModelService   
     {
         private readonly IRepository<Client> _clientRepository;
-        private readonly IClientService _clientService;
         private readonly IRepository<GymMembership> _membershipRepository;
         private readonly IRepository<MembershipPlan> _membershipPlanRepository;
 
         public MembershipViewModelService(
             IRepository<Client> clientRepository,
-            IClientService clientService,
             IRepository<GymMembership> membershipRepository,
             IRepository<MembershipPlan> membershipPlanRepository
         )
@@ -27,7 +21,6 @@ namespace Web.Services
             _clientRepository = clientRepository;
             _membershipRepository = membershipRepository;
             _membershipPlanRepository = membershipPlanRepository;
-            _clientService = clientService;
         }
 
         public async Task<MembershipIndexViewModel?> GetMembershipIndexViewModel(string UserId)

@@ -1,9 +1,7 @@
 ﻿using ApplicationCore.Entities;
-using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
-using Web.ViewModels.Calendar.Client.Trainings;
 using Web.ViewModels.Calendar.Client.TrainingsHistory;
 
 namespace Web.Services

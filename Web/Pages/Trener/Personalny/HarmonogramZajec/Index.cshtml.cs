@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.InputModels.Calendar.Trainer.Trainings.Personal;
 using Web.Interfaces;
 using Web.ViewModels.Calendar.Trainer.Trainings.Personal;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Session;
 
 namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 {

@@ -1,12 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
-using System;
 using Ardalis.Result;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ApplicationCore.Models.Membership;
 using ApplicationCore.Enums;
 

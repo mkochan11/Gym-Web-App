@@ -23,11 +23,11 @@
     padding: 5px;
     margin-bottom: 5px;
     width: 100%;
-    word-wrap: break-word; /* Ensures long words break into the next line */
-    overflow-wrap: break-word; /* Ensures proper wrapping for modern browsers */
-    white-space: normal; /* Allows the text to wrap onto multiple lines */
-    overflow: hidden; /* Prevents text from spilling out */
-    text-overflow: ellipsis; /* Truncates text with ellipsis (optional, if needed) */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
     transition: background-color 0.1s ease;
 }
@@ -103,14 +103,14 @@
 }
 
 .calendar-table {
-    table-layout: fixed; /* Prevent dynamic resizing of cells */
-    width: 100%; /* Stretch table to full width */
+    table-layout: fixed;
+    width: 100%;
 }
 
 .legend-ellipse {
-    width: 30px; /* Wider for the elliptical shape */
-    height: 10px; /* Thinner for a sleek look */
+    width: 30px;
+    height: 10px;
     display: inline-block;
-    border-radius: 10%; /* Makes the shape elliptical */
-    border: 1px solid #000; /* Adds a border for better visibility */
+    border-radius: 10%;
+    border: 1px solid #000;
 }

@@ -1,6 +1,4 @@
-﻿using ApplicationCore.Entities;
-
-namespace Web.ViewModels.Calendar.Trainer.Trainings.Group
+﻿namespace Web.ViewModels.Calendar.Trainer.Trainings.Group
 {
     public class TrainingsCalendarIndexGroupTrainingItemViewModel
     {

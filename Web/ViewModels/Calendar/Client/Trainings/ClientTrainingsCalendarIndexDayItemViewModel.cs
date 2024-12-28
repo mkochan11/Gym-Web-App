@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Entities.Abstract;
-
+﻿
 namespace Web.ViewModels.Calendar.Client.Trainings
 {
     public class ClientTrainingsCalendarIndexDayItemViewModel

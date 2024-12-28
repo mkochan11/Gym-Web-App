@@ -3,12 +3,6 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Client;
 using ApplicationCore.Specifications;
 using Ardalis.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
 {
@@ -59,6 +53,11 @@ namespace ApplicationCore.Services
             return result != null;
         }
 
+        /// <summary>
+        /// Gets Client by user Id.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns><see cref="Client"/> entity.</returns>
         public async Task<Client> GetClientByUserId(string userId){
             var _clientSpec = new FindClientByUserId(userId);
             var client = await _clientRepository.FirstOrDefaultAsync(_clientSpec);

@@ -1,6 +1,4 @@
-﻿
-
-using Web.Interfaces;
+﻿using Web.Interfaces;
 using Web.Services;
 
 namespace Web.Configuration

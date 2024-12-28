@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using Web.Interfaces;
-using Web.ViewModels.Membership;
 using Web.ViewModels.Membership.Buy;
 
 namespace Web.Services

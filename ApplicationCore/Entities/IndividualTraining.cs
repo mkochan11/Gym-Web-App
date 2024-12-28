@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationCore.Entities.Abstract;
 
 namespace ApplicationCore.Entities
@@ -14,7 +9,6 @@ namespace ApplicationCore.Entities
 
         [ForeignKey(nameof(PersonalTrainerId))]
         public PersonalTrainer PersonalTrainer { get; set; }
-
         public int? ClientId { get; set; }
 
         [ForeignKey(nameof(ClientId))]

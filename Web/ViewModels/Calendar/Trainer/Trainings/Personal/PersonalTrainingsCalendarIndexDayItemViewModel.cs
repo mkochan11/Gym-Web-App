@@ -1,6 +1,4 @@
-﻿using ApplicationCore.Entities.Abstract;
-
-namespace Web.ViewModels.Calendar.Trainer.Trainings.Personal
+﻿namespace Web.ViewModels.Calendar.Trainer.Trainings.Personal
 {
     public class PersonalTrainingsCalendarIndexDayItemViewModel
     {

@@ -1,6 +1,5 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Training;
-using ApplicationCore.Services;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ApplicationCore.Interfaces;
 using Web.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;

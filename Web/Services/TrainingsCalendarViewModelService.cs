@@ -1,8 +1,6 @@
 ﻿using ApplicationCore.Entities;
-using ApplicationCore.Entities.Abstract;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
-using Ardalis.Result;
 using Web.Interfaces;
 using Web.ViewModels.Calendar.Client.Trainings;
 using Web.ViewModels.Calendar.Trainer.Trainings.Group;

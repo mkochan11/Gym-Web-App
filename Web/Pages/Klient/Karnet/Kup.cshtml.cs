@@ -1,5 +1,3 @@
-using ApplicationCore.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
 using Web.ViewModels.Membership.Buy;

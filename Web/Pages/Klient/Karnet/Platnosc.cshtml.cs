@@ -2,7 +2,6 @@ using ApplicationCore.Enums;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Membership;
 using Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationCore.Entities
 {
@@ -13,15 +8,12 @@ namespace ApplicationCore.Entities
 
         [ForeignKey(nameof(MembershipPlanId))]
         public MembershipPlan MembershipPlan { get; set; }
-
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-
         public int ClientId { get; set; }
 
         [ForeignKey(nameof(ClientId))]
         public Client Client { get; set; }
-
         public List<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationCore.Enums;
 
 namespace ApplicationCore.Entities
@@ -15,7 +10,6 @@ namespace ApplicationCore.Entities
 
         [ForeignKey(nameof(GymMembershipId))]
         public GymMembership GymMembership { get; set; }
-
         public PaymentMethod PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
     }
