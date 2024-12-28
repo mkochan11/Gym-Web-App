@@ -34,7 +34,7 @@ else
 }
 
 
-<!-- Group Training Modal -->
+<!-- Individual Training Modal -->
 <div class="modal fade" id="individualTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit_@Model.Id" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -43,7 +43,6 @@ else
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Additional modal content goes here -->
                 <p><strong>Trener: </strong>@Model.TrainerName @Model.TrainerSurname</p>
                 <p><strong>Czas: </strong>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
                 <p><strong>Opis: </strong>@Model.Description</p>
@@ -68,39 +67,6 @@ else
                         <button type="submit" class="btn btn-success">Rezerwuj trening</button>
                     </form>
                 }
-
-                @* @if (!Model.IsReserved)
-                {
-                    if (Model.IsReservedByUser)
-                    {
-                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="CancelIndividual">
-                            <input type="hidden" name="trainingId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-danger">Odwołaj rezerwację treningu</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="ReserveIndividual">
-                            <input type="hidden" name="trainingId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-success">Rezerwuj trening</button>
-                        </form>
-                    }
-                }
-                else
-                {
-                    if (Model.IsReservedByUser)
-                    {
-                        <form method="post" asp-page="/HarmonogramZajec/Index" asp-page-handler="CancelIndividual">
-                            <input type="hidden" name="trainingId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-danger">Odwołaj rezerwację treningu</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Wszystkie miejsca na treningu są zajęte</span>
-                    }
-
-                } *@
             </div>
         </div>
     </div>

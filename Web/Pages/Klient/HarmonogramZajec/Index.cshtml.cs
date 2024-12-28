@@ -12,7 +12,6 @@ namespace Web.Pages.Klient.HarmonogramZajec
     [Authorize(Roles = "Client")]
     public class IndexModel : PageModel
     {
-
         public int CurrentMonth { get; set; }
         public int CurrentYear { get; set; }
 

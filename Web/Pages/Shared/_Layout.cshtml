@@ -26,13 +26,16 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
                         @if (User.IsInRole("Client"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Klient/HarmonogramZajec/Index">Harmonogram zajęć</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="" id="DropdownManage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Treningi
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="DropdownManage">
+                                    <a class="dropdown-item" asp-area="" asp-page="/Klient/HarmonogramZajec/Index">Harmonogram zajęć</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Klient/HistoriaTreningow/Index">Historia treningów</a>
+                                </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Klient/Karnet/Index">Karnet</a>

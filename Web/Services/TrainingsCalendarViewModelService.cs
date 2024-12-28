@@ -54,7 +54,6 @@ namespace Web.Services
 
             foreach (var item in individualTrainings)
             {
-
                 item.PersonalTrainer = await _personalTrainerRepository.GetByIdAsync(item.PersonalTrainerId);
 
                 if (item.ClientId != null)

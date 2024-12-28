@@ -12,7 +12,8 @@
 
 <div class="container my-5">
     <div class="row align-items-center">
-        @if (Model.CurrentMonth != DateTime.Now.Month || Model.CurrentYear != DateTime.Now.Year)
+        @if (Model.CurrentYear > DateTime.Now.Year ||
+            (Model.CurrentYear == DateTime.Now.Year && Model.CurrentMonth > DateTime.Now.Month))
         {
             <div class="col-auto">
                 <form method="post" asp-page-handler="Previous">
