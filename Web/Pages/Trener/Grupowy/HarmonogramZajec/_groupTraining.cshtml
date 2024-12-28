@@ -1,5 +1,6 @@
 ﻿@using Web.ViewModels.Calendar.Trainer.Trainings.Group
 @model TrainingsCalendarIndexGroupTrainingItemViewModel
+
 @if (Model.Date < DateTime.Now)
 {
     <div class="training-card training-card-expired">
@@ -74,6 +75,72 @@ else
                     <input type="hidden" name="trainingId" id="cancelTrainingId" value="@Model.Id" />
                     <button type="submit" class="btn btn-danger">Odwołaj trening</button>
                 </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Training Modal -->
+<div class="modal fade" id="editTrainingModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editTrainingModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="editTrainingModalLabel_@Model.Id">Edytuj trening indywidualny</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page="/Trener/Grupowy/HarmonogramZajec/Index" asp-page-handler="EditTraining">
+                    <input type="hidden" name="trainingId" value="@Model.Id" />
+
+                    <!-- Date input field -->
+                    <div class="mb-3">
+                        <label for="editDate_@Model.Id" class="form-label">Data treningu</label>
+                        <input type="date" class="form-control" id="editDate_@Model.Id" name="Date" value="@Model.Date.ToShortDateString()" min="@DateTime.Now.ToShortDateString()" required />
+                    </div>
+
+                    <!-- Hour input field -->
+                    <div class="mb-3">
+                        <label for="editHour_@Model.Id" class="form-label">Godzina</label>
+                        <input type="time" class="form-control" id="editHour_@Model.Id" name="Hour" value="@Model.Date.ToString("HH:mm")" required />
+                    </div>
+
+                    <!-- Duration input field -->
+                    <div class="mb-3">
+                        <label for="editDuration_@Model.Id" class="form-label">Czas trwania</label>
+                        <input type="time" class="form-control" id="editDuration_@Model.Id" name="Duration" value="@Model.Duration.ToString(@"hh\:mm")" required />
+                    </div>
+
+                    <!-- Description input field -->
+                    <div class="mb-3">
+                        <label for="editDescription_@Model.Id" class="form-label">Opis</label>
+                        <textarea class="form-control" id="editDescription_@Model.Id" name="Description">@Model.Description</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editMaxParticipantNumber_@Model.Id" class="form-label">Liczba uczestników</label>
+                        <input type="number" class="form-control" id="editMaxParticipantNumber_@Model.Id" name="MaxParticipantNumber" value="@Model.MaxParticipantNumber" required/>
+                    </div>
+
+                    <!-- Training Type Dropdown -->
+                    <div class="mb-3">
+                        <label for="editTrainingTypeId_@Model.Id" class="form-label">Typ treningu</label>
+                        <select class="form-select" id="editTrainingTypeId_@Model.Id" name="TrainingTypeId" required>
+                            <option value="" disabled selected>-- Wybierz typ treningu --</option>
+                            @foreach (var trainingType in Model.TrainingTypes)
+                            {
+                                <option value="@trainingType.Id">
+                                    @trainingType.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </form>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
             </div>
         </div>

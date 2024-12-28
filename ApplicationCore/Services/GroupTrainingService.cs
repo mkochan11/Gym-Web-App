@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Models.Training;
 using ApplicationCore.Specifications;
 using Ardalis.Result;
 using System;
@@ -17,14 +18,16 @@ namespace ApplicationCore.Services
         IRepository<MembershipPlan> _membershipPlanRepository;
         IRepository<GroupTraining> _groupTrainingRepository;
         IRepository<GroupTrainingParticipation> _groupTrainingParticipationRepository;
+        IRepository<GroupTrainer> _groupTrainerRepository;
         IMembershipService _membershipService;
 
         public GroupTrainingService(
             IRepository<Client> clientRepository,
-            IRepository<GymMembership>  gymMemberhsipRepository,
+            IRepository<GymMembership> gymMemberhsipRepository,
             IRepository<MembershipPlan> membershipPlanRepository,
             IRepository<GroupTraining> groupTrainingRepository,
             IRepository<GroupTrainingParticipation> groupTrainingParticipationRepository,
+            IRepository<GroupTrainer> groupTrainerRepository,
             IMembershipService membershipService
             )
         {
@@ -34,6 +37,7 @@ namespace ApplicationCore.Services
             _groupTrainingRepository = groupTrainingRepository;
             _groupTrainingParticipationRepository = groupTrainingParticipationRepository;
             _membershipService = membershipService;
+            _groupTrainerRepository = groupTrainerRepository;
         }
 
         public async Task<Result> CancelPlace(int trainingId, string userId)
@@ -72,6 +76,132 @@ namespace ApplicationCore.Services
 
             return Result.Success();
 
+        }
+
+        public async Task<Result> CreateTraining(NewGroupTrainingModel model, string userId)
+        {
+            var _trainerSpec = new FindGroupTrainerByUserId(userId);
+            var trainer = await _groupTrainerRepository.FirstOrDefaultAsync(_trainerSpec);
+
+            if (trainer == null)
+            {
+                return Result.Error("Nie znaleziono trenera");
+            }
+
+            if (model.IsCyclic)
+            {
+                var trainings = new List<GroupTraining>();
+                DateTime startDate = model.Date;
+                DateTime repeatUntilDate = new DateTime(year: 2025, month: 3, day: 31);
+
+                if (model.Repeatability == "everyday")
+                {
+                    int totalDays = (repeatUntilDate - startDate).Days;
+
+                    for (int i = 0; i <= totalDays; i++)
+                    {
+                        var training = new GroupTraining
+                        {
+                            GroupTrainerId = trainer.Id,
+                            Date = startDate.AddDays(i),
+                            MaxParticipantNumber = model.MaxParticipantNumber,
+                            TrainingTypeId = model.TrainingTypeId,
+                            Description = model.Description is null ? "" : model.Description,
+                            Duration = model.Duration,
+                        };
+
+                        training.Date = training.Date.AddHours(model.Hour.Hour);
+                        trainings.Add(training);
+                    }
+                }
+                else if (model.Repeatability == "everyWeek")
+                {
+                    int totalWeeks = (int)((repeatUntilDate - startDate).Days / 7);
+
+                    for (int i = 0; i <= totalWeeks; i++)
+                    {
+                        var training = new GroupTraining
+                        {
+                            GroupTrainerId = trainer.Id,
+                            Date = startDate.AddDays(i * 7),
+                            MaxParticipantNumber = model.MaxParticipantNumber,
+                            TrainingTypeId = model.TrainingTypeId,
+                            Description = model.Description is null ? "" : model.Description,
+                            Duration = model.Duration,
+                        };
+
+                        training.Date = training.Date.AddHours(model.Hour.Hour);
+                        trainings.Add(training);
+                    }
+                }
+                else if (model.Repeatability == "everyMonth")
+                {
+                    int totalMonths = (repeatUntilDate.Year - startDate.Year) * 12 + repeatUntilDate.Month - startDate.Month;
+
+                    for (int i = 0; i <= totalMonths; i++)
+                    {
+                        var training = new GroupTraining
+                        {
+                            GroupTrainerId = trainer.Id,
+                            Date = startDate.AddMonths(i),
+                            MaxParticipantNumber = model.MaxParticipantNumber,
+                            TrainingTypeId = model.TrainingTypeId,
+                            Description = model.Description is null ? "" : model.Description,
+                            Duration = model.Duration,
+                        };
+
+                        training.Date = training.Date.AddHours(model.Hour.Hour);
+                        trainings.Add(training);
+                    }
+                }
+                else
+                {
+                    return Result.Error("Podano niepoprawną cykliczność");
+                }
+
+                await _groupTrainingRepository.AddRangeAsync(trainings);
+                return Result.Success();
+
+            }
+            else
+            {
+                var training = new GroupTraining
+                {
+                    GroupTrainerId = trainer.Id,
+                    Date = model.Date,
+                    MaxParticipantNumber = model.MaxParticipantNumber,
+                    TrainingTypeId = model.TrainingTypeId,
+                    Description = model.Description is null ? "" : model.Description,
+                    Duration = model.Duration,
+                };
+
+                training.Date = training.Date.AddHours(model.Hour.Hour);
+
+                await _groupTrainingRepository.AddAsync(training);
+                return Result.Success();
+            }
+        }
+
+        public async Task<Result> DeleteTraining(int trainingId, string userId)
+        {
+            var _trainerSpec = new FindGroupTrainerByUserId(userId);
+            var trainer = await _groupTrainerRepository.FirstOrDefaultAsync(_trainerSpec);
+
+            if (trainer == null)
+            {
+                return Result.Error("Nie znaleziono trenera");
+            }
+
+            var training = await _groupTrainingRepository.GetByIdAsync(trainingId);
+
+            if (training == null)
+            {
+                return Result.Error("Nie znaleziono treningu");
+            }
+
+            await _groupTrainingRepository.DeleteAsync(training);
+
+            return Result.Success();
         }
 
         public async Task<Result> ReservePlace(int trainingId, string userId)
@@ -130,6 +260,34 @@ namespace ApplicationCore.Services
 
             return Result.Success();
             
+        }
+
+        public async Task<Result> UpdateTraining(EditGroupTrainingModel model, string userId)
+        {
+            var _trainerSpec = new FindGroupTrainerByUserId(userId);
+            var trainer = await _groupTrainerRepository.FirstOrDefaultAsync(_trainerSpec);
+
+            if (trainer == null)
+            {
+                return Result.Error("Nie znaleziono trenera");
+            }
+
+            var training = await _groupTrainingRepository.GetByIdAsync(model.Id);
+
+            if (training == null)
+            {
+                return Result.Error("Nie znaleziono treningu");
+            }
+
+            training.Date = model.Date;
+            training.Duration = model.Duration;
+            training.MaxParticipantNumber = model.MaxParticipantNumber;
+            training.TrainingTypeId = model.TrainingTypeId;
+            training.Description = model.Description is null ? "" : model.Description;
+            training.Date = training.Date.AddHours(model.Hour.Hour);
+
+            await _groupTrainingRepository.UpdateAsync(training);
+            return Result.Success();
         }
     }
 }

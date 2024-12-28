@@ -9,6 +9,7 @@ namespace Web.Interfaces
         Task<ClientTrainingsCalendarIndexViewModel> GetClientTrainingsCalendarIndexViewModel(int month, int year, string userId);
         Task<PersonalTrainingsCalendarIndexViewModel> GetPersonalTrainingsCalendarIndexViewModel(int month, int year, string userId);
         Task<GroupTrainingsCalendarIndexViewModel> GetGroupTrainingsCalendarIndexViewModel(int month, int year, string userId);
+        Task<List<GroupTrainingsTypeItemViewModel>> GetGroupTrainingsTypeItemViewModels();
         
     }
 }

@@ -12,5 +12,6 @@ namespace Web.ViewModels.Calendar.Trainer.Trainings.Group
         public int ParticipantsNumber { get; set; }
         public int MaxParticipantNumber { get; set; }
         public bool IsFull { get; set; }
+        public List<GroupTrainingsTypeItemViewModel> TrainingTypes { get; set; } = new List<GroupTrainingsTypeItemViewModel>();
     }
 }

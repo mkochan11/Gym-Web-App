@@ -256,6 +256,7 @@ namespace Web.Services
                     MaxParticipantNumber = item.MaxParticipantNumber,
                     ParticipantsNumber = participations.Count,
                     IsFull = item.MaxParticipantNumber == participations.Count ? true : false,
+                    TrainingTypes = _trainingTypeItems
                 });
             }
 
@@ -284,6 +285,25 @@ namespace Web.Services
             };
 
             return viewModel;
+        }
+
+        public async Task<List<GroupTrainingsTypeItemViewModel>> GetGroupTrainingsTypeItemViewModels()
+        {
+            var trainingTypes = await _trainingTypeRepository.ListAsync();
+
+            var _trainingTypeItems = new List<GroupTrainingsTypeItemViewModel>();
+
+            foreach (var trainingType in trainingTypes)
+            {
+                _trainingTypeItems.Add(new GroupTrainingsTypeItemViewModel
+                {
+                    Id = trainingType.Id,
+                    Name = trainingType.Name,
+                    Description = trainingType.Description,
+                });
+            }
+
+            return _trainingTypeItems;
         }
 
 

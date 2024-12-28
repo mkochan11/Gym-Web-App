@@ -151,3 +151,102 @@
         </div>
     </div>
 </div>
+
+<!-- Modal for Creating Training -->
+<div class="modal fade" id="createTrainingModal" tabindex="-1" aria-labelledby="createTrainingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTrainingModalLabel">Dodaj trening w dniu <span id="modalDate"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="CreateTraining">
+
+                    <input type="hidden" id="TrainingDate" name="NewTrainingInputModel.Date" />
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NewTrainingInputModel.Hour" class="form-control" autocomplete="off" aria-required="true" placeholder="Godzina" type="time" />
+                        <label asp-for="NewTrainingInputModel.Hour">Godzina</label>
+                        <span asp-validation-for="NewTrainingInputModel.Hour" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NewTrainingInputModel.Duration" class="form-control" autocomplete="off" aria-required="true" placeholder="Czas trwania" type="time" />
+                        <label asp-for="NewTrainingInputModel.Duration">Czas trwania</label>
+                        <span asp-validation-for="NewTrainingInputModel.Duration" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NewTrainingInputModel.Description" class="form-control" autocomplete="off" placeholder="Opis" />
+                        <label asp-for="NewTrainingInputModel.Description">Opis</label>
+                        <span asp-validation-for="NewTrainingInputModel.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NewTrainingInputModel.MaxParticipantNumber" class="form-control" autocomplete="off" placeholder="Liczba uczestników"/>
+                        <label asp-for="NewTrainingInputModel.MaxParticipantNumber">Liczba uczestników</label>
+                        <span asp-validation-for="NewTrainingInputModel.MaxParticipantNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select asp-for="NewTrainingInputModel.TrainingTypeId" class="form-select">
+                            <option value="">-- Wybierz typ treningu --</option>
+                            @foreach (var trainingType in Model.IndexViewModel.TrainingTypes)
+                            {
+                                <option value="@trainingType.Id">@trainingType.Name</option>
+                            }
+                        </select>
+                        <label asp-for="NewTrainingInputModel.TrainingTypeId">Typ treningu</label>
+                        <span asp-validation-for="NewTrainingInputModel.TrainingTypeId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input id="IsCyclic" asp-for="NewTrainingInputModel.IsCyclic" class="form-check-input" type="checkbox" />
+                        <label class="form-check-label" for="IsCyclic">
+                            Czy cykliczny?
+                        </label>
+                    </div>
+
+                    <div id="RepeatabilityOptions" class="form-check mb-3" style="display: none;">
+                        <label>Powtarzalność:</label><br />
+                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyday" id="daily" />
+                        <label for="daily">Codziennie</label><br />
+                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyWeek" id="weekly" />
+                        <label for="weekly">Co tydzień</label><br />
+                        <input type="radio" asp-for="NewTrainingInputModel.Repeatability" value="everyMonth" id="monthly" />
+                        <label for="monthly">Co miesiąc</label><br />
+                        <span asp-validation-for="NewTrainingInputModel.Repeatability" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Zapisz trening</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="serverToast" class="toast align-items-center text-bg-@TempData["ToastType"] text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                @TempData["ToastMessage"]
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@if (TempData["ToastMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var toastElement = document.getElementById('serverToast');
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        });
+    </script>
+}
