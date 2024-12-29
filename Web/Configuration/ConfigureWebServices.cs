@@ -11,6 +11,7 @@ namespace Web.Configuration
             services.AddTransient(typeof(IMembershipBuyViewModelService), typeof(MembershipBuyViewModelService));
             services.AddTransient(typeof(ITrainingsCalendarViewModelService), typeof(TrainingsCalendarViewModelService));
             services.AddTransient(typeof(ITrainingsHistoryViewModelService), typeof(TrainingsHistoryViewModelService));
+            services.AddTransient(typeof(ITrainingPlanViewModelService), typeof(TrainingPlanViewModelService));
             return services;
         }
     }

@@ -1,0 +1,140 @@
+﻿@page
+@model Web.Pages.Trener.Personalny.PlanyTreningowe.DodajModel
+@{
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+
+
+<div class="container mt-5" style="max-width: 800px;">
+
+    <form method="post" asp-page-handler="SaveTrainingPlan">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mb-4">Nowy Plan Treningowy</h3>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success">Zapisz Plan Treningowy</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label asp-for="NewTrainingPlanInputModel.Name" class="form-label">Nazwa</label>
+                    <input asp-for="NewTrainingPlanInputModel.Name" class="form-control" />
+                    <span asp-validation-for="NewTrainingPlanInputModel.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <select asp-for="NewTrainingPlanInputModel.ClientId" class="form-select">
+                        <option value="">-- Wybierz klienta --</option>
+                        @foreach (var client in Model.ViewModel.ClientItems)
+                        {
+                            <option value="@client.Id">@client.Name @client.Surname</option>
+                        }
+                    </select>
+                    <span asp-validation-for="NewTrainingPlanInputModel.ClientId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label asp-for="NewTrainingPlanInputModel.Description" class="form-label">Opis planu treningowego</label>
+                    <textarea asp-for="NewTrainingPlanInputModel.Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="NewTrainingPlanInputModel.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+
+        <h4></h4>
+        <h4 class="mb-4">Ćwiczenia</h4>
+        <!-- Exercise List -->
+        <div id="exercise-list" class="mb-4">
+            @if (Model.Exercises != null && Model.Exercises.Any())
+            {
+                foreach (var exercise in Model.Exercises)
+                {
+                    <div class="position-relative border p-3 mb-3">
+                        
+                        <form method="post" asp-page-handler="DeleteExercise" class="position-absolute top-0 end-0 p-2">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Usuń
+                            </button>
+                            <input type="hidden" name="exerciseId" value="@exercise.Id" />
+                        </form>
+                        <div class="row"></div>
+                        <h5>@exercise.Name</h5>
+                        <p>@exercise.Description</p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Liczba serii</th>
+                                    <th scope="col">Liczba powtórzeń</th>
+                                    <th scope="col">Czas odpoczynku</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@exercise.SeriesNumber</td>
+                                    <td>@exercise.RepetitionsNumber</td>
+                                    <td>@exercise.RestTime.Minutes min @exercise.RestTime.Seconds s</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Nie dodano jeszcze żadnych ćwiczeń.</p>
+            }
+        </div>
+        <div class="d-flex justify-content-center mb-3">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addExerciseForm" aria-expanded="false" aria-controls="addExerciseForm">
+                Dodaj ćwiczenie
+            </button>
+        </div>
+        <br />
+
+    <!-- Add Exercise Form -->
+        <div class="collapse mt-3" id="addExerciseForm">
+        <div class="card card-body">
+            <form method="post" asp-page-handler="AddExercise">
+                <div class="mb-3">
+                    <label asp-for="NewExerciseInputModel.Name" class="form-label"></label>
+                    <input asp-for="NewExerciseInputModel.Name" class="form-control" />
+                    <span asp-validation-for="NewExerciseInputModel.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewExerciseInputModel.Description" class="form-label"></label>
+                    <textarea asp-for="NewExerciseInputModel.Description" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="NewExerciseInputModel.Description" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="NewExerciseInputModel.SeriesNumber" class="form-label"></label>
+                        <input asp-for="NewExerciseInputModel.SeriesNumber" class="form-control" type="number" />
+                        <span asp-validation-for="NewExerciseInputModel.SeriesNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="NewExerciseInputModel.RepetitionsNumber" class="form-label"></label>
+                        <input asp-for="NewExerciseInputModel.RepetitionsNumber" class="form-control" type="number" />
+                        <span asp-validation-for="NewExerciseInputModel.RepetitionsNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="NewExerciseInputModel.RestTime" class="form-label"></label>
+                        <input asp-for="NewExerciseInputModel.RestTime" class="form-control" type="text" placeholder="hh:mm:ss" />
+                        <span asp-validation-for="NewExerciseInputModel.RestTime" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Dodaj</button>
+            </form>
+        </div>
+    </div>
+</div>
+
