@@ -14,6 +14,7 @@ namespace Web.Configuration
             services.AddTransient(typeof(IMembershipPlanService), typeof(MembershipPlanService));
             services.AddTransient(typeof(IGroupTrainingService), typeof(GroupTrainingService));
             services.AddTransient(typeof(IIndividualTrainingService), typeof(IndividualTrainingService));
+            services.AddTransient(typeof(ITrainingPlanService), typeof(TrainingPlanService));
 
             return services;
         }

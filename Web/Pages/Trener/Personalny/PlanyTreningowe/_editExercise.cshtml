@@ -1,0 +1,89 @@
+﻿@using Web.ViewModels.TrainingPlan.Edit
+@model EditTrainingPlanExerciseItemViewModel
+@{
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<div class="position-relative border p-3 mb-3">
+
+    <div class="position-absolute top-0 end-0 d-flex gap-2 p-2">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editExerciseModal_@Model.Id">
+            Edytuj
+        </button>
+        <form method="post" asp-page="/Trener/Personalny/PlanyTreningowe/Edytuj" asp-page-handler="DeleteExercise">
+            <input type="hidden" name="exerciseId" value="@Model.Id" />
+            <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+        </form>
+    </div>
+    <div class="row"></div>
+    <h5>@Model.Name</h5>
+    <p>@Model.Description</p>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Liczba serii</th>
+                <th scope="col">Liczba powtórzeń</th>
+                <th scope="col">Czas odpoczynku</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.SeriesNumber</td>
+                <td>@Model.RepetitionsNumber</td>
+                <td>@Model.RestTime.Minutes min @Model.RestTime.Seconds s</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Edit Exercise Modal -->
+
+<div class="modal fade" id="editExerciseModal_@Model.Id" tabindex="-1" aria-labelledby="editExerciseModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editExerciseModalLabel_@Model.Id">Edytuj Ćwiczenie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page="/Trener/Personalny/PlanyTreningowe/Edytuj" asp-page-handler="EditExercise">
+                    <input type="hidden" name="exerciseId" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label for="editName_@Model.Id" class="form-label">Nazwa</label>
+                        <input type="text" class="form-control" id="editName_@Model.Id" name="Name" value="@Model.Name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editDescription_@Model.Id" class="form-label">Opis</label>
+                        <textarea class="form-control" id="editDescription_@Model.Id" name="Description">@Model.Description</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="editSeriesNumber_@Model.Id" class="form-label">Liczba serii</label>
+                            <input type="number" class="form-control" id="editSeriesNumber_@Model.Id" name="SeriesNumber" value="@Model.SeriesNumber" required />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editRepetitionsNumber_@Model.Id" class="form-label">Powtórzenia</label>
+                            <input type="number" class="form-control" id="editRepetitionsNumber_@Model.Id" name="RepetitionsNumber" value="@Model.RepetitionsNumber" required />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editRestTime_@Model.Id" class="form-label">Czas Odpoczynku</label>
+                            <input type="text" class="form-control" id="editRestTime_@Model.Id" name="RestTime" value="@Model.RestTime" placeholder="hh:mm:ss" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

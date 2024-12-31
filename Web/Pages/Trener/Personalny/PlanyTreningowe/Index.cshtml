@@ -1,7 +1,28 @@
 ﻿@page
 @model Web.Pages.Trener.Personalny.PlanyTreningowe.IndexModel
 @{
+    ViewData["Title"] = "Plany treningowe";
 }
 
+@if (Model.ViewModel.TrainingPlans.Any())
+{
+    <h4> Twoje plany treningowe. </h4>
+    <br />
+    <div class="row">
+        @foreach (var plan in Model.ViewModel.TrainingPlans)
+        {
+            <partial name="_trainingPlan" for="@plan" />
+        }
+    </div>
 
-<a href="./PlanyTreningowe/Dodaj" class="btn btn-secondary mt-4">+ Add</a>
+    <div class="text-center">
+        <a href="./PlanyTreningowe/Dodaj" class="btn btn-success mt-4">Dodaj nowy plan</a>
+    </div>
+}
+else
+{
+    <h5>Nie dodałeś jeszcze żadnych planów treningowych.</h5>
+    <div class="text-center">
+        <a href="./PlanyTreningowe/Dodaj" class="btn btn-success mt-4">Dodaj nowy plan</a>
+    </div>
+}

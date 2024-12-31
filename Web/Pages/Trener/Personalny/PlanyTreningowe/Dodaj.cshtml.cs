@@ -1,7 +1,8 @@
+using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Exercise;
+using ApplicationCore.Models.TrainingPlan;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +18,16 @@ namespace Web.Pages.Trener.Personalny.PlanyTreningowe
     {
         private readonly ITrainingPlanViewModelService _trainingPlanViewModelService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITrainingPlanService _trainingPlanService;
 
         public DodajModel(
             UserManager<ApplicationUser> userManager,
-            ITrainingPlanViewModelService trainingPlanViewModelService)
+            ITrainingPlanViewModelService trainingPlanViewModelService,
+            ITrainingPlanService trainingPlanService)
         {
             _userManager = userManager;
             _trainingPlanViewModelService = trainingPlanViewModelService;
+            _trainingPlanService = trainingPlanService;
         }
 
         public required AddTrainingPlanIndexViewModel ViewModel {  get; set; }
@@ -35,6 +39,7 @@ namespace Web.Pages.Trener.Personalny.PlanyTreningowe
         public NewTrainingPlanInputModel NewTrainingPlanInputModel { get; set; }
 
         public List<NewExerciseModel> Exercises { get; set; } = new List<NewExerciseModel>();
+        public NewTrainingPlanModel TrainingPlan {  get; set; }
         public async Task OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -44,6 +49,12 @@ namespace Web.Pages.Trener.Personalny.PlanyTreningowe
             Exercises = !string.IsNullOrEmpty(exercisesJson)
                 ? JsonConvert.DeserializeObject<List<NewExerciseModel>>(exercisesJson)
                 : new List<NewExerciseModel>();
+
+            var trainingPlanJson = HttpContext.Session.GetString("TrainingPlan");
+            TrainingPlan = !string.IsNullOrEmpty(trainingPlanJson)
+                ? JsonConvert.DeserializeObject<NewTrainingPlanModel>(trainingPlanJson)
+                : new NewTrainingPlanModel();
+
         }
 
         public async Task<IActionResult> OnPostAddExercise()
@@ -93,9 +104,32 @@ namespace Web.Pages.Trener.Personalny.PlanyTreningowe
 
         public async Task<IActionResult> OnPostSaveTrainingPlan()
         {
-                return RedirectToPage("./Index");
+            var exercisesJson = HttpContext.Session.GetString("Exercises");
+            var exercises = !string.IsNullOrEmpty(exercisesJson)
+                ? JsonConvert.DeserializeObject<List<NewExerciseModel>>(exercisesJson)
+                : new List<NewExerciseModel>();
 
-            //TODO: Flush session exercises, nextId when saving training plan
+            var trainingPlanModel = new NewTrainingPlanModel
+            {
+                Name = NewTrainingPlanInputModel.Name,
+                Description = NewTrainingPlanInputModel.Description,
+                ClientId = NewTrainingPlanInputModel.ClientId,
+                Exercises = exercises is null ? new List<NewExerciseModel>() : exercises,
+            };
+
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _trainingPlanService.CreateTrainingPlan(trainingPlanModel, user.Id);
+
+            if (result.IsSuccess)
+            {
+                HttpContext.Session.Remove("nextId");
+                HttpContext.Session.Remove("Exercises");
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.FirstOrDefault() });
+            }
         }
     }
 }

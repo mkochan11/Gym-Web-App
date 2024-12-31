@@ -1,0 +1,38 @@
+﻿@using Web.ViewModels.TrainingPlan.Index
+@model TrainingPlansIndexItemViewModel
+
+
+<div class="col-12 col-sm-6 col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Description</p>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-page="./Edytuj" asp-route-id="@Model.Id" class="btn btn-primary me-2">Edytuj</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@Model.Id">Usuń</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteModal_@Model.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@Model.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć plan <strong>@Model.Name</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="planId" id="planId" value="@Model.Id"/>
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
