@@ -1,8 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using Ardalis.Result;
 using Web.Interfaces;
 using Web.ViewModels.TrainingPlan.Add;
+using Web.ViewModels.TrainingPlan.ClientDetails;
 using Web.ViewModels.TrainingPlan.Edit;
 using Web.ViewModels.TrainingPlan.Index;
 
@@ -30,6 +32,24 @@ namespace Web.Services
             _exerciseRepository = exerciseRepository;
         }
 
+        public async Task<Result> CheckIfClientCanSeeTrainingPlan(int planId, string userId)
+        {
+            var client = await _clientRepository.FirstOrDefaultAsync(new FindClientByUserId(userId));
+
+            var trainingPlan = await _trainingPlanRepository.GetByIdAsync(planId);
+            if (trainingPlan == null)
+            {
+                return Result.Error("Nie znaleziono planu treningowego");
+            }
+
+            if (trainingPlan.ClientId != client.Id)
+            {
+                return Result.Error("Nie masz dostępu do tego planu treningowego");
+            }
+
+            return Result.Success();
+        }
+
         public async Task<AddTrainingPlanIndexViewModel> GetAddTrainingPlanIndexViewModel(string userId)
         {
             var _personalTrainerSpec = new FindPersonalTrainerByUserId(userId);
@@ -52,6 +72,77 @@ namespace Web.Services
             var viewModel = new AddTrainingPlanIndexViewModel
             {
                 ClientItems = _clientItems,
+            };
+
+            return viewModel;
+        }
+
+        public async Task<ClientTrainingPlanDetailsViewModel> GetClientTrainingPlanDetailsViewModel(int planId, string userId)
+        {
+            var client = await _clientRepository.FirstOrDefaultAsync(new FindClientByUserId(userId));
+
+            var trainingPlan = await _trainingPlanRepository.GetByIdAsync(planId);
+
+            var personalTrainer = await _personalTrainerRepository.GetByIdAsync(trainingPlan.PersonalTrainerId);
+
+            var exercises = await _exerciseRepository.ListAsync(new FindExerciseByTrainingPlanId(planId));
+
+            var _exerciseItems = new List<ClientTrainingPlanDetailsExerciseItemViewModel>();
+
+            foreach (var exercise in exercises)
+            {
+                _exerciseItems.Add(new ClientTrainingPlanDetailsExerciseItemViewModel
+                {
+                    Name = exercise.Name,
+                    Description = exercise.Description,
+                    RepetitionsNumber = exercise.RepetitionsNumber,
+                    SeriesNumber = exercise.SeriesNumber,
+                    RestTime = exercise.RestTime,
+                });
+            }
+
+            var viewModel = new ClientTrainingPlanDetailsViewModel
+            {
+                TrainingPlanItem = new ClientTrainingPlanDetailsItemViewModel
+                {
+                    Name = trainingPlan.Name,
+                    Description = trainingPlan.Description,
+                    TrainerName = personalTrainer is null ? "Nie znaleziono trenera" : personalTrainer.Name,
+                    TrainerSurname = personalTrainer is null ? "" : personalTrainer.Surname,
+                },
+                ExerciseItems = _exerciseItems,
+            };
+            return viewModel;
+        }
+
+        public async Task<ClientTrainingPlansIndexViewModel> GetClientTrainingPlanIndexViewModel(string userId)
+        {
+            var client = await _clientRepository.FirstOrDefaultAsync(new FindClientByUserId(userId));
+
+            var _trainingPlanSpec = new FindTrainingPlanByClientId(client.Id);
+            var trainingPlans = await _trainingPlanRepository.ListAsync(_trainingPlanSpec);
+
+            var trainingPlanItems = new List<ClientTrainingPlansIndexItemViewModel>();
+
+            foreach (var trainingPlan in trainingPlans)
+            {
+                var trainer = await _personalTrainerRepository.GetByIdAsync(trainingPlan.PersonalTrainerId);
+
+                var planItem = new ClientTrainingPlansIndexItemViewModel
+                {
+                    Id = trainingPlan.Id,
+                    Name = trainingPlan.Name,
+                    Description = trainingPlan.Description,
+                    TrainerName = trainer is null ? "Nie znaleziono trenera" : trainer.Name,
+                    TrainerSurname = trainer is null ? "" : trainer.Surname
+                };
+
+                trainingPlanItems.Add(planItem);
+            }
+
+            var viewModel = new ClientTrainingPlansIndexViewModel
+            {
+                TrainingPlans = trainingPlanItems,
             };
 
             return viewModel;

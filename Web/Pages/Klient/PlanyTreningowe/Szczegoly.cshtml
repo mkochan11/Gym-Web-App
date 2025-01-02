@@ -1,0 +1,28 @@
+﻿@page
+@model Web.Pages.Klient.PlanyTreningowe.SzczegolyModel
+@{
+    ViewData["Title"] = "Szczegóły planu";
+}
+@{
+    var TrainingPlan = Model.ViewModel.TrainingPlanItem;
+    var Exercises = Model.ViewModel.ExerciseItems;
+}
+
+<h3>Plan Treningowy <strong>@TrainingPlan.Name</strong></h3>
+<p><strong>Trener: </strong> @TrainingPlan.TrainerName @TrainingPlan.TrainerSurname</p>
+<p><strong>Opis:</strong> @TrainingPlan.Description</p>
+<br />
+<h4 class="mb-4">Ćwiczenia</h4>
+<div id="exercise-list" class="mb-4">
+    @if (Exercises != null && Exercises.Any())
+    {
+        foreach (var exercise in Exercises)
+        {
+            <partial name="_exercise" for="@exercise" />
+        }
+    }
+    else
+    {
+        <p>W tym planie nie ma jeszcze żadnych ćwiczeń.</p>
+    }
+</div>

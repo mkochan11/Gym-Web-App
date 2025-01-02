@@ -10,4 +10,12 @@ namespace ApplicationCore.Specifications
             Query.Where(x => x.PersonalTrainerId == trainerId).AsSplitQuery();
         }
     }
+
+    public class FindTrainingPlanByClientId : SingleResultSpecification<TrainingPlan>
+    {
+        public FindTrainingPlanByClientId(int clientId)
+        {
+            Query.Where(x => x.ClientId == clientId).AsSplitQuery();
+        }
+    }
 }

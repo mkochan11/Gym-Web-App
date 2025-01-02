@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Interfaces;
-using Web.Services;
 using Web.ViewModels.TrainingPlan.Index;
 
 namespace Web.Pages.Trener.Personalny.PlanyTreningowe

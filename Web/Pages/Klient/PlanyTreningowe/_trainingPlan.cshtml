@@ -1,0 +1,15 @@
+﻿@using Web.ViewModels.TrainingPlan.Index
+@model ClientTrainingPlansIndexItemViewModel
+
+<div class="col-12 col-sm-6 col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Description</p>
+            <p class="card-text"><strong>Trener: </strong>@Model.TrainerName @Model.TrainerSurname</p>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-page="./Szczegoly" asp-route-planId="@Model.Id" class="btn btn-primary me-2">Zobacz szczegóły</a>
+        </div>
+    </div>
+</div>

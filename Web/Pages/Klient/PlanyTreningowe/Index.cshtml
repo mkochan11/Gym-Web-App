@@ -1,4 +1,21 @@
 ﻿@page
 @model Web.Pages.Klient.PlanyTreningowe.IndexModel
 @{
+    ViewData["Title"] = "Plany treningowe";
+}
+
+@if (Model.ViewModel.TrainingPlans.Any())
+{
+    <h4> Twoje plany treningowe. </h4>
+    <br />
+    <div class="row">
+        @foreach (var plan in Model.ViewModel.TrainingPlans)
+        {
+            <partial name="_trainingPlan" for="@plan" />
+        }
+    </div>
+}
+else
+{
+    <h5>Nie otrzymałeś jeszcze żadnych planów treningowych.</h5>
 }

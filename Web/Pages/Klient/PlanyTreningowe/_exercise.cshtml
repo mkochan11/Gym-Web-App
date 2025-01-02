@@ -1,0 +1,27 @@
+﻿@using Web.ViewModels.TrainingPlan.ClientDetails
+@model ClientTrainingPlanDetailsExerciseItemViewModel
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">@Model.Name</h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text"><strong>Opis ćwiczenia: </strong>@Model.Description</p>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Liczba serii</th>
+                    <th scope="col">Liczba powtórzeń</th>
+                    <th scope="col">Czas odpoczynku</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.SeriesNumber</td>
+                    <td>@Model.RepetitionsNumber</td>
+                    <td>@Model.RestTime.Minutes min @Model.RestTime.Seconds s</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
