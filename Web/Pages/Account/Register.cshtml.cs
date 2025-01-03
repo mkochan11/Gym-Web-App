@@ -89,7 +89,7 @@ namespace Web.Pages.Account
             [Required(ErrorMessage = "Hasło jest wymagane.")]
             [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} znaków i max {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             /// <summary>
@@ -97,18 +97,18 @@ namespace Web.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             [Compare("Password", ErrorMessage = "Hasła nie pasują do siebie!")]
             public string ConfirmPassword { get; set; }
 
             [Required(ErrorMessage = "Imię jest wymagane.")]
             [StringLength(30, ErrorMessage = "Imię nie może przekraczać 30 znaków.")]
-            [Display(Name = "Name")]
+            [Display(Name = "Imię")]
             public string Name { get; set; }
 
             [Required(ErrorMessage = "Nazwisko jest wymagane.")]
             [StringLength(50, ErrorMessage = "Nazwisko nie może przekraczać 50 znaków.")]
-            [Display(Name = "Surname")]
+            [Display(Name = "Nazwisko")]
             public string Surname { get; set; }
         }
 

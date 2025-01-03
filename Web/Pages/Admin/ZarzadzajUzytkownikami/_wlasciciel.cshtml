@@ -1,0 +1,80 @@
+﻿@using Web.ViewModels.Admin.ManageUsers
+@model ManageUsersIndexItemViewModel
+
+@{
+    var owner = Model;
+}
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<tr>
+    <td>@owner.Name</td>
+    <td>@owner.Surname</td>
+    <td>@owner.Email</td>
+    <td>@owner.CreatedDate.ToString("dd-MM-yyyy")</td>
+    <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@owner.Id">Edytuj</button>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@owner.Id">Usuń</button>
+    </td>
+</tr>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal_@owner.Id" tabindex="-1" aria-labelledby="editModalLabel_@owner.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel_@owner.Id">Edytuj właściciela</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm_@owner.Id" asp-page="/Admin/ZarzadzajUzytkownikami/Wlasciciele" asp-page-handler="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label for="editName_@owner.Id" class="form-label">Imię</label>
+                        <input type="text" class="form-control" id="editName_@owner.Id" name="Name" value="@owner.Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSurname_@owner.Id" class="form-label">Nazwisko</label>
+                        <input type="text" class="form-control" id="editSurname_@owner.Id" name="Surname" value="@owner.Surname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail_@owner.Id" class="form-label">Adres Email</label>
+                        <input type="email" class="form-control" id="editEmail_@owner.Id" name="Email" value="@owner.Email" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                <button type="submit" form="editForm_@owner.Id" class="btn btn-success">Zatwierdź zmiany</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal_@owner.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@owner.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@owner.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć tego użytkownika?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page="/Admin/ZarzadzajUzytkownikami/Wlasciciele" asp-page-handler="Delete">
+                    <input type="hidden" name="userId" id="userId" value="@owner.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

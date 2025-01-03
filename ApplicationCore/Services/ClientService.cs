@@ -64,5 +64,46 @@ namespace ApplicationCore.Services
 
             return client;
         }
+
+        public async Task<string> GetClientAccountId(int userId)
+        {
+            var user = await _clientRepository.GetByIdAsync(userId);
+
+            if (user == null)
+            {
+                return "";
+            }
+
+            return user.AccountId;
+        }
+
+        public async Task<Result> UpdateClient(EditClientModel model)
+        {
+            var client = await _clientRepository.GetByIdAsync(model.Id);
+
+            if (client == null)
+            {
+                return Result.Error("Nie znaleziono klienta");
+            }
+
+            client.Name = model.Name;
+            client.Surname = model.Surname;
+
+            await _clientRepository.UpdateAsync(client);
+            return Result.Success();
+        }
+
+        public async Task<Result> DeleteClient(int clientId)
+        {
+            var client = await _clientRepository.GetByIdAsync(clientId);
+
+            if (client == null)
+            {
+                return Result.Error("Nie znaleziono klienta");
+            }
+
+            await _clientRepository.DeleteAsync(client);
+            return Result.Success();
+        }
     }
 }

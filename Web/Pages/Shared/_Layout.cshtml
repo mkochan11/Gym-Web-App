@@ -1,4 +1,5 @@
 ﻿@using ApplicationCore.Interfaces;
+@using ApplicationCore.Services
 @using Infrastructure.Identity;
 @using Microsoft.AspNetCore.Identity;
 @inject IClientService _clientService
@@ -57,6 +58,12 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Trener/Grupowy/HarmonogramZajec/Index">Harmonogram zajęć</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/ZarzadzajUzytkownikami/Index">Zarządzaj użytkownikami</a>
                             </li>
                         }
                     </ul>

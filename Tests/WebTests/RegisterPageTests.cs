@@ -1,25 +1,18 @@
-
-using System.Threading;
-using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Web.Areas.Identity.Pages.Account;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
 using ApplicationCore.Models.Client;
 using Ardalis.Result;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using ApplicationCore.Entities;
-using Humanizer;
-using ApplicationCore.Entities.Abstract;
+using System.Diagnostics.CodeAnalysis;
+using Web.Pages.Account;
 
 namespace WebTests
 {
+    [ExcludeFromCodeCoverage]
     public class RegisterPageTests
     {
         [Fact]

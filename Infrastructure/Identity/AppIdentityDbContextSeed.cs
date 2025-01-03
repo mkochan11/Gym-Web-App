@@ -24,7 +24,7 @@ namespace Infrastructure.Identity
                 var adminUser = new ApplicationUser
                 {
                     Email = "admin@gymApp.com",
-                    UserName = "admin@gymApp.com" // Ensure UserName is set
+                    UserName = "admin@gymApp.com"
                 };
                 var adminResult = await userManager.CreateAsync(adminUser, AuthorizationConstants.DEFAULT_ADMIN_PASSWORD);
                 if (adminResult.Succeeded)
@@ -37,7 +37,6 @@ namespace Infrastructure.Identity
                     throw new Exception($"Failed to create Admin user: {string.Join(", ", adminResult.Errors.Select(e => e.Description))}");
                 }
 
-                // Owner User
                 var ownerUser = new ApplicationUser
                 {
                     Email = "owner@gymApp.com",
@@ -54,7 +53,6 @@ namespace Infrastructure.Identity
                     throw new Exception($"Failed to create Owner user: {string.Join(", ", ownerResult.Errors.Select(e => e.Description))}");
                 }
 
-                // Manager User
                 var managerUser = new ApplicationUser
                 {
                     Email = "manager@gymApp.com",
@@ -71,7 +69,6 @@ namespace Infrastructure.Identity
                     throw new Exception($"Failed to create Manager user: {string.Join(", ", managerResult.Errors.Select(e => e.Description))}");
                 }
 
-                // Receptionist User
                 var receptionistUser = new ApplicationUser
                 {
                     Email = "receptionist@gymApp.com",
@@ -88,7 +85,6 @@ namespace Infrastructure.Identity
                     throw new Exception($"Failed to create Receptionist user: {string.Join(", ", receptionistResult.Errors.Select(e => e.Description))}");
                 }
 
-                // Group Trainer User
                 var groupTrainerUser = new ApplicationUser
                 {
                     Email = "grouptrainer@gymApp.com",
@@ -105,7 +101,6 @@ namespace Infrastructure.Identity
                     throw new Exception($"Failed to create Group Trainer user: {string.Join(", ", groupTrainerResult.Errors.Select(e => e.Description))}");
                 }
 
-                // Personal Trainer User
                 var personalTrainerUser = new ApplicationUser
                 {
                     Email = "personaltrainer@gymApp.com",

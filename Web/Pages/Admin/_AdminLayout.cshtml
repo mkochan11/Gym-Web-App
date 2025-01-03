@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+
+
+<div class="row">
+    <div class="col-3">
+        <nav class="nav flex-column p-3 bg-light rounded shadow-sm">
+            <h5 class="text-primary mb-3">Użytkownicy</h5>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./Wlasciciele">
+                <i class="bi bi-person-fill me-2"></i> Właściciele
+            </a>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./Menadzerowie">
+                <i class="bi bi-person-badge-fill me-2"></i> Menadżerowie
+            </a>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./TrenerzyPersonalni">
+                <i class="bi bi-clipboard-check me-2"></i> Trenerzy personalni
+            </a>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./TrenerzyGrupowi">
+                <i class="bi bi-clipboard-check me-2"></i> Trenerzy grupowi
+            </a>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./Recepcjonisci">
+                <i class="bi bi-key-fill me-2"></i> Recepcjoniści
+            </a>
+            <a class="nav-link d-flex align-items-center text-dark" asp-page="./Klienci">
+                <i class="bi bi-people-fill me-2"></i> Klienci
+            </a>
+        </nav>
+    </div>
+    <div class="col-9">
+        @RenderBody()
+    </div>
+</div>
+
+@RenderSection("Scripts", required: false)
