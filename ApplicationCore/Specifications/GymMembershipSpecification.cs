@@ -10,4 +10,13 @@ namespace ApplicationCore.Specifications
             Query.Where(x => x.ClientId == clientId).AsSplitQuery();
         }
     }
+
+    public class FindNewMembershipsInPeriod : SingleResultSpecification<GymMembership>
+    {
+        public FindNewMembershipsInPeriod(DateTime fromDate, DateTime toDate)
+        {
+            Query.Where(x => x.StartDate >= fromDate && x.StartDate <= toDate)
+                .AsSplitQuery();
+        }
+    }
 }

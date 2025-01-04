@@ -11,13 +11,17 @@ namespace ApplicationCore.Entities
         public Owner Owner { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+        public bool BudgetReport { get; set; }
+        public bool ClientsReport { get; set; }
+        public bool IndividualTrainingsReport { get; set; }
+        public bool GroupTrainingsReport { get; set; }
         public int? NewClients { get; set; }
         public int? NewMemberships { get; set; }
+        public decimal? TotalEmployeesCost { get; set; }
         public decimal? TotalIncome { get; set; }
         public int? TotalIndividualTrainings { get; set; }
         public int? TotalGroupTrainings { get; set; }
         public TimeSpan? TotalIndividualTrainingsTime { get; set; }
         public TimeSpan? TotalGroupTrainingsTime { get; set; }
-        public decimal? TotalEmployeesCost { get; set; }
     }
 }

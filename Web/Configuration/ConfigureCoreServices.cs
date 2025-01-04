@@ -2,7 +2,6 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
-using Infrastructure.Services;
 
 namespace Web.Configuration
 {
@@ -23,7 +22,7 @@ namespace Web.Configuration
             services.AddScoped<Func<PersonalTrainer>>(sp => () => ActivatorUtilities.CreateInstance<PersonalTrainer>(sp));
             services.AddScoped<Func<GroupTrainer>>(sp => () => ActivatorUtilities.CreateInstance<GroupTrainer>(sp));
             services.AddScoped<Func<Receptionist>>(sp => () => ActivatorUtilities.CreateInstance<Receptionist>(sp));
-            services.AddTransient(typeof(IApplicationUserService), typeof(ApplicationUserService));
+            services.AddTransient(typeof(IGymReportService), typeof(GymReportService));
             
             
             return services;

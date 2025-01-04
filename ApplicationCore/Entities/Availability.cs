@@ -2,15 +2,15 @@
 
 namespace ApplicationCore.Entities
 {
-    public class Availability<T> : BaseEntity
+    public class Availability : BaseEntity
     {
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int ReceptionistId { get; set; }
 
-        [ForeignKey(nameof(EmployeeId))]
-        public T Employee { get; set; }
+        [ForeignKey(nameof(ReceptionistId))]
+        public Receptionist Receptionist { get; set; }
     }
 }

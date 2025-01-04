@@ -4,8 +4,8 @@ namespace ApplicationCore.Entities
 {
     public class Receptionist : Employee
     {
-        public List<Availability<Receptionist>> Availabilities { get; set; } = new List<Availability<Receptionist>>();
-        public List<Shift<Receptionist>> Shifts { get; set; } = new List<Shift<Receptionist>>();
+        public List<Availability> Availabilities { get; set; } = new List<Availability>();
+        public List<Shift> Shifts { get; set; } = new List<Shift>();
     }
 }
 

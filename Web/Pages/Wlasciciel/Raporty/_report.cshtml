@@ -1,0 +1,165 @@
+﻿@using Web.ViewModels.Owner.Reports
+@model OwnerReportsIndexItemViewModel
+@{
+    var report = Model;
+}
+
+
+<tr>
+    <td>@report.Name</td>
+    <td>Od @report.FromDate.ToShortDateString() do @report.ToDate.ToShortDateString()</td>
+    <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal_@report.Id">Szczegóły</button>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@report.Id">Usuń</button>
+    </td>
+</tr>
+
+<div class="modal fade" id="detailsModal_@report.Id" tabindex="-1" aria-labelledby="detailsModalLabel_@report.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel_@report.Id">Szczegóły raportu: @report.Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Raport o klientach -->
+                @if (report.ClientsReport)
+                {
+                    <div class="card mb-3 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Raport o klientach</h5>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                @if (report.NewClients.HasValue)
+                                {
+                                    <dt class="col-sm-6">Nowi klienci</dt>
+                                    <dd class="col-sm-6">@report.NewClients</dd>
+                                }
+
+                                @if (report.NewMemberships.HasValue)
+                                {
+                                    <dt class="col-sm-6">Nowe członkostwa</dt>
+                                    <dd class="col-sm-6">@report.NewMemberships</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+                <!-- Raport budżetowy -->
+                @if (report.BudgetReport)
+                {
+                    <div class="card mb-3 shadow">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Raport budżetowy</h5>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                @if (report.TotalIncome.HasValue)
+                                {
+                                    <dt class="col-sm-6">Całkowity dochód</dt>
+                                    <dd class="col-sm-6">@report.TotalIncome</dd>
+                                }
+
+                                @if (report.TotalEmployeesCost.HasValue)
+                                {
+                                    <dt class="col-sm-6">Całkowity koszt pracowników</dt>
+                                    <dd class="col-sm-6">@report.TotalEmployeesCost</dd>
+                                }
+                                @if (report.TotalProfit.HasValue)
+                                {
+                                    if (report.TotalProfit >= 0)
+                                    {
+                                        <dt class="col-sm-6">Zysk</dt>
+                                        <dd class="col-sm-6 text-success">@report.TotalProfit</dd>
+                                    }
+                                    else
+                                    {
+                                        <dt class="col-sm-6">Strata</dt>
+                                        <dd class="col-sm-6 text-danger">@report.TotalProfit</dd>
+                                    }
+                                }
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+                <!-- Raport treningów indywidualnych -->
+                @if (report.IndividualTrainingsReport)
+                {
+                    <div class="card mb-3 shadow">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Raport treningów indywidualnych</h5>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                @if (report.TotalIndividualTrainings.HasValue)
+                                {
+                                    <dt class="col-sm-6">Treningi indywidualne</dt>
+                                    <dd class="col-sm-6">@report.TotalIndividualTrainings</dd>
+                                }
+
+                                @if (report.TotalIndividualTrainingsTime.HasValue)
+                                {
+                                    <dt class="col-sm-6">Czas treningów indywidualnych</dt>
+                                    <dd class="col-sm-6">@report.TotalIndividualTrainingsTime</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+                <!-- Raport treningów grupowych -->
+                @if (report.GroupTrainingsReport)
+                {
+                    <div class="card mb-3 shadow">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">Raport treningów grupowych</h5>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                @if (report.TotalGroupTrainings.HasValue)
+                                {
+                                    <dt class="col-sm-6">Treningi grupowe</dt>
+                                    <dd class="col-sm-6">@report.TotalGroupTrainings</dd>
+                                }
+
+                                @if (report.TotalGroupTrainingsTime.HasValue)
+                                {
+                                    <dt class="col-sm-6">Czas treningów grupowych</dt>
+                                    <dd class="col-sm-6">@report.TotalGroupTrainingsTime</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal_@report.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@report.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@report.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć ten raport?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page="/Wlasciciel/Raporty/Index" asp-page-handler="Delete">
+                    <input type="hidden" name="reportId" id="reportId" value="@report.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

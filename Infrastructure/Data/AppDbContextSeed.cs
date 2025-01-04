@@ -289,27 +289,27 @@ namespace Infrastructure.Data
             };
         }
 
-        static IEnumerable<Shift<Receptionist>> GetPreconfiguredReceptionistShift(Receptionist receptionist)
+        static IEnumerable<Shift> GetPreconfiguredReceptionistShift(Receptionist receptionist)
         {
-            return new List<Shift<Receptionist>>
+            return new List<Shift>
             {
-                new Shift<Receptionist>
+                new Shift
                 {
                     StartTime = new DateTime(2025, 1, 15, 7, 0, 0),
                     EndTime = new DateTime(2025, 1, 15, 23, 0, 0),
-                    Employee = receptionist,
+                    Receptionist = receptionist,
                 },
-                new Shift<Receptionist>
+                new Shift
                 {
                     StartTime = new DateTime(2025, 1, 16, 15, 0, 0),
                     EndTime = new DateTime(2025, 1, 16, 23, 0, 0),
-                    Employee = receptionist,
+                    Receptionist = receptionist,
                 },
-                new Shift<Receptionist>
+                new Shift
                 {
                     StartTime = new DateTime(2025, 1, 16, 7, 0, 0),
                     EndTime = new DateTime(2025, 1, 16, 15, 0, 0),
-                    Employee = receptionist,
+                    Receptionist = receptionist,
                 }
             };
         }

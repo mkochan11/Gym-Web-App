@@ -2,13 +2,13 @@
 
 namespace ApplicationCore.Entities
 {
-    public class Shift<T> : BaseEntity
+    public class Shift : BaseEntity
     {
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int EmployeeId { get; set; }
+        public int ReceptionistId { get; set; }
 
-        [ForeignKey(nameof(EmployeeId))]
-        public T Employee { get; set; }
+        [ForeignKey(nameof(ReceptionistId))]
+        public Receptionist Receptionist { get; set; }
     }
 }

@@ -4,25 +4,108 @@
     ViewData["Title"] = "Raporty";
 }
 
-@if (Model.ViewModel.TrainingPlans.Any())
-{
-    <h4> Twoje plany treningowe. </h4>
-    <br />
-    <div class="row">
-        @foreach (var plan in Model.ViewModel.TrainingPlans)
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<head>
+    <script src="~/js/reports.js"></script>
+</head>
+
+
+<h3>Twoje raporty</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Okres raportu</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.ViewModel.Reports)
         {
-            <partial name="_trainingPlan" for="@plan" />
+            <partial name="_report" for="@report" />
         }
+    </tbody>
+</table>
+
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newReportModal">
+            Wygeneruj nowy raport
+        </button>
     </div>
 
-    <div class="text-center">
-        <a href="./PlanyTreningowe/Dodaj" class="btn btn-success mt-4">Dodaj nowy plan</a>
+
+
+<!-- New Report Modal -->
+<div class="modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newReportModalLabel">Generuj nowy raport</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-page-handler="Generate" method="post" id="newReportForm">
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.Name" class="form-label"></label>
+                        <input asp-for="NewReportInput.Name" class="form-control" />
+                        <span asp-validation-for="NewReportInput.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.FromDate" class="form-label"></label>
+                        <input id="fromDate" asp-for="NewReportInput.FromDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="NewReportInput.FromDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.ToDate" class="form-label"></label>
+                        <input id="toDate" asp-for="NewReportInput.ToDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="NewReportInput.ToDate" class="text-danger"></span>
+                    </div>
+
+                    <h5>Wybierz raporty do wygenerowania:</h5>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="NewReportInput.ClientsReport" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" for="NewReportInput.ClientsReport">Raport o klientach</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="NewReportInput.BudgetReport" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" for="NewReportInput.BudgetReport">Raport budżetowy</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="NewReportInput.IndividualTrainingsReport" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" for="NewReportInput.IndividualTrainingsReport">Raport treningów indywidualnych</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="NewReportInput.GroupTrainingsReport" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" for="NewReportInput.GroupTrainingsReport">Raport treningów grupowych</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-primary">Generuj raport</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <h5>Nie dodałeś jeszcze żadnych planów treningowych.</h5>
-    <div class="text-center">
-        <a href="./PlanyTreningowe/Dodaj" class="btn btn-success mt-4">Dodaj nowy plan</a>
-    </div>
-}
+</div>
+
+
