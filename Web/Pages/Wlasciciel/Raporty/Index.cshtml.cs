@@ -15,11 +15,11 @@ namespace Web.Pages.Wlasciciel.Raporty
     [Authorize(Roles = "Owner")]
     public class IndexModel : PageModel
     {
-        private readonly IOwnerReportsViewModelService _ownerReportsViewModelService;
+        private readonly IReportsViewModelService _ownerReportsViewModelService;
         private readonly IGymReportService _gymReportService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public IndexModel(IOwnerReportsViewModelService ownerReportsViewModelService, 
+        public IndexModel(IReportsViewModelService ownerReportsViewModelService, 
             UserManager<ApplicationUser> userManager,
             IGymReportService gymReportService)
         {
@@ -31,7 +31,7 @@ namespace Web.Pages.Wlasciciel.Raporty
         public required OwnerReportsIndexViewModel ViewModel { get; set; }
 
         [BindProperty]
-        public NewReportInputModel NewReportInput { get; set; }
+        public NewGymReportInputModel NewReportInput { get; set; }
 
         public async Task OnGet()
         {

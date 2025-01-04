@@ -1,0 +1,98 @@
+﻿@page
+@model Web.Pages.Menadzer.Raporty.IndexModel
+@{
+    ViewData["Title"] = "Raporty";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<head>
+    <script src="~/js/employeeReports.js"></script>
+    <script src="~/js/reports.js"></script>
+</head>
+
+
+<h3>Twoje raporty</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Okres raportu</th>
+            <th>Pracownik</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.ViewModel.Reports)
+        {
+            <partial name="_report" for="@report" />
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newReportModal">
+        Wygeneruj nowy raport
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newReportModalLabel">Utwórz raport</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+            </div>
+            <form asp-page-handler="Create" method="post">
+                <div class="modal-body">
+                    <!-- Report Name -->
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.Name" class="form-label"></label>
+                        <input asp-for="NewReportInput.Name" class="form-control" />
+                        <span asp-validation-for="NewReportInput.Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- From Date -->
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.FromDate" class="form-label"></label>
+                        <input id="fromDate"  asp-for="NewReportInput.FromDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="NewReportInput.FromDate" class="text-danger"></span>
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="mb-3">
+                        <label asp-for="NewReportInput.ToDate" class="form-label"></label>
+                        <input id="toDate" asp-for="NewReportInput.ToDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="NewReportInput.ToDate" class="text-danger"></span>
+                    </div>
+
+                    <!-- Employee Selection -->
+                    <div class="mb-3">
+                        <label class="form-label">Pracownik</label>
+                        <select class="form-select" id="employeeSelect" asp-for="NewReportInput.EmployeeId">
+                            <option value="">-- Wybierz pracownika --</option>
+                            @foreach (var employee in Model.ViewModel.Employees)
+                            {
+                                <option value="@employee.Id" data-position="@employee.Position">
+                                    @employee.Name @employee.Surname
+                                </option>
+                            }
+                        </select>
+                        <input type="hidden" asp-for="NewReportInput.Position" id="employeePosition" />
+                        <span asp-validation-for="NewReportInput.EmployeeId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-primary">Utwórz</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

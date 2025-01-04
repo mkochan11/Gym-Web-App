@@ -1,0 +1,67 @@
+﻿@using Web.ViewModels.Manager.Reports
+@model ManagerReportsIndexItemViewModel
+@{
+    var report = Model;
+}
+
+<tr>
+    <td>@report.Name</td>
+    <td>Od @report.FromDate.ToShortDateString() do @report.ToDate.ToShortDateString()</td>
+    <td>@report.EmployeeName</td>
+    <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal_@report.Id">Szczegóły</button>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@report.Id">Usuń</button>
+    </td>
+</tr>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal_@report.Id" tabindex="-1" aria-labelledby="detailsModalLabel_@report.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel_@report.Id">Szczegóły raportu: @report.Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-6">Pracownik</dt>
+                    <dd class="col-sm-6">@report.EmployeeName</dd>
+
+                    <dt class="col-sm-6">Zakres dat</dt>
+                    <dd class="col-sm-6">Od @report.FromDate.ToShortDateString() do @report.ToDate.ToShortDateString()</dd>
+
+                    <dt class="col-sm-6">Przepracowane godziny</dt>
+                    <dd class="col-sm-6">@report.DetailedReport.HoursWorked.ToString("N2")</dd>
+
+                    <dt class="col-sm-6">Zarobione pieniądze</dt>
+                    <dd class="col-sm-6">@report.DetailedReport.MoneyEarned.ToString("C")</dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal_@report.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@report.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@report.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć ten raport?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page="/Menadzer/Raporty/Index" asp-page-handler="Delete">
+                    <input type="hidden" name="reportId" id="reportId" value="@report.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

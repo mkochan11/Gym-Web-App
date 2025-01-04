@@ -23,6 +23,7 @@ namespace Web.Configuration
             services.AddScoped<Func<GroupTrainer>>(sp => () => ActivatorUtilities.CreateInstance<GroupTrainer>(sp));
             services.AddScoped<Func<Receptionist>>(sp => () => ActivatorUtilities.CreateInstance<Receptionist>(sp));
             services.AddTransient(typeof(IGymReportService), typeof(GymReportService));
+            services.AddTransient(typeof(IEmployeeReportService), typeof(EmployeeReportService));
             
             
             return services;

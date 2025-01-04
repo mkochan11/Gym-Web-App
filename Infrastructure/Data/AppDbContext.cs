@@ -25,5 +25,6 @@ namespace Infrastructure.Data
         public DbSet<Availability> ReceptionistsAvailabilities { get; set; }
         public DbSet<GroupTrainingParticipation> GroupTrainingParticipations { get; set; }
         public DbSet<GymReport> GymReports { get; set; }
+        public DbSet<EmployeeReport> EmployeeReports { get; set; }
     }
 }

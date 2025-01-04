@@ -26,5 +26,21 @@ namespace ApplicationCore.Specifications
         {
             Query.Where(x => x.Date >= from && x.Date <= to).AsSplitQuery();
         }
-}
+    }
+
+    public class FindTrainingsForPersonalTrainerInPeriod : SingleResultSpecification<IndividualTraining>
+    {
+        public FindTrainingsForPersonalTrainerInPeriod(int trainerId, DateTime from, DateTime to)
+        {
+            Query.Where(x => x.PersonalTrainerId == trainerId && x.Date >= from && x.Date <= to).AsSplitQuery();
+        }
+    }
+
+    public class FindTrainingsForGroupTrainerInPeriod : SingleResultSpecification<GroupTraining>
+    {
+        public FindTrainingsForGroupTrainerInPeriod(int trainerId, DateTime from, DateTime to)
+        {
+            Query.Where(x => x.GroupTrainerId == trainerId && x.Date >= from && x.Date <= to).AsSplitQuery();
+        }
+    }
 }

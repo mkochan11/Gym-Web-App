@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Web.WebPages;
+﻿using ApplicationCore.Enums;
+using System.ComponentModel.DataAnnotations;
 using Web.Validation;
 
 namespace Web.InputModels.Report
 {
-    public class NewReportInputModel : IValidatableObject
+    public class NewEmployeeReportInputModel
     {
         [Required(ErrorMessage = "Nazwa raportu jest wymagana.")]
         [StringLength(100, ErrorMessage = "Nazwa raportu nie może być dłuższa niż 100 znaków.")]
@@ -19,17 +19,8 @@ namespace Web.InputModels.Report
         [Display(Name = "Data końcowa")]
         [GreaterThanDate("FromDate", ErrorMessage = "Data końcowa musi być późniejsza niż początkowa")]
         public DateTime ToDate { get; set; }
-        public bool ClientsReport { get; set; }
-        public bool BudgetReport { get; set; }
-        public bool IndividualTrainingsReport { get; set; }
-        public bool GroupTrainingsReport { get; set; }
+        public int EmployeeId { get; set; }
+        public Position Position { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (FromDate <= ToDate)
-            {
-                yield return new ValidationResult("Data końcowa musi być późniejsza niż początkowa.", new[] { "ToDate" });
-            }
-        }
     }
 }
