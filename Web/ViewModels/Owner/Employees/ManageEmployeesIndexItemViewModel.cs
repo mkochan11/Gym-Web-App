@@ -1,14 +1,11 @@
-﻿
-using ApplicationCore.Enums;
-
-namespace ApplicationCore.Models.Employee
+﻿namespace Web.ViewModels.Owner.Employees
 {
-    public class EditEmployeeModel
+    public class ManageEmployeesIndexItemViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public Position Position { get; set; }
+        public string Email { get; set; }
         public decimal? Salary { get; set; }
         public DateTime? EmploymentDate { get; set; }
     }

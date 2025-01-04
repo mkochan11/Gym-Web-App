@@ -1,0 +1,84 @@
+﻿@page
+@model Web.Pages.Wlasciciel.Pracownicy.TrenerzyGrupowiModel
+@{
+    ViewData["Title"] = "Trenerzy grupowi";
+    Layout = "~/Pages/Wlasciciel/_OwnerLayout.cshtml";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<h3>Trenerzy grupowi</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Pensja</th>
+            <th>Data zatrudnienia</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var groupTrainer in Model.ViewModel.Employees)
+        {
+            <partial name="_groupTrainer" for="@groupTrainer" />
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newEmployeeModal">
+        Dodaj trenera
+    </button>
+</div>
+
+
+<!-- New GroupTrainer Modal -->
+<div class="modal fade" id="newEmployeeModal" tabindex="-1" aria-labelledby="newEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newEmployeeModalLabel">Dodaj trenera grupowego</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-page-handler="Create" method="post" id="newEmployeeForm">
+                    <div class="mb-3">
+                        <label asp-for="NewEmployeeInputModel.Name" class="form-label"></label>
+                        <input asp-for="NewEmployeeInputModel.Name" class="form-control" />
+                        <span asp-validation-for="NewEmployeeInputModel.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewEmployeeInputModel.Surname" class="form-label"></label>
+                        <input asp-for="NewEmployeeInputModel.Surname" class="form-control" />
+                        <span asp-validation-for="NewEmployeeInputModel.Surname" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewEmployeeInputModel.Email" class="form-label"></label>
+                        <input asp-for="NewEmployeeInputModel.Email" class="form-control" />
+                        <span asp-validation-for="NewEmployeeInputModel.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewEmployeeInputModel.Salary" class="form-label"></label>
+                        <input asp-for="NewEmployeeInputModel.Salary" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="NewEmployeeInputModel.Salary" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewEmployeeInputModel.EmploymentDate" class="form-label"></label>
+                        <input asp-for="NewEmployeeInputModel.EmploymentDate" class="form-control" type="date" />
+                        <span asp-validation-for="NewEmployeeInputModel.EmploymentDate" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                <button type="submit" form="newEmployeeForm" class="btn btn-success">Utwórz</button>
+            </div>
+        </div>
+    </div>
+</div>

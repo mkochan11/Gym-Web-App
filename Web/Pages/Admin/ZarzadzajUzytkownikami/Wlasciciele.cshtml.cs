@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.InputModels.Admin.Employee;
+using Web.InputModels.User;
 using Web.Interfaces;
 using Web.ViewModels.Admin.ManageUsers;
 
@@ -38,10 +38,10 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
         public required ManageUsersIndexViewModel ViewModel { get; set; }
 
         [BindProperty]
-        public NewEmployeeInputModel NewEmployeeInputModel { get; set; }
+        public NewUserInputModel NewEmployeeInputModel { get; set; }
 
         [BindProperty]
-        public EditEmployeeInputModel EditEmployeeInputModel { get; set; }
+        public EditUserInputModel EditEmployeeInputModel { get; set; }
 
         public async Task OnGet()
         {

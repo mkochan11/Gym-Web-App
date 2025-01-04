@@ -66,6 +66,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Admin/ZarzadzajUzytkownikami/Index">Zarządzaj użytkownikami</a>
                             </li>
                         }
+                        else if (User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Wlasciciel/Pracownicy/Index">Zarządzaj pracownikami</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

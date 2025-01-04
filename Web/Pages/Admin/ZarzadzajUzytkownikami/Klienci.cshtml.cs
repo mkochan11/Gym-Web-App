@@ -1,16 +1,12 @@
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Client;
-using ApplicationCore.Models.Employee;
-using ApplicationCore.Models.User;
-using ApplicationCore.Services;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.InputModels.Admin.Client;
-using Web.InputModels.Admin.Employee;
+using Web.InputModels.User;
 using Web.Interfaces;
 using Web.ViewModels.Admin.ManageUsers;
 
@@ -40,10 +36,10 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
         public required ManageUsersIndexViewModel ViewModel { get; set; }
 
         [BindProperty]
-        public NewClientInputModel NewClientInputModel { get; set; }
+        public NewUserInputModel NewClientInputModel { get; set; }
 
         [BindProperty]
-        public EditClientInputModel EditClientInputModel { get; set; }
+        public EditUserInputModel EditClientInputModel { get; set; }
 
         public async Task OnGet()
         {

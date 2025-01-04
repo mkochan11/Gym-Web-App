@@ -42,7 +42,7 @@ namespace Infrastructure.Identity
                     Email = "owner@gymApp.com",
                     UserName = "owner@gymApp.com"
                 };
-                var ownerResult = await userManager.CreateAsync(ownerUser, AuthorizationConstants.DEFAULT_MANAGER_PASSWORD);
+                var ownerResult = await userManager.CreateAsync(ownerUser, AuthorizationConstants.DEFAULT_OWNER_PASSWORD);
                 if (ownerResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(ownerUser, "Owner");

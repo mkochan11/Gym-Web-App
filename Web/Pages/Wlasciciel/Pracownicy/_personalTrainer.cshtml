@@ -1,0 +1,90 @@
+﻿@using Web.ViewModels.Owner.Employees
+@model ManageEmployeesIndexItemViewModel
+@{
+    var personalTrainer = Model;
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<tr>
+    <td>@personalTrainer.Name</td>
+    <td>@personalTrainer.Surname</td>
+    <td>@personalTrainer.Email</td>
+    <td>@personalTrainer.Salary</td>
+    <td>@personalTrainer.EmploymentDate.GetValueOrDefault().ToString("dd-MM-yyyy")</td>
+    <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@personalTrainer.Id">Edytuj</button>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@personalTrainer.Id">Usuń</button>
+    </td>
+</tr>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal_@personalTrainer.Id" tabindex="-1" aria-labelledby="editModalLabel_@personalTrainer.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel_@personalTrainer.Id">Edytuj Trenera</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm_@personalTrainer.Id" asp-page="/Wlasciciel/Pracownicy/TrenerzyPersonalni" asp-page-handler="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label for="editName_@personalTrainer.Id" class="form-label">Imię</label>
+                        <input type="text" class="form-control" id="editName_@personalTrainer.Id" name="Name" value="@personalTrainer.Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSurname_@personalTrainer.Id" class="form-label">Nazwisko</label>
+                        <input type="text" class="form-control" id="editSurname_@personalTrainer.Id" name="Surname" value="@personalTrainer.Surname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail_@personalTrainer.Id" class="form-label">Adres Email</label>
+                        <input type="email" class="form-control" id="editEmail_@personalTrainer.Id" name="Email" value="@personalTrainer.Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSalary_@personalTrainer.Id" class="form-label">Wynagrodzenie</label>
+                        <input type="number" class="form-control" id="editSalary_@personalTrainer.Id" name="Salary"
+                               value="@(personalTrainer.Salary.HasValue ? personalTrainer.Salary.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")"
+                               step="0.01" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editEmploymentDate_@personalTrainer.Id" class="form-label">Data Zatrudnienia</label>
+                        <input type="date" class="form-control" id="editEmploymentDate_@personalTrainer.Id" name="EmploymentDate" value="@personalTrainer.EmploymentDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                <button type="submit" form="editForm_@personalTrainer.Id" class="btn btn-success">Zatwierdź zmiany</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal_@personalTrainer.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@personalTrainer.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@personalTrainer.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć trenera?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page="/Wlasciciel/Pracownicy/TrenerzyPersonalni" asp-page-handler="Delete">
+                    <input type="hidden" name="userId" id="userId" value="@personalTrainer.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

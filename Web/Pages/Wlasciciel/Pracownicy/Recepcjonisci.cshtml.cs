@@ -1,3 +1,4 @@
+using ApplicationCore.Constants;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Employee;
@@ -7,44 +8,43 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.InputModels.User;
+using Web.InputModels.Employee;
 using Web.Interfaces;
-using Web.ViewModels.Admin.ManageUsers;
+using Web.ViewModels.Owner.Employees;
 
-namespace Web.Pages.Admin.ZarzadzajUzytkownikami
+namespace Web.Pages.Wlasciciel.Pracownicy
 {
-    [Authorize(Roles = "Administrator")]
-    public class TrenerzyPersonalniModel : PageModel
+    [Authorize(Roles = "Owner")]
+    public class RecepcjonisciModel : PageModel
     {
-        private readonly IManageUsersViewModelService<PersonalTrainer> _manageUsersViewModelService;
-        private readonly IEmployeeService<PersonalTrainer> _employeeService;
+        IManageEmployeesViewModelService<Receptionist> _manageEmployeesViewModelService;
+        private readonly IEmployeeService<Receptionist> _employeeService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
 
-        public TrenerzyPersonalniModel(IManageUsersViewModelService<PersonalTrainer> manageUsersViewModelService,
-            IEmployeeService<PersonalTrainer> employeeService,
+        public RecepcjonisciModel(IManageEmployeesViewModelService<Receptionist> manageEmplyeesViewModelService,
+            IEmployeeService<Receptionist> employeeService,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore)
         {
-            _manageUsersViewModelService = manageUsersViewModelService;
+            _manageEmployeesViewModelService = manageEmplyeesViewModelService;
             _employeeService = employeeService;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
         }
-
-        public required ManageUsersIndexViewModel ViewModel { get; set; }
-
-        [BindProperty]
-        public NewUserInputModel NewEmployeeInputModel { get; set; }
+        public required ManageEmployeesIndexViewModel ViewModel { get; set; }
 
         [BindProperty]
-        public EditUserInputModel EditEmployeeInputModel { get; set; }
+        public NewEmployeeInputModel NewEmployeeInputModel { get; set; }
+
+        [BindProperty]
+        public EditEmployeeInputModel EditEmployeeInputModel { get; set; }
 
         public async Task OnGet()
         {
-            ViewModel = await _manageUsersViewModelService.GetManageUsersIndexViewModel();
+            ViewModel = await _manageEmployeesViewModelService.GetManageEmployeesIndexViewModel();
         }
 
         public async Task<IActionResult> OnPostCreate()
@@ -53,18 +53,18 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
 
             await _userStore.SetUserNameAsync(user, NewEmployeeInputModel.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, NewEmployeeInputModel.Email, CancellationToken.None);
-            var password = GenerateRandomPassword();
-            var registerResult = await _userManager.CreateAsync(user, password);
+            //var password = GenerateRandomPassword();
+            var registerResult = await _userManager.CreateAsync(user, AuthorizationConstants.DEFAULT_RECEPTIONIST_PASSWORD);
 
             if (!registerResult.Succeeded)
             {
-                return RedirectToPage("/Error", new { errorMessage = registerResult.Errors.FirstOrDefault() });
+                return RedirectToPage("/Error", new { errorMessage = registerResult.Errors.FirstOrDefault().Description });
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "PersonalTrainer");
+            var roleResult = await _userManager.AddToRoleAsync(user, "Receptionist");
             if (!roleResult.Succeeded)
             {
-                return RedirectToPage("/Error", new { errorMessage = roleResult.Errors.FirstOrDefault() });
+                return RedirectToPage("/Error", new { errorMessage = roleResult.Errors.FirstOrDefault().Description });
             }
 
             var model = new NewEmployeeModel
@@ -72,7 +72,9 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
                 AccountId = user.Id,
                 Name = NewEmployeeInputModel.Name,
                 Surname = NewEmployeeInputModel.Surname,
-                Position = ApplicationCore.Enums.Position.PersonalTrainer
+                Position = ApplicationCore.Enums.Position.Receptionist,
+                Salary = NewEmployeeInputModel.Salary,
+                EmploymentDate = NewEmployeeInputModel.EmploymentDate
             };
 
             var result = await _employeeService.AddEmployee(model);
@@ -111,7 +113,9 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
                 Id = EditEmployeeInputModel.Id,
                 Name = EditEmployeeInputModel.Name,
                 Surname = EditEmployeeInputModel.Surname,
-                Position = ApplicationCore.Enums.Position.PersonalTrainer
+                Position = ApplicationCore.Enums.Position.Receptionist,
+                Salary = EditEmployeeInputModel.Salary,
+                EmploymentDate = EditEmployeeInputModel.EmploymentDate
             };
 
             var updateResult = await _employeeService.UpdateEmployee(model);
@@ -180,14 +184,22 @@ namespace Web.Pages.Admin.ZarzadzajUzytkownikami
         private string GenerateRandomPassword()
         {
             const int length = 12;
-            const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
+            const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
+            const string digitChars = "0123456789";
+            const string specialChars = "!@#$%^&*()_-+=<>?";
+            const string allValidChars = upperChars + lowerChars + digitChars + specialChars;
 
             var random = new Random();
             var passwordChars = new char[length];
 
-            for (int i = 0; i < length; i++)
+            passwordChars[0] = digitChars[random.Next(digitChars.Length)];
+
+            passwordChars[1] = specialChars[random.Next(specialChars.Length)];
+
+            for (int i = 2; i < length; i++)
             {
-                passwordChars[i] = validChars[random.Next(validChars.Length)];
+                passwordChars[i] = allValidChars[random.Next(allValidChars.Length)];
             }
 
             return new string(passwordChars);

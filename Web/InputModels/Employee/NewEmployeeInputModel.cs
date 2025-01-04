@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.InputModels.Admin.Client
+namespace Web.InputModels.Employee
 {
-    public class NewClientInputModel
+    public class NewEmployeeInputModel
     {
         [Required(ErrorMessage = "Imię jest wymagane.")]
         [StringLength(50, ErrorMessage = "Imię musi mieć od 2 do 50 znaków.", MinimumLength = 2)]
@@ -18,5 +18,13 @@ namespace Web.InputModels.Admin.Client
         [EmailAddress(ErrorMessage = "Nieprawidłowy adres e-mail.")]
         [Display(Name = "Adres e-mail")]
         public string Email { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Wynagrodzenie musi być liczbą dodatnią.")]
+        [Display(Name = "Wynagrodzenie")]
+        public decimal? Salary { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data zatrudnienia")]
+        public DateTime? EmploymentDate { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace ApplicationCore.Services
             employee.Surname = model.Surname;
             employee.Position = model.Position;
             employee.RegistrationDate = DateTime.Now;
+            employee.Salary = model.Salary ?? employee.Salary;
+            employee.EmploymentDate = model.EmploymentDate ?? employee.EmploymentDate;
 
 
             var result = await _employeeRepository.AddAsync(employee);
@@ -77,6 +79,8 @@ namespace ApplicationCore.Services
             employee.Name = model.Name;
             employee.Surname = model.Surname;
             employee.Position = model.Position;
+            employee.Salary = model.Salary ?? employee.Salary;
+            employee.EmploymentDate = model.EmploymentDate ?? employee.EmploymentDate;
 
             await _employeeRepository.UpdateAsync(employee);
             return Result.Success();

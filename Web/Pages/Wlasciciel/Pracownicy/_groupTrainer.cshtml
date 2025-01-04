@@ -1,0 +1,90 @@
+﻿@using Web.ViewModels.Owner.Employees
+@model ManageEmployeesIndexItemViewModel
+@{
+    var groupTrainer = Model;
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<tr>
+    <td>@groupTrainer.Name</td>
+    <td>@groupTrainer.Surname</td>
+    <td>@groupTrainer.Email</td>
+    <td>@groupTrainer.Salary</td>
+    <td>@groupTrainer.EmploymentDate.GetValueOrDefault().ToString("dd-MM-yyyy")</td>
+    <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal_@groupTrainer.Id">Edytuj</button>
+        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal_@groupTrainer.Id">Usuń</button>
+    </td>
+</tr>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal_@groupTrainer.Id" tabindex="-1" aria-labelledby="editModalLabel_@groupTrainer.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel_@groupTrainer.Id">Edytuj Trenera</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm_@groupTrainer.Id" asp-page="/Wlasciciel/Pracownicy/TrenerzyGrupowi" asp-page-handler="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label for="editName_@groupTrainer.Id" class="form-label">Imię</label>
+                        <input type="text" class="form-control" id="editName_@groupTrainer.Id" name="Name" value="@groupTrainer.Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSurname_@groupTrainer.Id" class="form-label">Nazwisko</label>
+                        <input type="text" class="form-control" id="editSurname_@groupTrainer.Id" name="Surname" value="@groupTrainer.Surname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail_@groupTrainer.Id" class="form-label">Adres Email</label>
+                        <input type="email" class="form-control" id="editEmail_@groupTrainer.Id" name="Email" value="@groupTrainer.Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSalary_@groupTrainer.Id" class="form-label">Wynagrodzenie</label>
+                        <input type="number" class="form-control" id="editSalary_@groupTrainer.Id" name="Salary"
+                               value="@(groupTrainer.Salary.HasValue ? groupTrainer.Salary.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "")"
+                               step="0.01" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editEmploymentDate_@groupTrainer.Id" class="form-label">Data Zatrudnienia</label>
+                        <input type="date" class="form-control" id="editEmploymentDate_@groupTrainer.Id" name="EmploymentDate" value="@groupTrainer.EmploymentDate?.ToString("yyyy-MM-dd")" >
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                <button type="submit" form="editForm_@groupTrainer.Id" class="btn btn-success">Zatwierdź zmiany</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal_@groupTrainer.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@groupTrainer.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel_@groupTrainer.Id">Potwierdzenie usunięcia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć trenera?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <form method="post" asp-page="/Wlasciciel/Pracownicy/TrenerzyGrupowi" asp-page-handler="Delete">
+                    <input type="hidden" name="userId" id="userId" value="@groupTrainer.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

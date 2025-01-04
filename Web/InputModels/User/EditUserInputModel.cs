@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Web.InputModels.Admin.Employee
+namespace Web.InputModels.User
 {
-    public class NewEmployeeInputModel
+    public class EditUserInputModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Imię jest wymagane.")]
         [StringLength(50, ErrorMessage = "Imię musi mieć od 2 do 50 znaków.", MinimumLength = 2)]
         [Display(Name = "Imię")]

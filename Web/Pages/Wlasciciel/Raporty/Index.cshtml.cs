@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Web.Pages.Admin.ZarzadzajUzytkownikami
+namespace Web.Pages.Wlasciciel.Raporty
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Owner")]
     public class IndexModel : PageModel
     {
+
         public void OnGet()
         {
         }
