@@ -18,4 +18,12 @@ namespace ApplicationCore.Specifications
             Query.Where(shift => shift.ReceptionistId == receptionistId && shift.StartTime >= fromDate && shift.EndTime <= toDate);
         }
     }
+
+    public class FindShiftsByMonth : SingleResultSpecification<Shift>
+    {
+        public FindShiftsByMonth(int month, int year)
+        {
+            Query.Where(shift => shift.StartTime.Month == month && shift.StartTime.Year == year);
+        }
+    }
 }

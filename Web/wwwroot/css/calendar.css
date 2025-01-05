@@ -1,6 +1,6 @@
 ﻿.calendar-day {
     height: 50px;
-    width: 80px
+    width: 80px;
     cursor: pointer;
 }
 
@@ -16,6 +16,53 @@
     margin-top: 10px;
     width: 100%;
 }
+
+.shift-cards {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.shift-card {
+    border: 1px solid #90caf9;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.shift-today-card {
+    background-color: #cce5ff; /* Light blue */
+}
+
+.shift-today-card:hover {
+    background-color: #66b3ff; /* Slightly darker blue on hover */
+}
+
+.shift-past-card {
+    background-color: #bab8b1; /* Light grey */
+    cursor: default;
+}
+
+.shift-past-card:hover {
+    background-color: #8a8883; /* Slightly darker grey on hover */
+}
+
+.shift-future-card {
+    background-color: #93e696; /* Light green */
+}
+
+.shift-future-card:hover {
+    background-color: #76c279; /* Slightly darker green on hover */
+}
+
+
 
 .training-card {
     border: 1px solid #90caf9;

@@ -22,7 +22,6 @@ namespace Infrastructure.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<TrainingType> TrainingTypes { get; set; }
         public DbSet<Shift> ReceptionistsShifts { get; set; }
-        public DbSet<Availability> ReceptionistsAvailabilities { get; set; }
         public DbSet<GroupTrainingParticipation> GroupTrainingParticipations { get; set; }
         public DbSet<GymReport> GymReports { get; set; }
         public DbSet<EmployeeReport> EmployeeReports { get; set; }

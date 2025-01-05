@@ -1,0 +1,102 @@
+﻿@using Web.ViewModels.WorkSchedule.Manager
+@model ManagerWorkScheduleShiftItemViewModel
+
+@if(Model.Date.Day < DateTime.Now.Day)
+{
+    <div class="shift-card shift-past-card">
+        <p>@Model.ReceptionistName</p>
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+    </div>
+}else if(Model.Date.Day == DateTime.Now.Day)
+{
+    <div class="shift-card shift-today-card">
+        <p>@Model.ReceptionistName</p>
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+    </div>
+}
+else
+{
+    <div class="shift-card shift-future-card"
+         data-bs-toggle="modal"
+         data-bs-target="#shiftModal_@Model.Id">
+        <p>@Model.ReceptionistName</p>
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editShiftModal_@Model.Id">
+            Edytuj
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelShiftModal_@Model.Id">
+            Usuń
+        </button>
+    </div>
+}
+
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelShiftModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cancelShiftModallLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="cancelShiftModalLabel_@Model.Id">Potwierdzenie usunięcia zmiany</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć tę zmianę?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page="/Menadzer/HarmonogramPracy/Index" asp-page-handler="CancelShift">
+                    <input type="hidden" name="shiftId" id="shiftId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Usuń zmianę</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Shift Modal -->
+<div class="modal fade" id="editShiftModal_@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editShiftModalLabel_@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center w-100">
+                <h5 class="modal-title" id="editShiftModalLabel_@Model.Id">Edytuj zmianę</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page="/Menadzer/HarmonogramPracy/Index" asp-page-handler="EditShift">
+                    <input type="hidden" name="shiftId" value="@Model.Id" />
+
+                    <!-- Start Hour input field -->
+                    <div class="mb-3">
+                        <label for="editStartHour_@Model.Id" class="form-label">Godzina rozpoczęcia</label>
+                        <input type="time" class="form-control" id="editStartHour_@Model.Id" name="StartHour" value="@Model.Date.ToString("HH:mm")" required />
+                    </div>
+
+                    <!-- End Hour input field -->
+                    <div class="mb-3">
+                        <label for="editEndHour_@Model.Id" class="form-label">Godzina zakończenia</label>
+                        <input type="time" class="form-control" id="editEndHour_@Model.Id" name="EndHour" value="@Model.Date.AddHours(Model.Duration.Hours).ToString("HH:mm")" required />
+                    </div>
+
+                    <!-- Receptionist Dropdown -->
+                    <div class="mb-3">
+                        <label for="editReceptionistId_@Model.Id" class="form-label">Recepcjonista</label>
+                        <select class="form-select" id="editReceptionistId_@Model.Id" name="ReceptionistId" required>
+                            <option value="" disabled selected>-- Wybierz recepcjonistę --</option>
+                            @foreach (var receptionist in Model.Receptionists)
+                            {
+                                <option value="@receptionist.Id">
+                                    @receptionist.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,7 @@ namespace Web.Configuration
             services.AddTransient(typeof(IManageUsersViewModelService<>), typeof(ManageUsersViewModelService<>));
             services.AddTransient(typeof(IManageEmployeesViewModelService<>), typeof(ManageEmployeesViewModelService<>));
             services.AddTransient(typeof(IReportsViewModelService), typeof(ReportsViewModelService));
+            services.AddTransient(typeof(IWorkScheduleViewModelService), typeof(WorkScheduleViewModelService));
 
             return services;
         }
