@@ -111,6 +111,7 @@ namespace Web.Pages.Account.Manage
             if (Input.NewEmail != email)
             {
                 await _userManager.SetEmailAsync(user, Input.NewEmail);
+                await _userManager.SetUserNameAsync(user, Input.NewEmail);
 
                 return RedirectToPage();
             }
