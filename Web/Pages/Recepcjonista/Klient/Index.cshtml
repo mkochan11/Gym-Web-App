@@ -1,0 +1,29 @@
+﻿@page
+@model Web.Pages.Recepcjonista.Klient.IndexModel
+@{
+    ViewData["Title"] = "Znajdź klienta";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-80">
+    <div class="text-center">
+        <h4>Wpisz login Klienta aby znaleźć go w systemie.</h4>
+        <form method="post" class="mt-4">
+            <div class="form-floating mb-3">
+                <input type="text" asp-for="ClientLogin" class="form-control" placeholder="Wprowadź login Klienta" />
+                <label asp-for="ClientLogin">Login Klienta</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Znajdź klienta</button>
+        </form>
+
+        @if (Model.Message != null)
+        {
+            <div class="alert alert-info mt-3">
+                @Model.Message
+            </div>
+        }
+
+        <div class="mt-4">
+            <a asp-page="./Dodaj" class="btn btn-success">Dodaj konto Klienta</a>
+        </div>
+    </div>
+</div>

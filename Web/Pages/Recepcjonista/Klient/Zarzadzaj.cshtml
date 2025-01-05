@@ -1,0 +1,43 @@
+﻿@page
+@model Web.Pages.Recepcjonista.Klient.ZarzadzajModel
+@{
+    ViewData["Title"] = "Zarządzaj klientem";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Edytuj Klienta</h2>
+    <hr />
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <form method="post" class="mb-5">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <input asp-for="EditUserInputModel.Id" value="@Model.ViewModel.Client.Id" hidden />
+                <div class="form-floating mb-3">
+                    <input asp-for="EditUserInputModel.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="EditUserInputModel.Email">Email</label>
+                    <span asp-validation-for="EditUserInputModel.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="EditUserInputModel.Name" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="EditUserInputModel.Name">Imię</label>
+                    <span asp-validation-for="EditUserInputModel.Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="EditUserInputModel.Surname" class="form-control" aria-required="true" />
+                    <label asp-for="EditUserInputModel.Surname">Nazwisko</label>
+                    <span asp-validation-for="EditUserInputModel.Surname" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Zapisz Zmiany</button>
+            </form>
+
+            @if (Model.Message != null)
+            {
+                <div class="alert alert-info text-center">
+                    @Model.Message
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
