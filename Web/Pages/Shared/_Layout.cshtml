@@ -84,7 +84,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Menadzer/Raporty/Index">Raporty</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Menadzer/HarmonogramPracy/Index">HarmonogramPracy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Menadzer/HarmonogramPracy/Index">Harmonogram pracy</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Receptionist"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Recepcjonista/HarmonogramPracy/Index">Harmonogram pracy</a>
                             </li>
                         }
                     </ul>

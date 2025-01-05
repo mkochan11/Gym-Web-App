@@ -1,0 +1,21 @@
+﻿@using Web.ViewModels.WorkSchedule.Receptionist
+@model ReceptionistWorkScheduleShiftItemViewModel
+
+@if (Model.Date.Day < DateTime.Now.Day)
+{
+    <div class="shift-card shift-past-card">
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+    </div>
+}
+else if (Model.Date.Day == DateTime.Now.Day)
+{
+    <div class="shift-card shift-today-card">
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+    </div>
+}
+else
+{
+    <div class="shift-card shift-future-card">
+        <p>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
+    </div>
+}

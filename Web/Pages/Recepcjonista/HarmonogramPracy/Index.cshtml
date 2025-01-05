@@ -1,0 +1,120 @@
+﻿@page
+@model Web.Pages.Recepcjonista.HarmonogramPracy.IndexModel
+@{
+    var daysOfWeek = new[] { "Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob" };
+    ViewData["Title"] = "Harmonogram";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/calendar.css" />
+    <script src="~/js/workSchedule.js"></script>
+</head>
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        @if (Model.CurrentYear > DateTime.Now.Year ||
+        (Model.CurrentYear == DateTime.Now.Year && Model.CurrentMonth > DateTime.Now.Month))
+        {
+            <div class="col-auto">
+                <form method="post" asp-page-handler="Previous">
+                    <button type="submit" class="btn btn-primary">
+                        &larr;
+                    </button>
+                </form>
+            </div>
+        }
+
+        <div class="col text-center">
+            <h3>Twoje zmiany @Model.CurrentMonth/@Model.CurrentYear</h3>
+        </div>
+
+        <div class="col-auto">
+            <form method="post" asp-page-handler="Next">
+                <button type="submit" class="btn btn-primary">
+                    &rarr;
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <table class="table table-bordered text-center calendar-table">
+            <thead>
+                <tr>
+                    @foreach (var day in daysOfWeek)
+                    {
+                        <th>@day</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 6; i++)  // 6 rows for a month (max)
+                {
+                    <tr>
+                        @for (int j = 0; j < 7; j++)  // 7 columns for the days
+                        {
+                            var index = i * 7 + j;
+                            var day = index < Model.IndexViewModel.DaysInMonth.Count ? Model.IndexViewModel.DaysInMonth[index] : null;
+                            <td class="calendar-day position-relative">
+                                @if (day != null)
+                                {
+                                    <span>@day.Day</span>
+
+                                    @if (day.Shifts.Any())
+                                    {
+                                        <div class="shift-cards">
+                                            @if (day.Shifts.Count >= 3)
+                                            {
+                                                <!-- Powyżej 3 zmian -->
+                                                <div class="card">
+                                                    <button class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#shiftsModal_@day.Day">
+                                                        Zmiany
+                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                            @day.Shifts.Count
+                                                            <span class="visually-hidden">unread messages</span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Wyświetlenie treningów -->
+                                                <div class="modal fade" id="shiftsModal_@day.Day" tabindex="-1" aria-labelledby="shiftsModalLabel_@day.Day" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="shiftsModalLabel_@day.Day">Zmiany w dniu @day.Date.Value.ToString("dd-MM-yyyy")</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @foreach (var shift in day.Shifts)
+                                                                {
+                                                                    <partial name="_shift" for="@shift" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var shift in day.Shifts)
+                                                {
+                                                    <partial name="_shift" for="@shift" />
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
