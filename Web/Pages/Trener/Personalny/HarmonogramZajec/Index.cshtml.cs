@@ -160,39 +160,29 @@ namespace Web.Pages.Trener.Personalny.HarmonogramZajec
 
         public async Task<IActionResult> OnPostCreateTraining()
         {
-            if (TryValidateModel(NewTrainingInputModel))
+            var user = await _userManager.GetUserAsync(User);
+
+            NewIndividualTrainingModel model = new NewIndividualTrainingModel
             {
-                NewIndividualTrainingModel model = new NewIndividualTrainingModel
-                {
-                    Date = NewTrainingInputModel.Date,
-                    Hour = NewTrainingInputModel.Hour,
-                    Duration = NewTrainingInputModel.Duration,
-                    IsCyclic = NewTrainingInputModel.IsCyclic,
-                    Description = NewTrainingInputModel.Description,
-                    Repeatability = NewTrainingInputModel.IsCyclic is true ? NewTrainingInputModel.Repeatability : ""
-                };
+                Date = NewTrainingInputModel.Date,
+                Hour = NewTrainingInputModel.Hour,
+                Duration = NewTrainingInputModel.Duration,
+                IsCyclic = NewTrainingInputModel.IsCyclic,
+                Description = NewTrainingInputModel.Description,
+                Repeatability = NewTrainingInputModel.IsCyclic is true ? NewTrainingInputModel.Repeatability : ""
+            };
 
+            var result = await _individualTrainingService.CreateTraining(model, user.Id);
 
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _individualTrainingService.CreateTraining(model, user.Id);
-
-                if (result.IsSuccess)
-                {
-                    TempData["ToastMessage"] = "Pomyœlnie dodano trening";
-                    TempData["ToastType"] = "success";
-                    return RedirectToPage();
-                }
-                else
-                {
-                    return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
-                }
+            if (result.IsSuccess)
+            {
+                TempData["ToastMessage"] = "Pomyœlnie dodano trening";
+                TempData["ToastType"] = "success";
+                return RedirectToPage();
             }
             else
             {
-                TempData["ToastMessage"] = "Nie uda³o siê dodaæ treningu";
-                TempData["ToastType"] = "warning";
-                return RedirectToPage();
+                return RedirectToPage("/Error", new { errorMessage = result.Errors.First() });
             }
         }
     }
