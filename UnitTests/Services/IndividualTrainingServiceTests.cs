@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreTests.Client
+namespace UnitTests.Services
 {
-    public class AddClientTests
+    internal class IndividualTrainingServiceTests
     {
-        [Fact]
-        public void Test1()
-        {
-
-        }
     }
 }
