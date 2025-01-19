@@ -11,6 +11,5 @@ namespace ApplicationCore.Entities
         [ForeignKey(nameof(GymMembershipId))]
         public GymMembership GymMembership { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public PaymentStatus PaymentStatus { get; set; }
     }
 }

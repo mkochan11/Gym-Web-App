@@ -472,9 +472,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GymMembershipId");

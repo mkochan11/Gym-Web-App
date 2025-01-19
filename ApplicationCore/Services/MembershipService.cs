@@ -109,7 +109,6 @@ namespace ApplicationCore.Services
                 GymMembership = membership,
                 PaymentDate = DateTime.Now,
                 PaymentMethod = paymentMethod,
-                PaymentStatus = PaymentStatus.Success
             };
 
             var paymentResult = await _paymentRepository.AddAsync(payment);
