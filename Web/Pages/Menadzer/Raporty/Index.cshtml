@@ -40,7 +40,7 @@
     </button>
 </div>
 
-<!-- Modal -->
+<!-- New Report Modal -->
 <div class="modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -50,28 +50,24 @@
             </div>
             <form asp-page-handler="Create" method="post">
                 <div class="modal-body">
-                    <!-- Report Name -->
                     <div class="mb-3">
                         <label asp-for="NewReportInput.Name" class="form-label"></label>
                         <input asp-for="NewReportInput.Name" class="form-control" />
                         <span asp-validation-for="NewReportInput.Name" class="text-danger"></span>
                     </div>
 
-                    <!-- From Date -->
                     <div class="mb-3">
                         <label asp-for="NewReportInput.FromDate" class="form-label"></label>
                         <input id="fromDate"  asp-for="NewReportInput.FromDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
                         <span asp-validation-for="NewReportInput.FromDate" class="text-danger"></span>
                     </div>
 
-                    <!-- To Date -->
                     <div class="mb-3">
                         <label asp-for="NewReportInput.ToDate" class="form-label"></label>
                         <input id="toDate" asp-for="NewReportInput.ToDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
                         <span asp-validation-for="NewReportInput.ToDate" class="text-danger"></span>
                     </div>
 
-                    <!-- Employee Selection -->
                     <div class="mb-3">
                         <label class="form-label">Pracownik</label>
                         <select class="form-select" id="employeeSelect" asp-for="NewReportInput.EmployeeId">

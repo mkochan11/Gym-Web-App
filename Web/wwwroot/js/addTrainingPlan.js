@@ -1,13 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('add-form-btn').addEventListener('click', function () {
-        // Get the current number of forms
         const formCount = document.querySelectorAll('.form-group').length + 1;
 
-        // Create a new form container
         const newFormDiv = document.createElement('div');
         newFormDiv.className = 'form-group border p-3 mb-3';
 
-        // Add fields for Name, Description, RepetitionsNumber, SeriesNumber, and RestTime
         newFormDiv.innerHTML = `
             <label for="name${formCount}">Name</label>
             <input type="text" class="form-control mb-2" id="name${formCount}" name="name${formCount}" placeholder="Enter name">
@@ -25,7 +22,6 @@
             <input type="text" class="form-control mb-2" id="rest${formCount}" name="rest${formCount}" placeholder="Enter rest time (e.g., 00:01:30)">
         `;
 
-        // Append the new form to the container
         document.getElementById('forms-container').appendChild(newFormDiv);
     });
 });

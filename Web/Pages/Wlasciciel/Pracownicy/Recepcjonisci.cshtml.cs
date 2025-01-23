@@ -53,7 +53,6 @@ namespace Web.Pages.Wlasciciel.Pracownicy
 
             await _userStore.SetUserNameAsync(user, NewEmployeeInputModel.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, NewEmployeeInputModel.Email, CancellationToken.None);
-            //var password = GenerateRandomPassword();
             var registerResult = await _userManager.CreateAsync(user, AuthorizationConstants.DEFAULT_RECEPTIONIST_PASSWORD);
 
             if (!registerResult.Succeeded)
@@ -179,30 +178,6 @@ namespace Web.Pages.Wlasciciel.Pracownicy
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
-        }
-
-        private string GenerateRandomPassword()
-        {
-            const int length = 12;
-            const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
-            const string digitChars = "0123456789";
-            const string specialChars = "!@#$%^&*()_-+=<>?";
-            const string allValidChars = upperChars + lowerChars + digitChars + specialChars;
-
-            var random = new Random();
-            var passwordChars = new char[length];
-
-            passwordChars[0] = digitChars[random.Next(digitChars.Length)];
-
-            passwordChars[1] = specialChars[random.Next(specialChars.Length)];
-
-            for (int i = 2; i < length; i++)
-            {
-                passwordChars[i] = allValidChars[random.Next(allValidChars.Length)];
-            }
-
-            return new string(passwordChars);
         }
     }
 }

@@ -13,7 +13,6 @@
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Now we know the DOM is fully loaded and elements are available to add event listeners
     document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#createTrainingModal"]').forEach(button => {
         button.addEventListener('click', function () {
             const isCyclicCheckbox = document.getElementById('IsCyclic');
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Handle the toggle of repeatability options based on the IsCyclic checkbox state
     document.getElementById('IsCyclic').addEventListener('change', function () {
         const repeatabilityOptions = document.getElementById('RepeatabilityOptions');
         if (this.checked) {
@@ -46,4 +44,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-

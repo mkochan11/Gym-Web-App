@@ -8,7 +8,6 @@
 @if(Model.ViewModel.IsFound){
     <div class="container mt-4">
         <h2 class="text-center mb-4">Wybierz Karnet</h2>
-        <!-- Scrollable Card Container -->
         <div class="d-flex overflow-auto" style="gap: 1rem; max-width: 100%; white-space: nowrap;">
             @foreach (var membershipPlan in Model.ViewModel.Plans)
             {
@@ -26,7 +25,6 @@
             }
         </div>
 
-        <!-- Button to Navigate to Payment -->
         <form method="get" action="/Klient/Karnet/Platnosc" class="text-center mt-4">
             <input type="hidden" id="selectedMembershipId" name="id" value="" />
             <button type="submit" class="btn btn-primary" disabled id="paymentButton">Przejdź do płatności</button>
@@ -45,19 +43,15 @@ else
         let selectedCardId = null;
 
         function selectCard(id) {
-            // Remove 'selected' class from previously selected card
             if (selectedCardId) {
                 document.getElementById(`card-${selectedCardId}`).style.border = "1px solid #ddd";
             }
 
-            // Highlight the newly selected card
             const card = document.getElementById(`card-${id}`);
             card.style.border = "2px solid #007bff";
 
-            // Set the selected card ID
             selectedCardId = id;
 
-            // Update the hidden input and enable the button
             document.getElementById("selectedMembershipId").value = id;
             document.getElementById("paymentButton").disabled = false;
         }

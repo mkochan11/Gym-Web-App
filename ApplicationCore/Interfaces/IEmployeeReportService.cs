@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Models.EmployeeReport;
+﻿using ApplicationCore.Models.EmployeeReport;
 using Ardalis.Result;
 
 namespace ApplicationCore.Interfaces

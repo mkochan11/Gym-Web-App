@@ -4,7 +4,6 @@ using ApplicationCore.Models.Exercise;
 using ApplicationCore.Models.TrainingPlan;
 using ApplicationCore.Specifications;
 using Ardalis.Result;
-using System.Numerics;
 
 namespace ApplicationCore.Services
 {

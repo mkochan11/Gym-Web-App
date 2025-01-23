@@ -26,7 +26,6 @@ namespace Web.Configuration
             services.AddTransient(typeof(IEmployeeReportService), typeof(EmployeeReportService));
             services.AddTransient(typeof(IShiftService), typeof(ShiftService));
             
-            
             return services;
         }
     }

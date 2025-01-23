@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Models.Shift;
+﻿using ApplicationCore.Models.Shift;
 using Ardalis.Result;
 
 namespace ApplicationCore.Interfaces

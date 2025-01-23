@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Models.Shift
+﻿namespace ApplicationCore.Models.Shift
 {
     public class EditShiftModel
     {

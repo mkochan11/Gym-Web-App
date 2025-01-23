@@ -40,7 +40,6 @@ else
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Additional modal content goes here -->
                 <p><strong>Czas: </strong>@Model.Date.ToString("HH:mm") - @Model.Date.Add(Model.Duration).ToString("HH:mm")</p>
                 <p><strong>Typ treningu: </strong>@Model.TrainingType.Name</p>
                 <p><strong>Opis typu: </strong>@Model.TrainingType.Description</p>
@@ -93,25 +92,21 @@ else
                 <form method="post" asp-page="/Trener/Grupowy/HarmonogramZajec/Index" asp-page-handler="EditTraining">
                     <input type="hidden" name="trainingId" value="@Model.Id" />
 
-                    <!-- Date input field -->
                     <div class="mb-3">
                         <label for="editDate_@Model.Id" class="form-label">Data treningu</label>
                         <input type="date" class="form-control" id="editDate_@Model.Id" name="Date" value="@Model.Date.ToShortDateString()" min="@DateTime.Now.ToShortDateString()" required />
                     </div>
 
-                    <!-- Hour input field -->
                     <div class="mb-3">
                         <label for="editHour_@Model.Id" class="form-label">Godzina</label>
                         <input type="time" class="form-control" id="editHour_@Model.Id" name="Hour" value="@Model.Date.ToString("HH:mm")" required />
                     </div>
 
-                    <!-- Duration input field -->
                     <div class="mb-3">
                         <label for="editDuration_@Model.Id" class="form-label">Czas trwania</label>
                         <input type="time" class="form-control" id="editDuration_@Model.Id" name="Duration" value="@Model.Duration.ToString(@"hh\:mm")" required />
                     </div>
 
-                    <!-- Description input field -->
                     <div class="mb-3">
                         <label for="editDescription_@Model.Id" class="form-label">Opis</label>
                         <textarea class="form-control" id="editDescription_@Model.Id" name="Description">@Model.Description</textarea>
@@ -122,7 +117,6 @@ else
                         <input type="number" class="form-control" id="editMaxParticipantNumber_@Model.Id" name="MaxParticipantNumber" value="@Model.MaxParticipantNumber" required/>
                     </div>
 
-                    <!-- Training Type Dropdown -->
                     <div class="mb-3">
                         <label for="editTrainingTypeId_@Model.Id" class="form-label">Typ treningu</label>
                         <select class="form-select" id="editTrainingTypeId_@Model.Id" name="TrainingTypeId" required>
@@ -136,7 +130,6 @@ else
                         </select>
                     </div>
 
-                    <!-- Submit button -->
                     <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                 </form>
             </div>

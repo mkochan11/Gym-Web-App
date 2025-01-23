@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Models.GymReport
+﻿namespace ApplicationCore.Models.GymReport
 {
     public class NewGymReportModel
     {

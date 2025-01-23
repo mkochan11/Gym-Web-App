@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Models.Training
+﻿namespace ApplicationCore.Models.Training
 {
     public class NewIndividualTrainingModel
     {

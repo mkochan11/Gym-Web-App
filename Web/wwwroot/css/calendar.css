@@ -79,7 +79,6 @@
     transition: background-color 0.1s ease;
 }
 
-/* Individual Training Cards - green */
 .individual-training-card {
     background-color: #93e696; /* Light green */
 }
@@ -88,7 +87,6 @@
     background-color: #76c279; /* Slightly darker green on hover */
 }
 
-/* Group Training Cards - Blue */
 .group-training-card {
     background-color: #cce5ff; /* Light blue */
 }

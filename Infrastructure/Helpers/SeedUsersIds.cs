@@ -1,5 +1,4 @@
-﻿
-namespace Infrastructure.Helpers
+﻿namespace Infrastructure.Helpers
 {
     public class SeedUsersIds
     {

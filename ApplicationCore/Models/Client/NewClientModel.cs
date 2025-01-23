@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Models.Client
+﻿namespace ApplicationCore.Models.Client
 {
     public class NewClientModel
     {

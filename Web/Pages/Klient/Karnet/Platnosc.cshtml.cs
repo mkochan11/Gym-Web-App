@@ -64,7 +64,6 @@ namespace Web.Pages.Klient.Karnet
             {
                 return RedirectToPage("/Error", new {errorMessage = response.Errors.FirstOrDefault()});
             }
-            
         }
     }
 }

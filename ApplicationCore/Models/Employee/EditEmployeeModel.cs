@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Enums;
+﻿using ApplicationCore.Enums;
 
 namespace ApplicationCore.Models.Employee
 {

@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Entities.Abstract
+﻿namespace ApplicationCore.Entities.Abstract
 {
     public abstract class Trainer<T> : Employee
     {

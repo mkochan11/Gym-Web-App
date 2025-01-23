@@ -65,19 +65,16 @@ else
                 <form method="post" asp-page="/Menadzer/HarmonogramPracy/Index" asp-page-handler="EditShift">
                     <input type="hidden" name="shiftId" value="@Model.Id" />
 
-                    <!-- Start Hour input field -->
                     <div class="mb-3">
                         <label for="editStartHour_@Model.Id" class="form-label">Godzina rozpoczęcia</label>
                         <input type="time" class="form-control" id="editStartHour_@Model.Id" name="StartHour" value="@Model.Date.ToString("HH:mm")" required />
                     </div>
 
-                    <!-- End Hour input field -->
                     <div class="mb-3">
                         <label for="editEndHour_@Model.Id" class="form-label">Godzina zakończenia</label>
                         <input type="time" class="form-control" id="editEndHour_@Model.Id" name="EndHour" value="@Model.Date.AddHours(Model.Duration.Hours).ToString("HH:mm")" required />
                     </div>
 
-                    <!-- Receptionist Dropdown -->
                     <div class="mb-3">
                         <label for="editReceptionistId_@Model.Id" class="form-label">Recepcjonista</label>
                         <select class="form-select" id="editReceptionistId_@Model.Id" name="ReceptionistId" required>

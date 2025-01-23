@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Models.GymReport;
+﻿using ApplicationCore.Models.GymReport;
 using Ardalis.Result;
 
 namespace ApplicationCore.Interfaces

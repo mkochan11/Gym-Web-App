@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Models.Exercise
+﻿namespace ApplicationCore.Models.Exercise
 {
     public class NewExerciseModel
     {

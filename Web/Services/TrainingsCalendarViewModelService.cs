@@ -329,11 +329,10 @@ namespace Web.Services
                 });
             }
 
-            // Fill in the remaining empty days at the end (next month's days)
-            int remainingDays = 42 - (startDay + daysInMonth); // 42 = 6 rows of 7 days
+            int remainingDays = 42 - (startDay + daysInMonth);
             for (int i = 0; i < remainingDays; i++)
             {
-                days.Add(null); // Empty day
+                days.Add(null);
             }
 
             return days;
@@ -364,11 +363,10 @@ namespace Web.Services
                 });
             }
 
-            // Fill in the remaining empty days at the end (next month's days)
-            int remainingDays = 42 - (startDay + daysInMonth); // 42 = 6 rows of 7 days
+            int remainingDays = 42 - (startDay + daysInMonth);
             for (int i = 0; i < remainingDays; i++)
             {
-                days.Add(null); // Empty day
+                days.Add(null);
             }
 
             return days;
@@ -399,11 +397,10 @@ namespace Web.Services
                 });
             }
 
-            // Fill in the remaining empty days at the end (next month's days)
-            int remainingDays = 42 - (startDay + daysInMonth); // 42 = 6 rows of 7 days
+            int remainingDays = 42 - (startDay + daysInMonth);
             for (int i = 0; i < remainingDays; i++)
             {
-                days.Add(null); // Empty day
+                days.Add(null);
             }
 
             return days;

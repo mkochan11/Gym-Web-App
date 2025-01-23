@@ -1,5 +1,4 @@
-﻿
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models.Shift;
 using Ardalis.Result;
