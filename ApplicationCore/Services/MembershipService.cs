@@ -27,14 +27,6 @@ namespace ApplicationCore.Services
             _paymentRepository = paymentRepository;
         }
 
-        /// <summary>
-        /// Gets Client's active GymMembership
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns>
-        /// A <see cref="GymMembership"/> object representing the active membership of the client, 
-        /// or <c>null</c> if no active membership is found.
-        /// </returns>
         public async Task<GymMembership> GetActiveMembership(int clientId)
         {
             var _membershipSpec = new FindMembershipByClientId(clientId);
@@ -52,21 +44,11 @@ namespace ApplicationCore.Services
             return activeMembership;
         }
 
-        /// <summary>
-        /// Determines if the specified gym membership is currently active.
-        /// </summary>
-        /// <param name="membership">The gym membership to check.</param>
-        /// <returns><c>true</c> if the membership is active; otherwise, <c>false</c>.</returns>
         public bool IsMembershipActive(GymMembership membership) {
             DateTime currentDate = DateTime.Now;
             return membership.StartDate < currentDate && membership.EndDate > currentDate;
         }
 
-        /// <summary>
-        /// Adds new GymMembership to the database with Client and MembershipPlan details
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>A <see cref="Result"/> indicating the success or failure of the operation.</returns>
         public async Task<Result> AddGymMembership(NewMembershipModel model)
         {
             var _clientSpec = new FindClientByUserId(model.UserId);
