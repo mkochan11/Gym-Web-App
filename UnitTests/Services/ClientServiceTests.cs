@@ -31,18 +31,16 @@ namespace UnitTests.Services
                 Surname = "testSurname"
             };
 
-            var registrationDate = DateTime.Now;
-
             var newClient = new Client
             {
                 AccountId = "testId",
                 Name = "testName",
                 Surname = "testSurname",
-                RegistrationDate = registrationDate,
+                RegistrationDate = DateTime.Now,
             };
 
             clientRepositoryMock
-                .Setup(x => x.AddAsync(It.IsAny<Client>(), default))
+                .Setup(x => x.AddAsync(newClient, default))
                 .ReturnsAsync(newClient);   
 
             var result = await service.AddClient(newClientModel);
@@ -100,11 +98,9 @@ namespace UnitTests.Services
         [Test]
         public async Task UpdateClientShouldReturnClientNotFound()
         {
-            int id = 1;
-
             var editClientModel = new EditClientModel
             {
-                Id = id,
+                Id = 1,
                 Name = "testName",
                 Surname = "testSurname"
             };
@@ -117,20 +113,9 @@ namespace UnitTests.Services
                 Surname = "oldTestSurname"
             };
 
-            var newClient = new Client
-            {
-                AccountId = "oldAccountId",
-                Name = "testName",
-                Surname = "testSurname",
-            };
-
             clientRepositoryMock
-                .Setup(x => x.GetByIdAsync(id, default))
-                .ReturnsAsync((Client)null);
-
-            clientRepositoryMock
-                .Setup(x => x.UpdateAsync(It.IsAny<Client>(), default))
-                .Verifiable();
+                .Setup(x => x.GetByIdAsync(2, default))
+                .ReturnsAsync(oldClient);
 
             var result = await service.UpdateClient(editClientModel);
 
